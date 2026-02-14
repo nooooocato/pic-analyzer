@@ -31,7 +31,7 @@ def test_images_schema(db_manager):
     cursor = conn.cursor()
     cursor.execute("PRAGMA table_info(images)")
     columns = {col[1] for col in cursor.fetchall()}
-    expected = {'id', 'path', 'filename', 'file_size', 'created_at', 'modified_at'}
+    expected = {'id', 'path', 'filename', 'file_size', 'created_at', 'modified_at', 'thumbnail'}
     assert expected.issubset(columns)
     conn.close()
 

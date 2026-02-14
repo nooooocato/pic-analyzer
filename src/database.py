@@ -18,7 +18,8 @@ class DatabaseManager:
                 filename TEXT NOT NULL,
                 file_size INTEGER,
                 created_at TIMESTAMP,
-                modified_at TIMESTAMP
+                modified_at TIMESTAMP,
+                thumbnail BLOB
             )
         ''')
 
