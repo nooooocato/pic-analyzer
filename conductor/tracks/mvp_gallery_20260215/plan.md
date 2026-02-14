@@ -12,7 +12,7 @@
 - [x] Task: Implement the Main Window with Fluent Design styling. 553e642
     - [ ] Create Top Toolbar placeholder.
     - [ ] Create Sidebar with a `QTreeView` for the Data Inspector.
-- [ ] Task: Implement the Tiled Gallery View.
+- [x] Task: Implement the Tiled Gallery View. 9245a05
     - [ ] Use `QListView` or `QScrollArea` with a flow layout for responsive tiling.
     - [ ] Implement lazy loading for thumbnails.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Core UI Components' (Protocol in workflow.md)
