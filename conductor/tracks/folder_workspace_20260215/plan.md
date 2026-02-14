@@ -32,3 +32,18 @@
     - [ ] Write Tests: Verify gallery and database are cleared/reset when a new folder is opened.
     - [ ] Implement: Final wiring in `MainWindow` to ensure all components reset correctly during workspace changes.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Integration & Refinement' (Protocol in workflow.md)
+
+## Phase 5: Thumbnail Engine & Persistent Storage
+- [x] Task: Update database schema to store thumbnails. (266cfee)
+    - [ ] Write Tests: Verify `images` table can store and retrieve BLOB data for thumbnails.
+    - [ ] Implement: Add `thumbnail` column to `images` table in `src/database.py`.
+- [ ] Task: Create `ThumbnailGenerator` utility.
+    - [ ] Write Tests: Verify a thumbnail is correctly generated from a test image using Pillow.
+    - [ ] Implement: Create `src/ui/thumbnail_gen.py` to handle scaling and conversion to bytes.
+- [ ] Task: Implement background thumbnail processing in `FolderScanner`.
+    - [ ] Write Tests: Verify `FolderScanner` emits thumbnails along with file paths.
+    - [ ] Implement: Update `FolderScanner` to generate (or load from DB) thumbnails during the scan.
+- [ ] Task: Update `GalleryView` to display real thumbnails.
+    - [ ] Write Tests: Verify `GalleryItem` can display a `QPixmap` from bytes.
+    - [ ] Implement: Update `GalleryItem` and `GalleryView` to render the received thumbnail data.
+- [ ] Task: Conductor - User Manual Verification 'Phase 5: Thumbnail Engine & Persistent Storage' (Protocol in workflow.md)
