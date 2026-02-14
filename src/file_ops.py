@@ -1,5 +1,23 @@
 import os
 import shutil
+import sys
+
+def hide_file(path):
+    """
+    Ensures a file is hidden on Windows, Linux, Android, and macOS.
+    On Unix-based systems, it relies on the '.' prefix (should be added by caller).
+    On Windows, it sets the FILE_ATTRIBUTE_HIDDEN attribute.
+    """
+    if not os.path.exists(path):
+        return
+    
+    if sys.platform == 'win32':
+        import ctypes
+        # Set file attribute to hidden (0x02)
+        FILE_ATTRIBUTE_HIDDEN = 0x02
+        success = ctypes.windll.kernel32.SetFileAttributesW(path, FILE_ATTRIBUTE_HIDDEN)
+        return bool(success)
+    return True
 
 class FileManager:
     def safe_move(self, src_path, dst_path, conflict_policy='ask'):

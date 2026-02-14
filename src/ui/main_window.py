@@ -8,6 +8,7 @@ from PySide6.QtGui import QStandardItemModel, QStandardItem
 from src.ui.gallery_view import GalleryView
 from src.file_scanner import FolderScanner
 from src.database import DatabaseManager
+from src.file_ops import hide_file
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -16,7 +17,9 @@ class MainWindow(QMainWindow):
         self.resize(1200, 800)
 
         # Initialize Database in app's local dir (or current dir for now)
-        self.db_manager = DatabaseManager("app_metadata.db")
+        db_path = "app_metadata.db"
+        self.db_manager = DatabaseManager(db_path)
+        hide_file(db_path)
         
         self.current_folder = None
         self._setup_ui()
@@ -89,6 +92,7 @@ class MainWindow(QMainWindow):
         # Switch database to the selected folder
         db_path = os.path.join(path, ".pic_analyzer.db")
         self.db_manager.switch_database(db_path)
+        hide_file(db_path)
 
         scanner = FolderScanner(path)
         scanner.signals.file_found.connect(self._on_file_found)
