@@ -53,3 +53,35 @@ def test_on_open_folder_selects_directory(qtbot, monkeypatch):
     
     # Check if the window has stored the selected path (we'll need to implement this)
     assert window.current_folder == test_path
+
+def test_on_open_folder_starts_scanner(qtbot, monkeypatch):
+    window = MainWindow()
+    qtbot.addWidget(window)
+    
+    # Mock QFileDialog
+    monkeypatch.setattr("PySide6.QtWidgets.QFileDialog.getExistingDirectory", lambda *args: "/fake/path")
+    
+    # Mock QThreadPool.start to verify scanner is started
+    started_runnable = []
+    from PySide6.QtCore import QThreadPool
+    monkeypatch.setattr(QThreadPool, "start", lambda self, runnable: started_runnable.append(runnable))
+    
+    window._on_open_folder()
+    
+    assert len(started_runnable) == 1
+    from src.file_scanner import FolderScanner
+    assert isinstance(started_runnable[0], FolderScanner)
+
+def test_main_window_adds_image_on_signal(qtbot):
+    window = MainWindow()
+    qtbot.addWidget(window)
+    
+    # Initial count
+    initial_count = window.gallery.layout.count()
+    
+    # Simulate a file being found
+    test_image = "test.jpg"
+    window._on_file_found(test_image)
+    
+    # Verify it was added to the gallery
+    assert window.gallery.layout.count() == initial_count + 1

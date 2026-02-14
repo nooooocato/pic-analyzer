@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QMainWindow, QToolBar, QTreeView, QDockWidget, QVBoxLayout, QWidget, QFileDialog
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 from src.ui.gallery_view import GalleryView
+from src.file_scanner import FolderScanner
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -60,4 +61,14 @@ class MainWindow(QMainWindow):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder to Scan")
         if folder:
             self.current_folder = folder
-            # TODO: Trigger recursive scan
+            self._start_scan(folder)
+
+    def _start_scan(self, path):
+        """Starts a background scan of the selected folder."""
+        scanner = FolderScanner(path)
+        scanner.signals.file_found.connect(self._on_file_found)
+        QThreadPool.globalInstance().start(scanner)
+
+    def _on_file_found(self, file_path):
+        """Callback when a file is found by the scanner."""
+        self.gallery.add_item(file_path)
