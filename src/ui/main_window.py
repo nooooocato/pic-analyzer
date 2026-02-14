@@ -83,6 +83,9 @@ class MainWindow(QMainWindow):
 
     def _start_scan(self, path):
         """Starts a background scan of the selected folder."""
+        # Clear UI state
+        self.gallery.clear()
+
         # Switch database to the selected folder
         db_path = os.path.join(path, ".pic_analyzer.db")
         self.db_manager.switch_database(db_path)

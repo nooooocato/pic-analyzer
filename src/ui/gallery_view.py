@@ -32,3 +32,10 @@ class GalleryView(QScrollArea):
         row = count // columns
         col = count % columns
         self.layout.addWidget(item, row, col)
+
+    def clear(self):
+        """Removes all items from the gallery."""
+        while self.layout.count():
+            child = self.layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
