@@ -4,7 +4,7 @@
 - [x] Task: Initialize Python project with PySide6 and standard directory structure (src, plugins, assets). c1ba088
     - [ ] Set up `requirements.txt`.
     - [ ] Create basic package structure.
-- [ ] Task: Design and implement the SQLite database schema for image metadata and analysis results.
+- [x] Task: Design and implement the SQLite database schema for image metadata and analysis results. 392376b
     - [ ] Define tables for images, analysis_results, and plugin_metadata.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding & Database Setup' (Protocol in workflow.md)
 
