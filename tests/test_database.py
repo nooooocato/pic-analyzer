@@ -34,3 +34,22 @@ def test_images_schema(db_manager):
     expected = {'id', 'path', 'filename', 'file_size', 'created_at', 'modified_at'}
     assert expected.issubset(columns)
     conn.close()
+
+def test_switch_database(tmp_path):
+    db1_path = str(tmp_path / "db1.db")
+    db2_path = str(tmp_path / "db2.db")
+    
+    manager = DatabaseManager(db1_path)
+    assert manager.db_path == db1_path
+    assert os.path.exists(db1_path)
+    
+    manager.switch_database(db2_path)
+    assert manager.db_path == db2_path
+    assert os.path.exists(db2_path)
+    
+    # Verify tables exist in the new DB
+    conn = sqlite3.connect(db2_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='images'")
+    assert cursor.fetchone() is not None
+    conn.close()

@@ -48,3 +48,8 @@ class DatabaseManager:
 
         conn.commit()
         conn.close()
+
+    def switch_database(self, new_db_path):
+        """Closes connection to current DB (if any) and opens/initializes a new one."""
+        self.db_path = new_db_path
+        self._initialize_db()
