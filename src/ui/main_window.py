@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QToolBar, QTreeView, QDockWidget, QVBoxLayout, QWidget
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QStandardItemModel, QStandardItem
 from src.ui.gallery_view import GalleryView
 
 class MainWindow(QMainWindow):
@@ -23,6 +24,7 @@ class MainWindow(QMainWindow):
         self.inspector_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         
         self.tree_view = QTreeView()
+        self.tree_view.setEditTriggers(QTreeView.NoEditTriggers)
         self.inspector_dock.setWidget(self.tree_view)
         
         self.addDockWidget(Qt.RightDockWidgetArea, self.inspector_dock)
@@ -30,3 +32,16 @@ class MainWindow(QMainWindow):
         # Central Widget (Gallery)
         self.gallery = GalleryView()
         self.setCentralWidget(self.gallery)
+
+    def update_inspector(self, metadata: dict):
+        """Populates the Data Inspector with image metadata."""
+        model = QStandardItemModel()
+        model.setHorizontalHeaderLabels(["Property", "Value"])
+        
+        for key, value in metadata.items():
+            key_item = QStandardItem(str(key))
+            value_item = QStandardItem(str(value))
+            model.appendRow([key_item, value_item])
+            
+        self.tree_view.setModel(model)
+        self.tree_view.expandAll()
