@@ -1,6 +1,6 @@
 # Implementation Plan - MVP Gallery
 
-## Phase 1: Project Scaffolding & Database Setup
+## Phase 1: Project Scaffolding & Database Setup [checkpoint: ef97933]
 - [x] Task: Initialize Python project with PySide6 and standard directory structure (src, plugins, assets). c1ba088
     - [ ] Set up `requirements.txt`.
     - [ ] Create basic package structure.
