@@ -8,4 +8,9 @@ window = MainWindow()
 for i in range(10):
     window.gallery.add_item(f"Image {i+1}")
 window.show()
+window.update_inspector({
+    "Format": "JPEG",
+    "Resolution": "1920x1080",
+    "Analysis Status": "Complete"
+})
 sys.exit(app.exec())
