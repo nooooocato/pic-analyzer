@@ -26,7 +26,7 @@
     - [ ] Create interactive prompt for Rename/Skip/Overwrite.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Plugin Framework & File Operations' (Protocol in workflow.md)
 
-## Phase 4: Integration & Initial Plugins
+## Phase 4: Integration & Initial Plugins [checkpoint: 059b3ed]
 - [x] Task: Implement the "Date Grouping" logic as a built-in feature/plugin. c8fc9f3
 - [x] Task: Connect the Data Inspector to display real-time metadata from selected images. bb93885
     - [ ] Update Sidebar with real-time metadata.
