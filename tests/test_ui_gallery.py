@@ -30,3 +30,24 @@ def test_gallery_add_item(qtbot):
     gallery_items = gallery.findChildren(GalleryItem)
     assert len(gallery_items) == 1
     assert gallery_items[0].label.text() == "Test Image"
+
+def test_gallery_add_thumbnail(qtbot):
+    gallery = GalleryView()
+    qtbot.addWidget(gallery)
+    
+    # Create fake thumbnail bytes (a red 1x1 png)
+    from PIL import Image
+    import io
+    img = Image.new('RGB', (1, 1), color='red')
+    buffer = io.BytesIO()
+    img.save(buffer, format="PNG")
+    thumb_bytes = buffer.getvalue()
+    
+    gallery.add_item("test.jpg", thumb_bytes)
+    
+    from src.ui.gallery_view import GalleryItem
+    gallery_items = gallery.findChildren(GalleryItem)
+    assert len(gallery_items) == 1
+    # Check if pixmap is set on some label or custom property
+    # We'll need to update GalleryItem to handle pixmap
+    assert gallery_items[0].pixmap() is not None

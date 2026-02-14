@@ -47,6 +47,33 @@ def test_folder_scanner_finds_images(temp_image_dir, qtbot):
         assert isinstance(thumb, bytes)
         assert len(thumb) > 0
 
+def test_folder_scanner_persistence(temp_image_dir, qtbot, tmp_path):
+    db_path = str(tmp_path / "persistence.db")
+    from src.database import DatabaseManager
+    db_manager = DatabaseManager(db_path) # Initialize schema
+    
+    scanner = FolderScanner(temp_image_dir, db_path)
+    scanner.run()
+    
+    # Verify data is in DB
+    import sqlite3
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT count(*) FROM images")
+    assert cursor.fetchone()[0] == 4
+    
+    cursor.execute("SELECT thumbnail FROM images WHERE thumbnail IS NOT NULL")
+    assert len(cursor.fetchall()) == 4
+    conn.close()
+    
+    # Run again, should load from DB (we can mock thumbnail_gen to verify)
+    import unittest.mock as mock
+    with mock.patch('src.ui.thumbnail_gen.ThumbnailGenerator.generate') as mock_gen:
+        scanner2 = FolderScanner(temp_image_dir, db_path)
+        scanner2.run()
+        # Should NOT call generate because it loads from DB
+        assert mock_gen.call_count == 0
+
 def test_folder_scanner_finished_signal(temp_image_dir, qtbot):
     scanner = FolderScanner(temp_image_dir)
     
