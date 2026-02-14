@@ -22,7 +22,7 @@
 - [x] Task: Enhance `DatabaseManager` to support dynamic database switching. (193610e)
     - [ ] Write Tests: Verify `DatabaseManager` can close one DB and open another correctly.
     - [ ] Implement: Update `src/database.py` to handle dynamic paths and session management.
-- [ ] Task: Implement Workspace Prompt and Management logic.
+- [x] Task: Implement Workspace Prompt and Management logic. (4c81c3a)
     - [ ] Write Tests: Verify the application prompts the user when switching folders if a workspace is active.
     - [ ] Implement: Add a `WorkspaceManager` or update `MainWindow` to handle the "Save/Clear" prompt and manage the hybrid storage logic (centralized vs `.pa` file).
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Workspace & Database Management' (Protocol in workflow.md)
