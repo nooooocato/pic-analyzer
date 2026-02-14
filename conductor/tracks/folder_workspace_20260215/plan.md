@@ -40,7 +40,7 @@
 - [x] Task: Create `ThumbnailGenerator` utility. (0888346)
     - [ ] Write Tests: Verify a thumbnail is correctly generated from a test image using Pillow.
     - [ ] Implement: Create `src/ui/thumbnail_gen.py` to handle scaling and conversion to bytes.
-- [ ] Task: Implement background thumbnail processing in `FolderScanner`.
+- [x] Task: Implement background thumbnail processing in `FolderScanner`. (006fb44)
     - [ ] Write Tests: Verify `FolderScanner` emits thumbnails along with file paths.
     - [ ] Implement: Update `FolderScanner` to generate (or load from DB) thumbnails during the scan.
 - [ ] Task: Update `GalleryView` to display real thumbnails.
