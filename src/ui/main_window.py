@@ -15,6 +15,8 @@ class MainWindow(QMainWindow):
         self.toolbar = QToolBar("Main Toolbar")
         self.addToolBar(self.toolbar)
         self.toolbar.setMovable(False)
+        self.toolbar.addAction("Import")
+        self.toolbar.addAction("Analyze")
 
         # Sidebar (Data Inspector)
         self.inspector_dock = QDockWidget("Data Inspector", self)
