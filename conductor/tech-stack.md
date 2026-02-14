@@ -5,8 +5,10 @@
 - **UI Framework:** PySide6 (Qt for Python) - Chosen for its native Windows integration and support for modern Fluent Design styles.
 - **Database:** SQLite - Used for local, high-performance storage of image analysis results and metadata.
 
-## Image Processing & Analysis
+## Image Processing & Media
 - **Pillow (PIL):** Primary library for image loading, thumbnail generation, and basic manipulation.
+- **Qt Media:** `QMovie` for high-performance playback of animated formats (GIF, WebP).
+- **Custom UI Rendering:** `QStyledItemDelegate` for optimized, overlaid UI components (checkboxes, selection states).
 - **OpenCV:** Used for advanced analysis like pHash (similarity) and color space calculations.
 - **ImageHash:** Specialized library for pHash, dHash, and other perceptual hashing algorithms.
 

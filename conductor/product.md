@@ -12,8 +12,10 @@ I need a quick and simple image management tool for organizing scattered images 
 1.  **File Operations:**
     -   Use safe "move" operations (not copy/cut) to minimize SSD wear.
         - Selection actions:
-            -   **Move Out:** Move to a user-specified path.
-            -   **Delete:** Send to system recycle bin.
+            -   **Selection Mode:** Batch select images via long-press, right-click, or rubber-band drag.
+            -   **Batch Actions:** "Select All", "Invert Selection", and "Cancel Selection" via a floating overlay.
+            -   **Move Out:** Move selected items to a user-specified path.
+            -   **Delete:** Send selected items to system recycle bin.
         -   **Workspace Management:**
             -   Folder-based workspaces with isolated analysis data.
             -   Automatic discovery of images in selected folders and subfolders.
@@ -30,7 +32,9 @@ I need a quick and simple image management tool for organizing scattered images 
 
 3.  **Image Preview:**
     -   Default: Tiled view (like Android gallery).
-    -   Thumbnail view with click-to-view original.
+    -   **Full-Area Viewer:** Double-click or Mouse 5 to open a full-area overlay viewer with fade and slide animations.
+    -   **Navigation:** Supports Keyboard arrows, Mouse wheel, and Mouse 4/5 for seamless browsing.
+    -   **Animated Support:** Full support for GIF and WebP animations in the viewer.
     -   Grouped tiled views based on analysis results (e.g., by date).
     -   **Switchable grouping views (similar to Windows Explorer grouping).
 
