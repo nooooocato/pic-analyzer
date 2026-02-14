@@ -9,7 +9,7 @@
     - [ ] Implement: Add `_on_open_folder` method to `MainWindow` to handle the selection.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: UI Foundations & Menu Bar' (Protocol in workflow.md)
 
-## Phase 2: Threaded Recursive Scanner
+## Phase 2: Threaded Recursive Scanner [checkpoint: 69cea1c]
 - [x] Task: Create `FolderScanner` worker for background file discovery. (56e75b1)
     - [ ] Write Tests: Verify `FolderScanner` correctly identifies image files recursively in a test directory.
     - [ ] Implement: Create `src/file_scanner.py` with a `QRunnable` that emits signals as it finds files.
