@@ -11,11 +11,17 @@ I need a quick and simple image management tool for organizing scattered images 
 
 1.  **File Operations:**
     -   Use safe "move" operations (not copy/cut) to minimize SSD wear.
-    -   Selection actions:
-        -   **Move Out:** Move to a user-specified path.
-        -   **Delete:** Send to system recycle bin.
-
-2.  **Architecture:**
+        - Selection actions:
+            -   **Move Out:** Move to a user-specified path.
+            -   **Delete:** Send to system recycle bin.
+        -   **Workspace Management:**
+            -   Folder-based workspaces with isolated analysis data.
+            -   Automatic discovery of images in selected folders and subfolders.
+            -   Hybrid storage: Centralized tracking of workspaces and localized analysis databases (`.pic_analyzer.db`).
+            -   Cross-platform hidden file support for analysis data.
+    
+    2.  **Architecture:**
+    
     -   Separation of analysis and file manipulation.
     -   Analysis results stored in SQLite.
     -   **Performance:** Multi-threaded analysis.
@@ -61,6 +67,7 @@ A "geeky," high-performance image management and analysis tool designed for scie
 - **Utility-First UI:** A functional, data-dense interface following native Windows design patterns.
 - **On-Demand Analysis:** Statistical rules are triggered manually via buttons to conserve resources.
 - **Lazy Loading:** UI elements and thumbnails are generated only as needed.
+- **Workspace Management:** Users can open folders as discrete workspaces, with analysis data stored in hidden local databases.
 - **Interactive Visualization:**
     - **Distribution Charts:** Histograms and scatter plots that act as interactive filters.
     - **Data Inspector:** A sidebar for deep-dives into raw metrics (pHash, information density).
