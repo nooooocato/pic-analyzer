@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QToolBar, QTreeView, QDockWidget, QVBoxLayout, QWidget
 from PySide6.QtCore import Qt
+from src.ui.gallery_view import GalleryView
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -24,7 +25,6 @@ class MainWindow(QMainWindow):
         
         self.addDockWidget(Qt.RightDockWidgetArea, self.inspector_dock)
 
-        # Central Widget (Placeholder for Gallery)
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
-        self.layout = QVBoxLayout(self.central_widget)
+        # Central Widget (Gallery)
+        self.gallery = GalleryView()
+        self.setCentralWidget(self.gallery)
