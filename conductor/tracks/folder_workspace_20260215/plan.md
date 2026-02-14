@@ -18,7 +18,7 @@
     - [ ] Implement: Connect `FolderScanner` signals to `GalleryView` to add images dynamically.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Threaded Recursive Scanner' (Protocol in workflow.md)
 
-## Phase 3: Workspace & Database Management
+## Phase 3: Workspace & Database Management [checkpoint: f769477]
 - [x] Task: Enhance `DatabaseManager` to support dynamic database switching. (193610e)
     - [ ] Write Tests: Verify `DatabaseManager` can close one DB and open another correctly.
     - [ ] Implement: Update `src/database.py` to handle dynamic paths and session management.
