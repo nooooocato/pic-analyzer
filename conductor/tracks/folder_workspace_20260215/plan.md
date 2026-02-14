@@ -21,3 +21,6 @@
 - [x] Task: Implement background thumbnail processing in `FolderScanner`. (006fb44)
 - [x] Task: Update `GalleryView` to display real thumbnails. (2f2eb16)
 - [x] Task: Implement change detection and UI/UX refinements. (9c59232)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (43db2df)
