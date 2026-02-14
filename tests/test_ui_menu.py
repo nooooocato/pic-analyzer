@@ -165,3 +165,24 @@ def test_on_open_folder_switches_db(qtbot, monkeypatch, tmp_path):
     expected_db = os.path.join(new_folder, ".pic_analyzer.db")
     assert window.db_manager.db_path == expected_db
     assert os.path.exists(expected_db)
+
+def test_on_open_folder_clears_gallery(qtbot, monkeypatch, tmp_path):
+    window = MainWindow()
+    qtbot.addWidget(window)
+    
+    # Add an item to the gallery
+    window.gallery.add_item("old_image.jpg")
+    assert window.gallery.layout.count() == 1
+    
+    # Mock QFileDialog
+    new_folder = str(tmp_path / "clear_gallery_test")
+    os.makedirs(new_folder)
+    monkeypatch.setattr("PySide6.QtWidgets.QFileDialog.getExistingDirectory", lambda *args: new_folder)
+    
+    # Mock QThreadPool.start
+    monkeypatch.setattr("PySide6.QtCore.QThreadPool.start", lambda self, runnable: None)
+    
+    window._on_open_folder()
+    
+    # Gallery should be cleared
+    assert window.gallery.layout.count() == 0
