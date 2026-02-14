@@ -1,72 +1,76 @@
-from PySide6.QtWidgets import QScrollArea, QWidget, QGridLayout, QLabel, QFrame, QVBoxLayout
-from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QPixmap
+from PySide6.QtWidgets import QListWidget, QListWidgetItem, QListView
+from PySide6.QtCore import Qt, QSize, Signal
+from PySide6.QtGui import QIcon, QPixmap
+import logging
 
-class GalleryItem(QFrame):
-    def __init__(self, text="Thumbnail", thumb_bytes=None):
+logger = logging.getLogger(__name__)
+
+class GalleryView(QListWidget):
+    item_clicked = Signal(str)
+
+    def __init__(self):
         super().__init__()
-        self.setFixedSize(160, 180) # Adjusted for label
-        self.setFrameStyle(QFrame.StyledPanel | QFrame.Plain)
+        # 启用图标模式，这最适合展示相册
+        self.setViewMode(QListView.IconMode)
+        # 允许项在窗口大小改变时自动重新排列
+        self.setResizeMode(QListView.Adjust)
+        # 禁止用户手动拖动图标位置
+        self.setMovement(QListView.Static)
+        # 紧凑间距
+        self.setSpacing(2)
+        # 图标展示大小
+        self.setIconSize(QSize(148, 148))
+        # 每个格子的固定大小（确保正方形排布）
+        self.setGridSize(QSize(150, 150))
         
-        layout = QVBoxLayout(self)
+        # 移除边框，启用像素级平滑滚动
+        self.setFrameShape(QListWidget.NoFrame)
+        self.setVerticalScrollMode(QListView.ScrollPerPixel)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         
-        self.image_label = QLabel(self)
-        self.image_label.setFixedSize(140, 140)
-        self.image_label.setAlignment(Qt.AlignCenter)
-        self.image_label.setStyleSheet("background-color: #ddd;")
+        # 信号连接
+        self.itemClicked.connect(self._on_item_clicked)
+        
+        # 样式表优化：移除硬编码颜色，跟随系统主题
+        # 仅保留悬停和选中时的半透明高亮，增加“触控感”
+        self.setStyleSheet("""
+            QListWidget {
+                outline: none;
+                background: transparent;
+            }
+            QListWidget::item {
+                border: 1px solid transparent;
+            }
+            QListWidget::item:hover {
+                background-color: rgba(0, 120, 212, 0.15);
+                border: 1px solid rgba(0, 120, 212, 0.3);
+            }
+            QListWidget::item:selected {
+                background-color: rgba(0, 120, 212, 0.25);
+                border: 1px solid #0078d4;
+            }
+        """)
+
+    def add_item(self, file_path, thumb_bytes=None):
+        """向画廊添加一个新的图片项。"""
+        item = QListWidgetItem()
+        # 将文件路径存入 UserRole，以便点击时提取
+        item.setData(Qt.UserRole, file_path)
         
         if thumb_bytes:
             pixmap = QPixmap()
             if pixmap.loadFromData(thumb_bytes):
-                # Scale pixmap to fit label while maintaining aspect ratio
-                scaled_pixmap = pixmap.scaled(
-                    self.image_label.size(), 
-                    Qt.KeepAspectRatio, 
-                    Qt.SmoothTransformation
-                )
-                self.image_label.setPixmap(scaled_pixmap)
+                # 将缩略图设置为项的图标
+                item.setIcon(QIcon(pixmap))
             else:
-                self.image_label.setText("Error")
-        else:
-            self.image_label.setText("No Image")
-            
-        layout.addWidget(self.image_label)
+                logger.warning(f"Failed to load pixmap for {file_path}")
         
-        self.label = QLabel(text, self)
-        self.label.setAlignment(Qt.AlignCenter)
-        # Simple filename eliding if needed
-        layout.addWidget(self.label)
-        
-        self.setStyleSheet("GalleryItem { border: 1px solid #ccc; background-color: #f9f9f9; }")
+        self.addItem(item)
 
-    def pixmap(self):
-        return self.image_label.pixmap()
-
-class GalleryView(QScrollArea):
-    def __init__(self):
-        super().__init__()
-        self.setWidgetResizable(True)
-        
-        self.container = QWidget()
-        self.layout = QGridLayout(self.container)
-        self.layout.setSpacing(10)
-        self.layout.setAlignment(Qt.AlignLeft | Qt.AlignTop)
-        
-        self.setWidget(self.container)
-        
-    def add_item(self, text, thumb_bytes=None):
-        import os
-        filename = os.path.basename(text)
-        item = GalleryItem(filename, thumb_bytes)
-        count = self.layout.count()
-        columns = max(1, self.width() // 170)
-        row = count // columns
-        col = count % columns
-        self.layout.addWidget(item, row, col)
+    def _on_item_clicked(self, item):
+        file_path = item.data(Qt.UserRole)
+        self.item_clicked.emit(file_path)
 
     def clear(self):
-        """Removes all items from the gallery."""
-        while self.layout.count():
-            child = self.layout.takeAt(0)
-            if child.widget():
-                child.widget().deleteLater()
+        """清空画廊。"""
+        super().clear()
