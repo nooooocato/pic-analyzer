@@ -1,0 +1,8 @@
+{
+  "track_id": "mvp_gallery_20260215",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-02-15T01:50:00Z",
+  "updated_at": "2026-02-15T01:50:00Z",
+  "description": "Build the core gallery interface with a tiled preview, side data inspector, and the framework for plugin-based statistical analysis."
+}
