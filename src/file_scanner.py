@@ -35,23 +35,25 @@ class FolderScanner(QRunnable):
                         file_path = os.path.join(root, file)
                         
                         thumb_bytes = None
+                        stats = os.stat(file_path)
                         if conn:
-                            # Check if already in DB
+                            # Check if already in DB and if it has changed
                             cursor = conn.cursor()
                             cursor.execute(
-                                "SELECT thumbnail FROM images WHERE path = ?", 
+                                "SELECT thumbnail, file_size, modified_at FROM images WHERE path = ?", 
                                 (file_path,)
                             )
                             row = cursor.fetchone()
                             if row and row[0]:
-                                thumb_bytes = row[0]
+                                db_thumb, db_size, db_mtime = row
+                                if db_size == int(stats.st_size) and db_mtime == int(stats.st_mtime):
+                                    thumb_bytes = db_thumb
                         
                         if not thumb_bytes:
                             thumb_bytes = self.thumbnail_gen.generate(file_path)
                             if thumb_bytes and conn:
                                 # Save to DB
                                 filename = os.path.basename(file_path)
-                                stats = os.stat(file_path)
                                 cursor = conn.cursor()
                                 cursor.execute(
                                     """INSERT OR REPLACE INTO images 

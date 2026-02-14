@@ -74,6 +74,24 @@ def test_folder_scanner_persistence(temp_image_dir, qtbot, tmp_path):
         # Should NOT call generate because it loads from DB
         assert mock_gen.call_count == 0
 
+    # Modify a file
+    img_path = os.path.join(temp_image_dir, "test1.jpg")
+    # Wait a bit to ensure mtime changes if system resolution is low
+    import time
+    time.sleep(0.1)
+    with open(img_path, "wb") as f:
+        from PIL import Image
+        import io
+        img = Image.new('RGB', (20, 20), color='blue') # Different content
+        img.save(f, format="JPEG")
+    
+    with mock.patch('src.ui.thumbnail_gen.ThumbnailGenerator.generate') as mock_gen:
+        mock_gen.return_value = b"new_thumb"
+        scanner3 = FolderScanner(temp_image_dir, db_path)
+        scanner3.run()
+        # Should call generate exactly once for the modified file
+        assert mock_gen.call_count == 1
+
 def test_folder_scanner_finished_signal(temp_image_dir, qtbot):
     scanner = FolderScanner(temp_image_dir)
     
