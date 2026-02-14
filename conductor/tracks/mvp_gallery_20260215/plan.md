@@ -9,7 +9,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding & Database Setup' (Protocol in workflow.md)
 
 ## Phase 2: Core UI Components
-- [ ] Task: Implement the Main Window with Fluent Design styling.
+- [x] Task: Implement the Main Window with Fluent Design styling. 553e642
     - [ ] Create Top Toolbar placeholder.
     - [ ] Create Sidebar with a `QTreeView` for the Data Inspector.
 - [ ] Task: Implement the Tiled Gallery View.
