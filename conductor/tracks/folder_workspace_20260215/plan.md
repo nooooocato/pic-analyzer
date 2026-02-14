@@ -37,7 +37,7 @@
 - [x] Task: Update database schema to store thumbnails. (266cfee)
     - [ ] Write Tests: Verify `images` table can store and retrieve BLOB data for thumbnails.
     - [ ] Implement: Add `thumbnail` column to `images` table in `src/database.py`.
-- [ ] Task: Create `ThumbnailGenerator` utility.
+- [x] Task: Create `ThumbnailGenerator` utility. (0888346)
     - [ ] Write Tests: Verify a thumbnail is correctly generated from a test image using Pillow.
     - [ ] Implement: Create `src/ui/thumbnail_gen.py` to handle scaling and conversion to bytes.
 - [ ] Task: Implement background thumbnail processing in `FolderScanner`.
