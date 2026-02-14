@@ -12,6 +12,14 @@ class MainWindow(QMainWindow):
         self._setup_ui()
 
     def _setup_ui(self):
+        # Menu Bar
+        self.menu_bar = self.menuBar()
+        self.file_menu = self.menu_bar.addMenu("&File")
+        
+        self.open_folder_action = self.file_menu.addAction("&Open Folder")
+        self.open_folder_action.setShortcut("Ctrl+O")
+        self.open_folder_action.triggered.connect(self._on_open_folder)
+
         # Top Toolbar
         self.toolbar = QToolBar("Main Toolbar")
         self.addToolBar(self.toolbar)
@@ -45,3 +53,7 @@ class MainWindow(QMainWindow):
             
         self.tree_view.setModel(model)
         self.tree_view.expandAll()
+
+    def _on_open_folder(self):
+        """Triggered when File > Open Folder is selected."""
+        pass
