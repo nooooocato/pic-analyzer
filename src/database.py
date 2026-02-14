@@ -48,6 +48,17 @@ class DatabaseManager:
         ''')
 
         conn.commit()
+        
+        # Schema migration: check for thumbnail column
+        try:
+            cursor.execute("PRAGMA table_info(images)")
+            columns = [col[1] for col in cursor.fetchall()]
+            if 'thumbnail' not in columns:
+                cursor.execute("ALTER TABLE images ADD COLUMN thumbnail BLOB")
+                conn.commit()
+        except Exception:
+            pass
+            
         conn.close()
 
     def switch_database(self, new_db_path):

@@ -86,14 +86,14 @@ def test_main_window_adds_image_on_signal(qtbot):
     qtbot.addWidget(window)
     
     # Initial count
-    initial_count = window.gallery.layout.count()
+    initial_count = window.gallery.count()
     
     # Simulate a file being found
     test_image = "test.jpg"
     window._on_file_found(test_image, b"fake_thumb")
     
     # Verify it was added to the gallery
-    assert window.gallery.layout.count() == initial_count + 1
+    assert window.gallery.count() == initial_count + 1
 
 def test_on_open_folder_prompts_if_active(qtbot, monkeypatch, tmp_path):
     window = MainWindow()
@@ -177,7 +177,7 @@ def test_on_open_folder_clears_gallery(qtbot, monkeypatch, tmp_path):
     
     # Add an item to the gallery
     window.gallery.add_item("old_image.jpg")
-    assert window.gallery.layout.count() == 1
+    assert window.gallery.count() == 1
     
     # Mock QFileDialog
     new_folder = str(tmp_path / "clear_gallery_test")
@@ -190,4 +190,4 @@ def test_on_open_folder_clears_gallery(qtbot, monkeypatch, tmp_path):
     window._on_open_folder()
     
     # Gallery should be cleared
-    assert window.gallery.layout.count() == 0
+    assert window.gallery.count() == 0
