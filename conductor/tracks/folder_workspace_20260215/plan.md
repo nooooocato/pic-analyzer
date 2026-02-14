@@ -10,7 +10,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: UI Foundations & Menu Bar' (Protocol in workflow.md)
 
 ## Phase 2: Threaded Recursive Scanner
-- [ ] Task: Create `FolderScanner` worker for background file discovery.
+- [x] Task: Create `FolderScanner` worker for background file discovery. (56e75b1)
     - [ ] Write Tests: Verify `FolderScanner` correctly identifies image files recursively in a test directory.
     - [ ] Implement: Create `src/file_scanner.py` with a `QRunnable` that emits signals as it finds files.
 - [ ] Task: Integrate `FolderScanner` with `MainWindow` for real-time updates.
