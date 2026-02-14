@@ -27,8 +27,8 @@
     - [ ] Implement: Add a `WorkspaceManager` or update `MainWindow` to handle the "Save/Clear" prompt and manage the hybrid storage logic (centralized vs `.pa` file).
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Workspace & Database Management' (Protocol in workflow.md)
 
-## Phase 4: Final Integration & Refinement
-- [x] Task: Ensure clean state transitions. (0027c2d)
+## Phase 4: Final Integration & Refinement [checkpoint: 23fb1d2]
+- [x] Task: Ensure clean state transitions and cross-platform hidden database files. (9549f28)
     - [ ] Write Tests: Verify gallery and database are cleared/reset when a new folder is opened.
     - [ ] Implement: Final wiring in `MainWindow` to ensure all components reset correctly during workspace changes.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Integration & Refinement' (Protocol in workflow.md)
