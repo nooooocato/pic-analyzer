@@ -1,6 +1,6 @@
 # Implementation Plan: Folder Selection & Workspace Management
 
-## Phase 1: UI Foundations & Menu Bar
+## Phase 1: UI Foundations & Menu Bar [checkpoint: 81d866c]
 - [x] Task: Add `QMenuBar` to `MainWindow` with `File > Open Folder` action. (81c1f55)
     - [ ] Write Tests: Verify `MainWindow` has a menu bar and the "Open Folder" action is present and connected.
     - [ ] Implement: Update `src/ui/main_window.py` to include a menu bar and trigger a folder selection dialog.
