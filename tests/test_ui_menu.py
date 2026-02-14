@@ -90,7 +90,7 @@ def test_main_window_adds_image_on_signal(qtbot):
     
     # Simulate a file being found
     test_image = "test.jpg"
-    window._on_file_found(test_image)
+    window._on_file_found(test_image, b"fake_thumb")
     
     # Verify it was added to the gallery
     assert window.gallery.layout.count() == initial_count + 1
