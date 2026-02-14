@@ -13,7 +13,7 @@
 - [x] Task: Create `FolderScanner` worker for background file discovery. (56e75b1)
     - [ ] Write Tests: Verify `FolderScanner` correctly identifies image files recursively in a test directory.
     - [ ] Implement: Create `src/file_scanner.py` with a `QRunnable` that emits signals as it finds files.
-- [ ] Task: Integrate `FolderScanner` with `MainWindow` for real-time updates.
+- [x] Task: Integrate `FolderScanner` with `MainWindow` for real-time updates. (2ac9d33)
     - [ ] Write Tests: Verify `MainWindow` receives file signals and updates the gallery.
     - [ ] Implement: Connect `FolderScanner` signals to `GalleryView` to add images dynamically.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Threaded Recursive Scanner' (Protocol in workflow.md)
