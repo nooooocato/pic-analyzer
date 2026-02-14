@@ -1,0 +1,32 @@
+# Implementation Plan - MVP Gallery
+
+## Phase 1: Project Scaffolding & Database Setup
+- [ ] Task: Initialize Python project with PySide6 and standard directory structure (src, plugins, assets).
+    - [ ] Set up `requirements.txt`.
+    - [ ] Create basic package structure.
+- [ ] Task: Design and implement the SQLite database schema for image metadata and analysis results.
+    - [ ] Define tables for images, analysis_results, and plugin_metadata.
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding & Database Setup' (Protocol in workflow.md)
+
+## Phase 2: Core UI Components
+- [ ] Task: Implement the Main Window with Fluent Design styling.
+    - [ ] Create Top Toolbar placeholder.
+    - [ ] Create Sidebar with a `QTreeView` for the Data Inspector.
+- [ ] Task: Implement the Tiled Gallery View.
+    - [ ] Use `QListView` or `QScrollArea` with a flow layout for responsive tiling.
+    - [ ] Implement lazy loading for thumbnails.
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Core UI Components' (Protocol in workflow.md)
+
+## Phase 3: Plugin Framework & File Operations
+- [ ] Task: Design the Analysis Plugin interface and Factory pattern.
+    - [ ] Create a base class for plugins.
+    - [ ] Implement dynamic loading from the `plugins/` directory.
+- [ ] Task: Implement "Safe Move" file operations with conflict resolution dialog.
+    - [ ] Use `shutil.move` for atomic operations.
+    - [ ] Create interactive prompt for Rename/Skip/Overwrite.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Plugin Framework & File Operations' (Protocol in workflow.md)
+
+## Phase 4: Integration & Initial Plugins
+- [ ] Task: Implement the "Date Grouping" logic as a built-in feature/plugin.
+- [ ] Task: Connect the Data Inspector to display real-time metadata from selected images.
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Integration & Initial Plugins' (Protocol in workflow.md)
