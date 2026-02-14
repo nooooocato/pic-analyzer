@@ -1,8 +1,13 @@
-from PySide6.QtWidgets import QMainWindow, QToolBar, QTreeView, QDockWidget, QVBoxLayout, QWidget, QFileDialog
+from PySide6.QtWidgets import (
+    QMainWindow, QToolBar, QTreeView, QDockWidget, 
+    QVBoxLayout, QWidget, QFileDialog, QMessageBox
+)
 from PySide6.QtCore import Qt, QThreadPool
+import os
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 from src.ui.gallery_view import GalleryView
 from src.file_scanner import FolderScanner
+from src.database import DatabaseManager
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -10,6 +15,9 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Pic-Analyzer")
         self.resize(1200, 800)
 
+        # Initialize Database in app's local dir (or current dir for now)
+        self.db_manager = DatabaseManager("app_metadata.db")
+        
         self.current_folder = None
         self._setup_ui()
 
@@ -58,6 +66,16 @@ class MainWindow(QMainWindow):
 
     def _on_open_folder(self):
         """Triggered when File > Open Folder is selected."""
+        if self.current_folder:
+            reply = QMessageBox.question(
+                self, "Switch Workspace",
+                f"A folder is already open: {self.current_folder}\n"
+                "Do you want to close it and open a new one?",
+                QMessageBox.Yes | QMessageBox.No, QMessageBox.No
+            )
+            if reply == QMessageBox.No:
+                return
+
         folder = QFileDialog.getExistingDirectory(self, "Select Folder to Scan")
         if folder:
             self.current_folder = folder
@@ -65,6 +83,10 @@ class MainWindow(QMainWindow):
 
     def _start_scan(self, path):
         """Starts a background scan of the selected folder."""
+        # Switch database to the selected folder
+        db_path = os.path.join(path, ".pic_analyzer.db")
+        self.db_manager.switch_database(db_path)
+
         scanner = FolderScanner(path)
         scanner.signals.file_found.connect(self._on_file_found)
         QThreadPool.globalInstance().start(scanner)
