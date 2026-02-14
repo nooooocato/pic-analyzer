@@ -1,7 +1,7 @@
 # Implementation Plan - MVP Gallery
 
 ## Phase 1: Project Scaffolding & Database Setup
-- [ ] Task: Initialize Python project with PySide6 and standard directory structure (src, plugins, assets).
+- [x] Task: Initialize Python project with PySide6 and standard directory structure (src, plugins, assets). c1ba088
     - [ ] Set up `requirements.txt`.
     - [ ] Create basic package structure.
 - [ ] Task: Design and implement the SQLite database schema for image metadata and analysis results.
