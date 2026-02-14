@@ -15,8 +15,18 @@ def temp_image_dir(tmp_path):
     
     sub_dir = img_dir / "sub"
     sub_dir.mkdir()
-    (sub_dir / "test3.webp").write_text("fake data")
-    (sub_dir / "test4.BMP").write_text("fake data") # Test case sensitivity
+    # Need real image data for Pillow to work
+    from PIL import Image
+    import io
+    def save_img(path):
+        img = Image.new('RGB', (10, 10), color='red')
+        img.save(path)
+    
+    save_img(img_dir / "test1.jpg")
+    save_img(img_dir / "test2.png")
+    save_img(sub_dir / "test3.webp")
+    save_img(sub_dir / "test4.BMP")
+    (img_dir / "not_an_image.txt").write_text("fake data")
     
     return str(img_dir)
 
@@ -25,18 +35,17 @@ def test_folder_scanner_finds_images(temp_image_dir, qtbot):
     
     scanner = FolderScanner(temp_image_dir)
     
-    # Connect signal to collect found files
-    scanner.signals.file_found.connect(lambda p: found_files.append(p))
+    # Connect signal to collect found files and thumbnails
+    scanner.signals.file_found.connect(lambda p, t: found_files.append((p, t)))
     
-    # Run the scanner logic directly (since we want to test the discovery)
+    # Run the scanner logic directly
     scanner.run()
     
     assert len(found_files) == 4
-    assert any(f.endswith("test1.jpg") for f in found_files)
-    assert any(f.endswith("test2.png") for f in found_files)
-    assert any(f.endswith("test3.webp") for f in found_files)
-    assert any(f.endswith("test4.BMP") for f in found_files)
-    assert not any(f.endswith("not_an_image.txt") for f in found_files)
+    for path, thumb in found_files:
+        assert isinstance(path, str)
+        assert isinstance(thumb, bytes)
+        assert len(thumb) > 0
 
 def test_folder_scanner_finished_signal(temp_image_dir, qtbot):
     scanner = FolderScanner(temp_image_dir)

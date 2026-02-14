@@ -98,6 +98,7 @@ class MainWindow(QMainWindow):
         scanner.signals.file_found.connect(self._on_file_found)
         QThreadPool.globalInstance().start(scanner)
 
-    def _on_file_found(self, file_path):
+    def _on_file_found(self, file_path, thumb_bytes):
         """Callback when a file is found by the scanner."""
-        self.gallery.add_item(file_path)
+        self.gallery.add_item(file_path) # For now, still just path
+        # TODO: Pass thumb_bytes to add_item
