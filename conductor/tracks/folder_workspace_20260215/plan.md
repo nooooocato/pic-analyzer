@@ -4,7 +4,7 @@
 - [x] Task: Add `QMenuBar` to `MainWindow` with `File > Open Folder` action. (81c1f55)
     - [ ] Write Tests: Verify `MainWindow` has a menu bar and the "Open Folder" action is present and connected.
     - [ ] Implement: Update `src/ui/main_window.py` to include a menu bar and trigger a folder selection dialog.
-- [ ] Task: Implement basic folder selection logic in `MainWindow`.
+- [x] Task: Implement basic folder selection logic in `MainWindow`. (ed4a4f4)
     - [ ] Write Tests: Mock `QFileDialog` to ensure the selected path is correctly captured.
     - [ ] Implement: Add `_on_open_folder` method to `MainWindow` to handle the selection.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: UI Foundations & Menu Bar' (Protocol in workflow.md)
