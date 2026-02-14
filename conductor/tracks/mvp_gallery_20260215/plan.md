@@ -21,7 +21,7 @@
 - [x] Task: Design the Analysis Plugin interface and Factory pattern. f3619d6
     - [ ] Create a base class for plugins.
     - [ ] Implement dynamic loading from the `plugins/` directory.
-- [ ] Task: Implement "Safe Move" file operations with conflict resolution dialog.
+- [x] Task: Implement "Safe Move" file operations with conflict resolution dialog. aae14dc
     - [ ] Use `shutil.move` for atomic operations.
     - [ ] Create interactive prompt for Rename/Skip/Overwrite.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Plugin Framework & File Operations' (Protocol in workflow.md)
