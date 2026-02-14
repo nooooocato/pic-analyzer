@@ -27,6 +27,6 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Plugin Framework & File Operations' (Protocol in workflow.md)
 
 ## Phase 4: Integration & Initial Plugins
-- [ ] Task: Implement the "Date Grouping" logic as a built-in feature/plugin.
+- [x] Task: Implement the "Date Grouping" logic as a built-in feature/plugin. c8fc9f3
 - [ ] Task: Connect the Data Inspector to display real-time metadata from selected images.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Integration & Initial Plugins' (Protocol in workflow.md)
