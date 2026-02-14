@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow, QToolBar, QTreeView, QDockWidget, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QMainWindow, QToolBar, QTreeView, QDockWidget, QVBoxLayout, QWidget, QFileDialog
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 from src.ui.gallery_view import GalleryView
@@ -9,6 +9,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Pic-Analyzer")
         self.resize(1200, 800)
 
+        self.current_folder = None
         self._setup_ui()
 
     def _setup_ui(self):
@@ -56,4 +57,7 @@ class MainWindow(QMainWindow):
 
     def _on_open_folder(self):
         """Triggered when File > Open Folder is selected."""
-        pass
+        folder = QFileDialog.getExistingDirectory(self, "Select Folder to Scan")
+        if folder:
+            self.current_folder = folder
+            # TODO: Trigger recursive scan
