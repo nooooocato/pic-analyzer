@@ -94,11 +94,10 @@ class MainWindow(QMainWindow):
         self.db_manager.switch_database(db_path)
         hide_file(db_path)
 
-        scanner = FolderScanner(path)
+        scanner = FolderScanner(path, db_path)
         scanner.signals.file_found.connect(self._on_file_found)
         QThreadPool.globalInstance().start(scanner)
 
     def _on_file_found(self, file_path, thumb_bytes):
         """Callback when a file is found by the scanner."""
-        self.gallery.add_item(file_path) # For now, still just path
-        # TODO: Pass thumb_bytes to add_item
+        self.gallery.add_item(file_path, thumb_bytes)

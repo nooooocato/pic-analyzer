@@ -1,4 +1,5 @@
 import os
+import sqlite3
 from PySide6.QtCore import QRunnable, QObject, Signal
 from src.ui.thumbnail_gen import ThumbnailGenerator
 
@@ -14,22 +15,58 @@ class FolderScanner(QRunnable):
     """
     SUPPORTED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'}
 
-    def __init__(self, folder_path):
+    def __init__(self, folder_path, db_path=None):
         super().__init__()
         self.folder_path = folder_path
+        self.db_path = db_path
         self.signals = ScannerSignals()
         self.thumbnail_gen = ThumbnailGenerator()
 
     def run(self):
+        conn = None
+        if self.db_path:
+            conn = sqlite3.connect(self.db_path)
+        
         try:
             for root, _, files in os.walk(self.folder_path):
                 for file in files:
                     ext = os.path.splitext(file)[1].lower()
                     if ext in self.SUPPORTED_EXTENSIONS:
                         file_path = os.path.join(root, file)
-                        thumb_bytes = self.thumbnail_gen.generate(file_path)
+                        
+                        thumb_bytes = None
+                        if conn:
+                            # Check if already in DB
+                            cursor = conn.cursor()
+                            cursor.execute(
+                                "SELECT thumbnail FROM images WHERE path = ?", 
+                                (file_path,)
+                            )
+                            row = cursor.fetchone()
+                            if row and row[0]:
+                                thumb_bytes = row[0]
+                        
+                        if not thumb_bytes:
+                            thumb_bytes = self.thumbnail_gen.generate(file_path)
+                            if thumb_bytes and conn:
+                                # Save to DB
+                                filename = os.path.basename(file_path)
+                                stats = os.stat(file_path)
+                                cursor = conn.cursor()
+                                cursor.execute(
+                                    """INSERT OR REPLACE INTO images 
+                                    (path, filename, file_size, modified_at, thumbnail) 
+                                    VALUES (?, ?, ?, ?, ?)""",
+                                    (file_path, filename, int(stats.st_size), 
+                                     int(stats.st_mtime), thumb_bytes)
+                                )
+                                conn.commit()
+                        
                         if thumb_bytes:
                             self.signals.file_found.emit(file_path, thumb_bytes)
             self.signals.finished.emit()
         except Exception as e:
             self.signals.error.emit(str(e))
+        finally:
+            if conn:
+                conn.close()
