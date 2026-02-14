@@ -18,7 +18,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Core UI Components' (Protocol in workflow.md)
 
 ## Phase 3: Plugin Framework & File Operations
-- [ ] Task: Design the Analysis Plugin interface and Factory pattern.
+- [x] Task: Design the Analysis Plugin interface and Factory pattern. f3619d6
     - [ ] Create a base class for plugins.
     - [ ] Implement dynamic loading from the `plugins/` directory.
 - [ ] Task: Implement "Safe Move" file operations with conflict resolution dialog.
