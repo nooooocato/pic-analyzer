@@ -165,6 +165,11 @@ def test_on_open_folder_switches_db(qtbot, monkeypatch, tmp_path):
     expected_db = os.path.join(new_folder, ".pic_analyzer.db")
     assert window.db_manager.db_path == expected_db
     assert os.path.exists(expected_db)
+    
+    if os.name == 'nt':
+        import ctypes
+        attrs = ctypes.windll.kernel32.GetFileAttributesW(expected_db)
+        assert attrs & 2 # FILE_ATTRIBUTE_HIDDEN
 
 def test_on_open_folder_clears_gallery(qtbot, monkeypatch, tmp_path):
     window = MainWindow()
