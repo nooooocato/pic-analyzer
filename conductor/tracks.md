@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Advanced Sorting & Statistical Plugins**
+- [x] **Track: Advanced Sorting & Statistical Plugins**
 *Link: [./tracks/advanced_sorting_20260215/](./tracks/advanced_sorting_20260215/)*
