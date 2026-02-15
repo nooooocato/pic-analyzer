@@ -21,7 +21,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Overlays & Specialized Widgets' (Protocol in workflow.md)
 
 ## Phase 3: Complex Views (Gallery & Viewer) [checkpoint: ]
-- [ ] Task: Refactor Image Viewer.
+- [x] Task: Refactor Image Viewer. (8dc1175)
     - [ ] Create `src/ui/image_viewer/` with Style/Layout/Logic triplets.
     - [ ] Move animation and navigation logic to the Logic layer.
 - [ ] Task: Refactor Gallery View & Grouping.
