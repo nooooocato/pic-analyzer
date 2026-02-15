@@ -16,7 +16,7 @@
 - [x] Task: Refactor Sort Overlay. (c01bab3)
     - [ ] Create `src/ui/overlays/sort/` with Style/Layout/Logic triplets.
     - [ ] Integrate SortPluginManager logic into the Logic layer.
-- [ ] Task: Write Tests for Overlays.
+- [x] Task: Write Tests for Overlays. (c01bab3)
     - [ ] Create `tests/ui_refactor/test_overlays.py`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Overlays & Specialized Widgets' (Protocol in workflow.md)
 
