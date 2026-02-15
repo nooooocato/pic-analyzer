@@ -15,7 +15,7 @@
 - [x] Task: Implement the Tiled Gallery View. 9245a05
     - [ ] Use `QListView` or `QScrollArea` with a flow layout for responsive tiling.
     - [ ] Implement lazy loading for thumbnails.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Core UI Components' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Core UI Components' (Protocol in workflow.md)
 
 ## Phase 3: Plugin Framework & File Operations [checkpoint: cc894f4]
 - [x] Task: Design the Analysis Plugin interface and Factory pattern. f3619d6
