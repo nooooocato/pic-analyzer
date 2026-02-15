@@ -1,21 +1,22 @@
 from src.ui.theme import Theme
 
 def get_style():
+    # Let standard widgets use system palette for colors
     return f"""
         QMainWindow {{
-            background-color: {Theme.BACKGROUND_LIGHT};
+            border: none;
         }}
         QMenuBar {{
-            background-color: {Theme.SURFACE_LIGHT};
-            border-bottom: 1px solid {Theme.BORDER_SUBTLE};
+            border-bottom: 1px solid rgba(128, 128, 128, 30);
+            padding: 2px;
         }}
         QToolBar {{
-            background-color: {Theme.SURFACE_LIGHT};
-            border-bottom: 1px solid {Theme.BORDER_SUBTLE};
-            spacing: 10px;
+            border-bottom: 1px solid rgba(128, 128, 128, 30);
+            spacing: 8px;
+            padding: 8px;
         }}
         QDockWidget {{
-            titlebar-close-icon: url(none);
-            titlebar-normal-icon: url(none);
+            border: 1px solid rgba(128, 128, 128, 30);
+            margin: 4px;
         }}
     """

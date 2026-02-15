@@ -11,6 +11,7 @@ class SelectionOverlay(Card):
 
     def __init__(self, parent=None):
         super().__init__(parent, setup_layout=False)
+        self.setObjectName("Card")
         self.setWindowFlags(Qt.SubWindow)
         
         self.layout_engine = SelectionOverlayLayout()

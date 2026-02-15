@@ -1,9 +1,10 @@
+import sys
 import os
 import sqlite3
 import datetime
 import logging
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QApplication
-from PySide6.QtCore import Qt, QThreadPool, QPoint
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QApplication, QStyleFactory
+from PySide6.QtCore import Qt, QThreadPool, QPoint, QEvent
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QAction, QCursor
 
 from src.file_scanner import FolderScanner
@@ -12,6 +13,7 @@ from src.file_ops import hide_file
 from src.plugins.date_grouping import DateGroupingPlugin
 from src.plugins.sort.manager import SortPluginManager
 from src.ui.overlays.sort.logic import SortOverlay
+from src.ui.common.toast.logic import Toast
 
 from .layout import MainWindowLayout
 from .style import get_style
@@ -35,10 +37,20 @@ class MainWindow(QMainWindow):
         self.layout_engine.setup_ui(self)
         self.setStyleSheet(get_style())
         
+        # Toast
+        self.toast = Toast("", parent=self)
+        
         # Initialize Sort Overlay (needs manager)
         self.layout_engine.sort_overlay = SortOverlay(self.sort_manager, self.layout_engine.gallery)
         self.layout_engine.sort_overlay.sortRequested.connect(self._on_sort_requested)
         self.layout_engine.sort_overlay.show()
+        
+        # Set overlays on gallery for repositioning
+        self.layout_engine.gallery.set_overlays(
+            self.layout_engine.selection_overlay,
+            self.layout_engine.sort_overlay,
+            self.layout_engine.image_viewer
+        )
         
         # App State
         self.current_folder = None
@@ -47,6 +59,14 @@ class MainWindow(QMainWindow):
         
         self._setup_connections()
         self._setup_menus()
+
+    def event(self, event):
+        if event.type() == QEvent.PaletteChange:
+            # System theme changed, update styles that depend on it
+            self.setStyleSheet(get_style())
+            if hasattr(self.layout_engine, "gallery"):
+                self.layout_engine.gallery.setStyleSheet(self.layout_engine.gallery.styleSheet())
+        return super().event(event)
 
     def _setup_connections(self):
         l = self.layout_engine
@@ -85,14 +105,14 @@ class MainWindow(QMainWindow):
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
-        self.layout_engine.update_overlay_positions(self)
+        # Positioning is now handled by l.gallery.resizeEvent
 
     def _open_image_viewer(self, file_path: str):
         l = self.layout_engine
         new_index = -1
-        # Use gallery logic to find index
-        for i in range(l.gallery.count()):
-            if l.gallery._items[i]['path'] == file_path:
+        # Use visible items for correct ordering
+        for i in range(len(l.gallery._visible_items)):
+            if l.gallery._visible_items[i]['path'] == file_path:
                 new_index = i
                 break
         
@@ -109,19 +129,19 @@ class MainWindow(QMainWindow):
         l = self.layout_engine
         new_index = self._current_viewer_index + 1
         if new_index < l.gallery.count():
-            self._open_image_viewer(l.gallery._items[new_index]['path'])
+            self._open_image_viewer(l.gallery._visible_items[new_index]['path'])
         else:
-            # Wrap around or show toast (Toast is in GalleryView logic now for loop back)
-            # But MainWindow manages the high level index
-            self._open_image_viewer(l.gallery._items[0]['path'])
+            self.toast.show_message("Wrapped to first image", reference_widget=l.image_viewer)
+            self._open_image_viewer(l.gallery._visible_items[0]['path'])
 
     def _on_prev_image(self):
         l = self.layout_engine
         new_index = self._current_viewer_index - 1
         if new_index >= 0:
-            self._open_image_viewer(l.gallery._items[new_index]['path'])
+            self._open_image_viewer(l.gallery._visible_items[new_index]['path'])
         else:
-            self._open_image_viewer(l.gallery._items[l.gallery.count()-1]['path'])
+            self.toast.show_message("Wrapped to last image", reference_widget=l.image_viewer)
+            self._open_image_viewer(l.gallery._visible_items[l.gallery.count()-1]['path'])
 
     def _on_select_all(self):
         for group in self.layout_engine.gallery._group_widgets:

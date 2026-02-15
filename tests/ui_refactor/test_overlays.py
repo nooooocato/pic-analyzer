@@ -34,7 +34,7 @@ def test_sort_overlay_ui(qtbot):
 
 def test_sort_overlay_menu_creation(qtbot):
     mock_manager = MagicMock()
-    mock_manager.get_plugins.return_value = ["Plugin1", "Plugin2"]
+    mock_manager.plugins = {"Plugin1": MagicMock(), "Plugin2": MagicMock()}
     overlay = SortOverlay(mock_manager)
     qtbot.addWidget(overlay)
     

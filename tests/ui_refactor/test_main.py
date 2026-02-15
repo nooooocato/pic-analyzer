@@ -14,7 +14,10 @@ def test_main_window_resize(qtbot):
     qtbot.addWidget(window)
     window.show()
     
+    gallery = window.layout_engine.gallery
     initial_sort_pos = window.layout_engine.sort_overlay.pos()
+    
+    # Resize the gallery directly or the window
     window.resize(1400, 900)
-    # Positions should change on resize
+    # The gallery's resizeEvent should have been triggered
     assert window.layout_engine.sort_overlay.pos() != initial_sort_pos

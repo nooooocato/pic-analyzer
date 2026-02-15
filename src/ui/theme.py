@@ -1,81 +1,76 @@
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QPalette, QColor, QGuiApplication
+from PySide6.QtCore import Qt
 
 class Theme:
-    """Single source of truth for global styling constants."""
+    """Provides system-aware colors and Fluent Design geometry/style templates."""
     
-    # Fluent Design - Neutral Colors
-    BACKGROUND_LIGHT = "#f3f3f3"
-    BACKGROUND_DARK = "#202020"
-    
-    SURFACE_LIGHT = "#ffffff"
-    SURFACE_DARK = "#2d2d2d"
-    
-    # Accent Colors (Windows 11 Blue)
-    ACCENT_PRIMARY = "#0078d4"
-    ACCENT_SECONDARY = "#2b88d8"
-    ACCENT_TERTIARY = "#c7e0f4"
-    
-    # Text Colors
-    TEXT_PRIMARY = "#1b1b1b"
-    TEXT_SECONDARY = "#5f5f5f"
-    TEXT_INVERTED = "#ffffff"
-    
-    # State Colors
-    SUCCESS = "#107c10"
-    ERROR = "#d13438"
-    WARNING = "#ffb900"
-    
-    # Transparency
-    OVERLAY_BG = "rgba(245, 245, 245, 240)"
-    BUTTON_BG = "rgba(255, 255, 255, 200)"
-    BORDER_SUBTLE = "rgba(0, 0, 0, 80)"
-    
-    # Spacing & Radii
+    @staticmethod
+    def is_dark_mode():
+        return QGuiApplication.styleHints().colorScheme() == Qt.ColorScheme.Dark
+
+    @staticmethod
+    def get_color(role: QPalette.ColorRole) -> QColor:
+        return QGuiApplication.palette().color(role)
+
+    # Fluent Design Geometry
     SPACING_XS = 4
     SPACING_S = 8
     SPACING_M = 12
     SPACING_L = 16
     SPACING_XL = 24
     
+    # Windows 11 Standard Radii
     RADIUS_S = 4
     RADIUS_M = 8
     RADIUS_L = 12
     
-    # Fonts
     FONT_FAMILY = "Segoe UI Variable, Segoe UI, sans-serif"
-    FONT_SIZE_BODY = 10
-    FONT_SIZE_TITLE = 14
+    
+    @staticmethod
+    def get_overlay_bg_qss():
+        if Theme.is_dark_mode():
+            return "background-color: #2d2d2d; border: 1px solid #3d3d3d;"
+        else:
+            return "background-color: #ffffff; border: 1px solid #d1d1d1;"
 
     @staticmethod
-    def get_qcolor(hex_color: str, alpha: int = 255) -> QColor:
-        """Helper to convert hex string to QColor."""
-        color = QColor(hex_color)
-        if alpha < 255:
-            color.setAlpha(alpha)
-        return color
+    def get_menu_qss():
+        """Explicitly style QMenu to prevent transparent/black background issues."""
+        if Theme.is_dark_mode():
+            bg = "#2d2d2d"
+            text = "#ffffff"
+            hover = "#3d3d3d"
+        else:
+            bg = "#ffffff"
+            text = "#000000"
+            hover = "#f0f0f0"
+            
+        return f"""
+            QMenu {{
+                background-color: {bg};
+                color: {text};
+                border: 1px solid rgba(128, 128, 128, 60);
+                padding: 4px;
+            }}
+            QMenu::item {{
+                padding: 6px 24px;
+                border-radius: {Theme.RADIUS_S}px;
+            }}
+            QMenu::item:selected {{
+                background-color: {hover};
+            }}
+        """
 
-    # Common QSS Fragments
-    COMMON_BUTTON_STYLE = f"""
-        QPushButton {{
-            background-color: {BUTTON_BG};
-            border: 1px solid {BORDER_SUBTLE};
-            border-radius: {RADIUS_S}px;
-            padding: 4px;
-            font-family: {FONT_FAMILY};
-        }}
-        QPushButton:hover {{
-            background-color: rgba(0, 120, 212, 220);
-            border: 1px solid {ACCENT_PRIMARY};
-        }}
-        QPushButton:pressed {{
-            background-color: {ACCENT_TERTIARY};
-        }}
-    """
-    
-    CARD_STYLE = f"""
-        QFrame#Card {{
-            background-color: {SURFACE_LIGHT};
-            border: 1px solid {BORDER_SUBTLE};
-            border-radius: {RADIUS_M}px;
-        }}
-    """
+    @staticmethod
+    def get_button_qss(circular=False):
+        radius = 18 if circular else Theme.RADIUS_S
+        return f"""
+            QPushButton {{
+                border-radius: {radius}px;
+                padding: 5px 10px;
+                background-color: transparent;
+            }}
+            QPushButton:hover {{
+                background-color: rgba(128, 128, 128, 40);
+            }}
+        """

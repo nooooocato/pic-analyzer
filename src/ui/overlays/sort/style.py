@@ -1,7 +1,3 @@
 def get_style():
-    return """
-        QFrame#Card {
-            background-color: transparent;
-            border: none;
-        }
-    """
+    # Return empty to allow the base Card style (with background) to take effect
+    return ""

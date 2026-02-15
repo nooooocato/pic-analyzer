@@ -50,7 +50,10 @@ class GroupedListWidget(BaseGroupedListWidget):
         parent_gallery = self._find_parent_gallery()
         if not parent_gallery: return
         
+        from src.ui.theme import Theme
         menu = QMenu(self)
+        menu.setStyleSheet(Theme.get_menu_qss())
+        
         if not parent_gallery.selection_mode_enabled:
             act = menu.addAction("Select")
             act.triggered.connect(lambda: parent_gallery.set_selection_mode_enabled(True))
@@ -113,6 +116,7 @@ class GalleryView(QScrollArea):
         self.setStyleSheet(get_gallery_style())
         
         self._items = []
+        self._visible_items = []
         self._selection_mode_enabled = False
         self._group_widgets = []
         self._current_plugin = None
@@ -120,6 +124,34 @@ class GalleryView(QScrollArea):
         self._show_stats = False
         self._current_sort_plugin = None
         self._current_sort_metric = None
+        
+        # Overlays
+        self.selection_overlay = None
+        self.sort_overlay = None
+        self.image_viewer = None
+
+    def set_overlays(self, selection, sort, viewer):
+        self.selection_overlay = selection
+        self.sort_overlay = sort
+        self.image_viewer = viewer
+        self._reposition_overlays()
+
+    def _reposition_overlays(self):
+        margin = 15
+        if self.selection_overlay:
+            self.selection_overlay.move(margin, margin)
+            self.selection_overlay.raise_()
+        
+        if self.image_viewer:
+            self.image_viewer.resize(self.size())
+
+        if self.sort_overlay:
+            # We need to ensure sort_overlay size is updated before positioning
+            self.sort_overlay.adjustSize()
+            x = self.width() - self.sort_overlay.width() - margin
+            y = margin
+            self.sort_overlay.move(x, y)
+            self.sort_overlay.raise_()
 
     @property
     def selection_mode_enabled(self):
@@ -138,6 +170,7 @@ class GalleryView(QScrollArea):
 
     def clear(self):
         self._items = []
+        self._visible_items = []
         self._clear_layout()
 
     def _clear_layout(self):
@@ -169,6 +202,7 @@ class GalleryView(QScrollArea):
 
     def refresh_view(self):
         self._clear_layout()
+        self._visible_items = []
         if not self._current_plugin:
             self._create_group("All Images", self._items)
         else:
@@ -202,6 +236,7 @@ class GalleryView(QScrollArea):
         )
         
         group_layout.addWidget(list_widget)
+        self._visible_items.extend(items)
         
         if self._show_stats and self._current_sort_plugin and self._current_sort_metric:
             stats = self._current_sort_plugin.get_stats(items, self._current_sort_metric)
@@ -220,6 +255,7 @@ class GalleryView(QScrollArea):
         super().resizeEvent(event)
         for group in self._group_widgets:
             group.adjust_height()
+        self._reposition_overlays()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Escape and self._selection_mode_enabled:
@@ -227,4 +263,4 @@ class GalleryView(QScrollArea):
             return # Consume the event
         super().keyPressEvent(event)
 
-    def count(self): return len(self._items)
+    def count(self): return len(self._visible_items)

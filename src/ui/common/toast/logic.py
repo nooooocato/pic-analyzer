@@ -27,17 +27,26 @@ class Toast(QFrame):
         self.duration = duration
         self.hide()
 
-    def show_message(self, text=None):
+    def show_message(self, text=None, reference_widget=None):
         if text:
             self.layout_engine.label.setText(text)
         
-        # Position at bottom center of parent
-        if self.parent():
-            p = self.parent()
+        # Determine target for positioning
+        target = reference_widget or self.parent()
+        
+        if target:
             self.adjustSize()
-            x = (p.width() - self.width()) // 2
-            y = p.height() - self.height() - 50
-            self.move(x, y)
+            # Calculate global center of target
+            target_rect = target.rect()
+            global_center = target.mapToGlobal(target_rect.center())
+            
+            # Convert back to parent coordinates
+            if self.parent():
+                local_center = self.parent().mapFromGlobal(global_center)
+                x = local_center.x() - self.width() // 2
+                # Position near bottom of the target
+                y = local_center.y() + (target_rect.height() // 2) - self.height() - 50
+                self.move(x, y)
         
         self.show()
         self.raise_()
