@@ -1,4 +1,5 @@
 PySide6
+PySide6-Fluent-Widgets
 pytest
 pytest-cov
 numpy
