@@ -8,7 +8,7 @@
     - [ ] Define tables for images, analysis_results, and plugin_metadata.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding & Database Setup' (Protocol in workflow.md)
 
-## Phase 2: Core UI Components [checkpoint: a06e7c8]
+## Phase 2: Core UI Components [checkpoint: 5a46415]
 - [x] Task: Implement the Main Window with Fluent Design styling. 553e642
     - [ ] Create Top Toolbar placeholder.
     - [ ] Create Sidebar with a `QTreeView` for the Data Inspector.
