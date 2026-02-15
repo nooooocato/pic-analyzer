@@ -1,6 +1,8 @@
 import pytest
 from PySide6.QtCore import Qt
 from src.ui.overlays.selection.logic import SelectionOverlay
+from src.ui.overlays.sort.logic import SortOverlay
+from unittest.mock import MagicMock
 
 def test_selection_overlay_signals(qtbot):
     overlay = SelectionOverlay()
@@ -21,3 +23,27 @@ def test_selection_overlay_ui_elements(qtbot):
     assert overlay.layout_engine.btn_invert is not None
     assert overlay.layout_engine.btn_cancel is not None
     assert overlay.windowFlags() & Qt.SubWindow
+
+def test_sort_overlay_ui(qtbot):
+    mock_manager = MagicMock()
+    overlay = SortOverlay(mock_manager)
+    qtbot.addWidget(overlay)
+    
+    assert overlay.layout_engine.btn_sort is not None
+    assert overlay.windowFlags() & Qt.SubWindow
+
+def test_sort_overlay_menu_creation(qtbot):
+    mock_manager = MagicMock()
+    mock_manager.get_plugins.return_value = ["Plugin1", "Plugin2"]
+    overlay = SortOverlay(mock_manager)
+    qtbot.addWidget(overlay)
+    
+    menu = overlay.create_menu()
+    actions = menu.actions()
+    assert len(actions) == 2
+    assert actions[0].text() == "Plugin1"
+    assert actions[1].text() == "Plugin2"
+    
+    with qtbot.waitSignal(overlay.sortRequested, timeout=1000) as blocker:
+        actions[0].trigger()
+    assert blocker.args == ["Plugin1"]
