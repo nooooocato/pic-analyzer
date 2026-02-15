@@ -13,6 +13,7 @@ from src.database import DatabaseManager
 from src.file_ops import hide_file
 from src.ui.gallery_view import GalleryView
 from src.ui.image_viewer import ImageViewer
+from src.plugins.date_grouping import DateGroupingPlugin
 import logging
 
 logger = logging.getLogger(__name__)
@@ -105,7 +106,26 @@ class MainWindow(QMainWindow):
         self.addToolBar(self.toolbar)
         self.toolbar.setMovable(False)
         self.toolbar.addAction("Import")
-        self.toolbar.addAction("Analyze")
+        
+        analyze_action = self.toolbar.addAction("Analyze")
+        
+        # Grouping Menu
+        self.view_menu = self.menu_bar.addMenu("&View")
+        self.group_menu = self.view_menu.addMenu("Group By")
+        
+        group_none_action = self.group_menu.addAction("None")
+        group_none_action.triggered.connect(lambda: self.gallery.set_grouping(None))
+        
+        group_date_menu = self.group_menu.addMenu("Date")
+        
+        date_year_action = group_date_menu.addAction("Year")
+        date_year_action.triggered.connect(lambda: self._on_group_by_date("year"))
+        
+        date_month_action = group_date_menu.addAction("Month")
+        date_month_action.triggered.connect(lambda: self._on_group_by_date("month"))
+        
+        date_day_action = group_date_menu.addAction("Day")
+        date_day_action.triggered.connect(lambda: self._on_group_by_date("day"))
 
         # Sidebar (Data Inspector)
         self.inspector_dock = QDockWidget("Data Inspector", self)
@@ -308,6 +328,11 @@ class MainWindow(QMainWindow):
         """Cleanup after folder scan completes."""
         if scanner in self.active_scanners:
             self.active_scanners.remove(scanner)
+
+    def _on_group_by_date(self, granularity="month"):
+        """Groups gallery items by date using the DateGroupingPlugin."""
+        plugin = DateGroupingPlugin()
+        self.gallery.set_grouping(plugin, granularity)
 
     def _on_file_found(self, file_path: str, thumb_bytes: bytes):
         """Callback when a file is found by the scanner."""

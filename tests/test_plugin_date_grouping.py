@@ -18,6 +18,14 @@ def test_date_grouping_run(tmp_path):
     
     plugin = DateGroupingPlugin()
     result = plugin.run(str(test_file))
-    
+
     assert "date" in result
-    assert result["date"] == "2024-01-01"
+    assert result["date"] == "2024-01"
+
+    # Test day granularity
+    result_day = plugin.run(str(test_file), granularity="day")
+    assert result_day["date"] == "2024-01-01"
+
+    # Test year granularity
+    result_year = plugin.run(str(test_file), granularity="year")
+    assert result_year["date"] == "2024"
