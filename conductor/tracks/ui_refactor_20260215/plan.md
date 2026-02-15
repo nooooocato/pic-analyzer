@@ -27,7 +27,7 @@
 - [x] Task: Refactor Gallery View & Grouping. (8811240)
     - [ ] Create `src/ui/gallery/` with Style/Layout/Logic triplets for `GroupedListWidget` and `GalleryView`.
     - [ ] Ensure item delegate rendering is handled in the Style layer.
-- [ ] Task: Write Tests for Complex Views.
+- [x] Task: Write Tests for Complex Views. (f8d87c2)
     - [ ] Create `tests/ui_refactor/test_views.py`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Complex Views' (Protocol in workflow.md)
 
