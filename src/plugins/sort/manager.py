@@ -2,7 +2,7 @@ import os
 import importlib.util
 import inspect
 from typing import Dict
-from .base import BaseSortPlugin
+from src.plugins.sort.base import BaseSortPlugin
 
 class SortPluginManager:
     """
