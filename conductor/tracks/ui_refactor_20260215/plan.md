@@ -7,7 +7,7 @@
     - [ ] Identify common widgets (e.g., custom buttons, status labels).
     - [ ] Create `src/ui/common/` and implement the Style/Layout/Logic triplet for each.
     - [ ] Write Tests: Create `tests/ui_refactor/test_common.py`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Common Components' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Common Components' (Protocol in workflow.md)
 
 ## Phase 2: Overlays & Specialized Widgets [checkpoint: ]
 - [ ] Task: Refactor Selection Overlay.
