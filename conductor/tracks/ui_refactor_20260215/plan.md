@@ -10,7 +10,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Common Components' (Protocol in workflow.md)
 
 ## Phase 2: Overlays & Specialized Widgets [checkpoint: ]
-- [ ] Task: Refactor Selection Overlay.
+- [x] Task: Refactor Selection Overlay. (8752abe)
     - [ ] Create `src/ui/overlays/selection/` with Style/Layout/Logic triplets.
     - [ ] Migrate batch action logic (Select All, Invert, etc.) to Logic layer.
 - [ ] Task: Refactor Sort Overlay.
