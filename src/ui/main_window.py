@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout, QWidget, QFileDialog, QMessageBox,
     QPushButton, QHBoxLayout, QFrame, QStyle
 )
-from PySide6.QtCore import Qt, QThreadPool, QSize
+from PySide6.QtCore import Qt, QThreadPool, QSize, QPoint
 import os
 import sqlite3
 import datetime
@@ -14,6 +14,7 @@ from src.file_ops import hide_file
 from src.ui.gallery_view import GalleryView
 from src.ui.image_viewer import ImageViewer
 from src.plugins.date_grouping import DateGroupingPlugin
+from src.plugins.sort.manager import SortPluginManager
 import logging
 
 logger = logging.getLogger(__name__)
@@ -74,6 +75,40 @@ class SelectionOverlay(QFrame):
         """)
         self.adjustSize()
 
+class SortOverlay(QFrame):
+    """Floating overlay for sorting selection."""
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setObjectName("SortOverlay")
+        self.setWindowFlags(Qt.SubWindow)
+        
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(5, 5, 5, 5)
+        
+        self.btn_sort = QPushButton()
+        self.btn_sort.setFixedSize(36, 36)
+        self.btn_sort.setToolTip("Sort Options")
+        self.btn_sort.setIcon(self.style().standardIcon(QStyle.SP_TitleBarMenuButton))
+        self.btn_sort.setStyleSheet("""
+            QPushButton {
+                background-color: rgba(255, 255, 255, 200);
+                border: 1px solid rgba(0, 0, 0, 80);
+                border-radius: 18px;
+            }
+            QPushButton:hover {
+                background-color: rgba(0, 120, 212, 220);
+            }
+        """)
+        
+        layout.addWidget(self.btn_sort)
+        
+        self.setStyleSheet("""
+            #SortOverlay {
+                background-color: transparent;
+            }
+        """)
+        self.adjustSize()
+
 class MainWindow(QMainWindow):
     """The main application window for Pic-Analyzer."""
     def __init__(self):
@@ -86,6 +121,7 @@ class MainWindow(QMainWindow):
         self.db_manager = DatabaseManager(db_path)
         hide_file(db_path)
         
+        self.sort_manager = SortPluginManager()
         self.current_folder = None
         self.active_scanners = []
         self._current_viewer_index = -1
@@ -155,6 +191,11 @@ class MainWindow(QMainWindow):
         self.selection_overlay.btn_cancel.clicked.connect(self._on_cancel_selection)     
         self.gallery.selection_mode_changed.connect(self.selection_overlay.setVisible)   
 
+        # Sort Overlay
+        self.sort_overlay = SortOverlay(self.gallery)
+        self.sort_overlay.btn_sort.clicked.connect(self._show_sort_menu)
+        self.sort_overlay.show()
+
     def resizeEvent(self, event):
         """Maintains position of overlays on window resize."""
         super().resizeEvent(event)
@@ -167,6 +208,19 @@ class MainWindow(QMainWindow):
         
         if hasattr(self, "image_viewer"):
             self.image_viewer.resize(self.gallery.size())
+
+        if hasattr(self, "sort_overlay"):
+            margin = 15
+            # Position it to the left of the selection overlay if it's visible, 
+            # or just in the corner.
+            # For simplicity, let's put it slightly lower than selection overlay 
+            # or just further left.
+            x = self.gallery.width() - self.sort_overlay.width() - margin
+            y = margin
+            if self.selection_overlay.isVisible():
+                y = self.selection_overlay.height() + margin * 2
+            self.sort_overlay.move(x, y)
+            self.sort_overlay.raise_()
 
     def _open_image_viewer(self, file_path: str):
         """Opens the full-screen image viewer for the specified file."""
@@ -220,6 +274,29 @@ class MainWindow(QMainWindow):
     def _on_cancel_selection(self):
         """Exits multi-selection mode."""
         self.gallery.set_selection_mode_enabled(False)
+
+    def _show_sort_menu(self):
+        """Displays a menu to select sort metric and algorithm."""
+        from PySide6.QtWidgets import QMenu
+        from PySide6.QtGui import QAction
+        
+        menu = QMenu(self)
+        metrics = self.db_manager.get_numeric_metrics()
+        
+        for metric in metrics:
+            metric_menu = menu.addMenu(metric.replace("_", " ").title())
+            for plugin_name, plugin in self.sort_manager.plugins.items():
+                action = QAction(plugin_name, self)
+                action.triggered.connect(lambda checked=False, m=metric, p=plugin: self._apply_sort(m, p))
+                metric_menu.addAction(action)
+        
+        menu.exec(self.sort_overlay.btn_sort.mapToGlobal(QPoint(0, self.sort_overlay.btn_sort.height())))
+
+    def _apply_sort(self, metric, plugin):
+        """Applies the selected sorting plugin to the gallery."""
+        logger.info(f"Applying sort: {plugin.name} on {metric}")
+        values = self.db_manager.get_metric_values(metric)
+        self.gallery.apply_sort(metric, plugin, values)
 
     def mousePressEvent(self, event):
         """Handles Mouse 4/5 for navigation and mode exit."""
