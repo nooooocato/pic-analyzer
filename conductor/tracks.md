@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: UI Refactor - PySide6 Modular Style**
+- [~] **Track: UI Refactor - PySide6 Modular Style**
 *Link: [./tracks/ui_refactor_20260215/](./tracks/ui_refactor_20260215/)*
