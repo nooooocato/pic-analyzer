@@ -11,7 +11,7 @@ class SortOverlay(Card):
     def __init__(self, sort_manager, parent=None):
         super().__init__(parent, setup_layout=False)
         self.sort_manager = sort_manager
-        self.setObjectName("SortOverlay")
+        self.setObjectName("Card")
         self.setWindowFlags(Qt.SubWindow)
         
         self.layout_engine = SortOverlayLayout()
@@ -30,8 +30,10 @@ class SortOverlay(Card):
         ))
 
     def create_menu(self):
+        from src.ui.theme import Theme
         menu = QMenu(self)
-        plugins = self.sort_manager.get_plugins()
+        menu.setStyleSheet(Theme.get_menu_qss())
+        plugins = self.sort_manager.plugins.keys()
         
         for plugin_name in plugins:
             action = menu.addAction(plugin_name)
