@@ -11,7 +11,7 @@
     - [ ] Create `src/plugins/sort/ascending.py`.
     - [ ] Create `src/plugins/sort/descending.py`.
     - [ ] Write Tests: Verify correct ordering for simple numeric sets.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Sorting Plugin Framework' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Sorting Plugin Framework' (Protocol in workflow.md)
 
 ## Phase 2: Statistical Sorting & Logic [checkpoint: ]
 - [ ] Task: Implement the Normal Distribution (Peak First) plugin.

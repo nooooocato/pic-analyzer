@@ -1,5 +1,5 @@
 from typing import List, Dict, Any
-from .base import BaseSortPlugin
+from src.plugins.sort.base import BaseSortPlugin
 
 class AscendingSortPlugin(BaseSortPlugin):
     @property
