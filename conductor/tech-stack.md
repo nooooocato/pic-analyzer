@@ -17,6 +17,10 @@
 - **NumPy:** Used for efficient statistical calculations (Mean, Standard Deviation) in sorting algorithms.
 
 ## Architecture & Infrastructure
+- **UI Architecture:** "Triple-Python Pattern" - Strict separation of concerns for UI components:
+    - `xxx.style.py`: Pure styling, colors, and QSS fragments.
+    - `xxx.layout.py`: Pure widget hierarchy and static initialization.
+    - `xxx.logic.py`: Component entry point, signal/slot handling, and orchestration.
 - **Concurrency:** `QThreadPool` and `QRunnable` for multi-threaded, non-blocking image analysis.
 - **Plugin System:** Python's `importlib` and factory pattern for dynamic loading of statistical rules.
 - **Storage:** Safe file operations using Python's `shutil.move` with manual conflict resolution logic.
