@@ -1,8 +1,0 @@
-{
-  "track_id": "advanced_sorting_20260215",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-02-15T15:00:00Z",
-  "updated_at": "2026-02-15T15:00:00Z",
-  "description": "编写插件，排序呈现方式： 正序、倒序、正态分布排序（按照平均值和正负几西格玛排序）"
-}
