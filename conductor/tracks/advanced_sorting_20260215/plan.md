@@ -18,7 +18,7 @@
     - [ ] Create `src/plugins/sort/normal_dist.py`.
     - [ ] Implement Mean (μ) and Sigma (σ) calculation using `numpy`.
     - [ ] Write Tests: Verify items are sorted by proximity to the mean.
-- [ ] Task: Enhance `MainWindow` to extract numeric metrics from the database.
+- [x] Task: Enhance `MainWindow` to extract numeric metrics from the database. 80313ca
     - [ ] Update `src/database.py` or `MainWindow` to fetch all numeric analysis result keys.
     - [ ] Write Tests: Ensure only numeric columns/results are identified as sortable metrics.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Statistical Sorting & Logic' (Protocol in workflow.md)
