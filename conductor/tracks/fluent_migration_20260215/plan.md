@@ -5,7 +5,7 @@
 - [x] Task: Refactor `src/ui/theme.py` to integrate with `qfluentwidgets` theme system (Ensure compatibility with existing QMainWindow). [b047c94]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
-## Phase 2: Atomic Components
+## Phase 2: Atomic Components [checkpoint: bcc93d9]
 - [x] Task: Replace `IconButton` with `TransparentToolButton` / `tool_button`. [2f510ae]
     - Update `src/ui/common/icon_button/`.
 - [x] Task: Replace `Card` with `SimpleCardWidget` or `CardWidget`. [a74e7bf]
