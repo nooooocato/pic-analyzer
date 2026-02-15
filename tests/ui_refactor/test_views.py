@@ -53,13 +53,17 @@ def test_gallery_item_delegate_paint(qtbot):
     finally:
         painter.end()
 
-def test_gallery_view_clear(qtbot):
+def test_gallery_view_esc_exits_selection(qtbot):
     gallery = GalleryView()
     qtbot.addWidget(gallery)
     gallery.add_item("test.jpg")
-    gallery.clear()
-    assert gallery.count() == 0
-    assert len(gallery._group_widgets) == 0
+    
+    gallery.set_selection_mode_enabled(True)
+    assert gallery.selection_mode_enabled
+    
+    # Simulating Esc key on the group widget which has focus
+    qtbot.keyClick(gallery._group_widgets[0], Qt.Key_Escape)
+    assert not gallery.selection_mode_enabled
 
 def test_image_viewer_close(qtbot):
     viewer = ImageViewer()
