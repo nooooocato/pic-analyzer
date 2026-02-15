@@ -7,7 +7,7 @@
 - [x] Task: Implement `SortPluginManager`. 22b7340
     - [ ] Create `src/plugins/sort/manager.py` for dynamic loading of sorting algorithms.
     - [ ] Write Tests: Verify plugins are correctly discovered and loaded from `src/plugins/sort/`.
-- [ ] Task: Implement basic sorting plugins.
+- [x] Task: Implement basic sorting plugins. cf49e2d
     - [ ] Create `src/plugins/sort/ascending.py`.
     - [ ] Create `src/plugins/sort/descending.py`.
     - [ ] Write Tests: Verify correct ordering for simple numeric sets.
