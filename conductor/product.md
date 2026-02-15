@@ -70,7 +70,7 @@ I need a quick and simple image management tool for organizing scattered images 
 A "geeky," high-performance image management and analysis tool designed for scientific screening rather than nostalgic browsing. It prioritizes data-driven insights, safe file operations, and a plugin-based architecture for extensibility.
 
 ## Key Features
-- **Utility-First UI:** A functional, data-dense interface following native Windows design patterns.
+- **Utility-First UI:** A modular, component-based interface following **Fluent Design** principles (rounded corners, adaptive transparency). It uses a system-aware theme that automatically synchronizes with Windows light/dark mode.
 - **On-Demand Analysis:** Statistical rules are triggered manually via buttons to conserve resources.
 - **Lazy Loading:** UI elements and thumbnails are generated only as needed.
 - **Workspace Management:** Users can open folders as discrete workspaces, with analysis data stored in hidden local databases.
