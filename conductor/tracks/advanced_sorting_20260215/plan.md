@@ -14,7 +14,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Sorting Plugin Framework' (Protocol in workflow.md)
 
 ## Phase 2: Statistical Sorting & Logic [checkpoint: ]
-- [ ] Task: Implement the Normal Distribution (Peak First) plugin.
+- [x] Task: Implement the Normal Distribution (Peak First) plugin. ef16e72
     - [ ] Create `src/plugins/sort/normal_dist.py`.
     - [ ] Implement Mean (μ) and Sigma (σ) calculation using `numpy`.
     - [ ] Write Tests: Verify items are sorted by proximity to the mean.
