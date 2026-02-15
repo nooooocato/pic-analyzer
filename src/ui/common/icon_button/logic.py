@@ -1,16 +1,14 @@
-from PySide6.QtWidgets import QPushButton
-from .style import get_style
-from .layout import IconButtonLayout
+from qfluentwidgets import TransparentToolButton, FluentIcon
+from PySide6.QtWidgets import QWidget
 
-class IconButton(QPushButton):
-    def __init__(self, icon=None, tooltip="", circular=False, parent=None):
+class IconButton(TransparentToolButton):
+    def __init__(self, icon: FluentIcon, tooltip: str = "", parent: QWidget = None):
         super().__init__(parent)
-        self.layout_engine = IconButtonLayout()
-        self.layout_engine.setup_ui(self)
+        self.setIcon(icon)
         
-        if icon:
-            self.setIcon(icon)
         if tooltip:
             self.setToolTip(tooltip)
-            
-        self.setStyleSheet(get_style(circular))
+        
+        # Consistent sizing (optional, can be adjusted)
+        self.setFixedSize(36, 36)
+        self.setIconSize(self.iconSize()) # Use default or set custom

@@ -2,13 +2,14 @@ import pytest
 from PySide6.QtWidgets import QApplication
 from src.ui.common.icon_button.logic import IconButton
 from src.ui.common.card.logic import Card
+from qfluentwidgets import FluentIcon
 
 @pytest.fixture
 def app(qtbot):
     return QApplication.instance() or QApplication([])
 
 def test_icon_button(qtbot):
-    btn = IconButton(tooltip="Test Tooltip")
+    btn = IconButton(FluentIcon.ADD, tooltip="Test Tooltip")
     qtbot.addWidget(btn)
     
     assert btn.toolTip() == "Test Tooltip"

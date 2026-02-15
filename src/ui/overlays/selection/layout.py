@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QHBoxLayout, QStyle
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QHBoxLayout
+from qfluentwidgets import FluentIcon
 from src.ui.common.icon_button.logic import IconButton
 from src.ui.common.card.logic import Card
 
@@ -12,19 +12,19 @@ class SelectionOverlayLayout:
         
         # Select All Button
         self.btn_all = IconButton(
-            icon=widget.style().standardIcon(QStyle.SP_DialogApplyButton),
+            FluentIcon.CHECKBOX,
             tooltip="Select All"
         )
         
         # Invert Selection Button
         self.btn_invert = IconButton(
-            icon=widget.style().standardIcon(QStyle.SP_BrowserReload),
+            FluentIcon.SYNC,
             tooltip="Invert Selection"
         )
         
         # Cancel Button
         self.btn_cancel = IconButton(
-            icon=widget.style().standardIcon(QStyle.SP_DialogCancelButton),
+            FluentIcon.CANCEL,
             tooltip="Cancel"
         )
         
