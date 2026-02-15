@@ -36,7 +36,8 @@ I need a quick and simple image management tool for organizing scattered images 
     -   **Navigation:** Supports Keyboard arrows, Mouse wheel, and Mouse 4/5 for seamless browsing.
     -   **Animated Support:** Full support for GIF and WebP animations in the viewer.
     -   Grouped tiled views based on analysis results (e.g., by date).
-    -   **Switchable grouping views (similar to Windows Explorer grouping).
+    -   **Hierarchical Grouping:** Full-width visual headers for categorized views (e.g., by Date).
+    -   **Granular Control:** Toggle between different grouping levels (e.g., Year, Month, Day for time-based views).
 
 4.  **Statistical & Analysis Rules (Plugins):**
     -   pHash (Similarity)
