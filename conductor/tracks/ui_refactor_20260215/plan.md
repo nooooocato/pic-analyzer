@@ -18,7 +18,7 @@
     - [ ] Integrate SortPluginManager logic into the Logic layer.
 - [x] Task: Write Tests for Overlays. (c01bab3)
     - [ ] Create `tests/ui_refactor/test_overlays.py`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Overlays & Specialized Widgets' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Overlays & Specialized Widgets' (Protocol in workflow.md)
 
 ## Phase 3: Complex Views (Gallery & Viewer) [checkpoint: ]
 - [ ] Task: Refactor Image Viewer.
