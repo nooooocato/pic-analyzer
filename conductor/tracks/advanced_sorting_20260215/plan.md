@@ -34,10 +34,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Floating Sort UI' (Protocol in workflow.md)
 
 ## Phase 4: Debug Stats & Refinement [checkpoint: ]
-- [ ] Task: Implement the "Show Stats" toggle and display.
+- [~] Task: Implement the "Show Stats" toggle and display.
     - [ ] Add the toggle to the `SortOverlay` or View menu.
     - [ ] Update `GalleryView` to display Mean/Sigma labels at the end of groups when enabled.
     - [ ] Write Tests: Verify labels are shown/hidden based on the toggle state.
 - [ ] Task: Performance optimization for large galleries.
     - [ ] Ensure sorting calculations don't freeze the UI.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Debug Stats & Refinement' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Debug Stats & Refinement' (Protocol in workflow.md)

@@ -207,6 +207,9 @@ class GalleryView(QScrollArea):
         self._group_widgets = []
         self._current_plugin = None
         self._current_granularity = "month"
+        self._show_stats = False
+        self._current_sort_plugin = None
+        self._current_sort_metric = None
 
     @property
     def selection_mode_enabled(self):
@@ -244,10 +247,16 @@ class GalleryView(QScrollArea):
         self._current_granularity = granularity
         self.refresh_view()
 
+    def set_show_stats(self, enabled):
+        self._show_stats = enabled
+        self.refresh_view()
+
     def apply_sort(self, metric, plugin, values_map):
         """
         Sorts all items using the provided plugin and metric, then refreshes the view.
         """
+        self._current_sort_plugin = plugin
+        self._current_sort_metric = metric
         # Inject values into items for sorting
         for item in self._items:
             item[metric] = values_map.get(item['path'], 0)
@@ -301,6 +310,16 @@ class GalleryView(QScrollArea):
         group_layout.addWidget(header)
         group_layout.addWidget(list_widget)
         
+        # Add Statistics if enabled
+        if self._show_stats and self._current_sort_plugin and self._current_sort_metric:
+            stats = self._current_sort_plugin.get_stats(items, self._current_sort_metric)
+            if stats:
+                stats_str = " | ".join([f"{k.upper()}: {v:.2f}" for k, v in stats.items()])
+                stats_label = QLabel(f"Group Statistics: {stats_str}")
+                stats_label.setStyleSheet("color: #666; font-style: italic; padding-top: 5px;")
+                stats_label.setAlignment(Qt.AlignRight)
+                group_layout.addWidget(stats_label)
+
         self.container_layout.insertWidget(self.container_layout.count() - 1, group_container)
         self._group_widgets.append(list_widget)
         QTimer.singleShot(0, list_widget.adjust_height)
