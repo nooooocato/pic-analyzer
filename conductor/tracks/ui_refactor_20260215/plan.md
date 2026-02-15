@@ -9,7 +9,7 @@
     - [ ] Write Tests: Create `tests/ui_refactor/test_common.py`.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Common Components' (Protocol in workflow.md)
 
-## Phase 2: Overlays & Specialized Widgets [checkpoint: ]
+## Phase 2: Overlays & Specialized Widgets [checkpoint: 712cbad]
 - [x] Task: Refactor Selection Overlay. (8752abe)
     - [ ] Create `src/ui/overlays/selection/` with Style/Layout/Logic triplets.
     - [ ] Migrate batch action logic (Select All, Invert, etc.) to Logic layer.
@@ -18,7 +18,7 @@
     - [ ] Integrate SortPluginManager logic into the Logic layer.
 - [x] Task: Write Tests for Overlays. (c01bab3)
     - [ ] Create `tests/ui_refactor/test_overlays.py`.
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Overlays & Specialized Widgets' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Overlays & Specialized Widgets' (Protocol in workflow.md)
 
 ## Phase 3: Complex Views (Gallery & Viewer) [checkpoint: ]
 - [ ] Task: Refactor Image Viewer.
