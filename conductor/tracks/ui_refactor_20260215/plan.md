@@ -20,7 +20,7 @@
     - [ ] Create `tests/ui_refactor/test_overlays.py`.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Overlays & Specialized Widgets' (Protocol in workflow.md)
 
-## Phase 3: Complex Views (Gallery & Viewer) [checkpoint: ]
+## Phase 3: Complex Views (Gallery & Viewer) [checkpoint: 35e468e]
 - [x] Task: Refactor Image Viewer. (8dc1175)
     - [ ] Create `src/ui/image_viewer/` with Style/Layout/Logic triplets.
     - [ ] Move animation and navigation logic to the Logic layer.
@@ -29,7 +29,7 @@
     - [ ] Ensure item delegate rendering is handled in the Style layer.
 - [x] Task: Write Tests for Complex Views. (f8d87c2)
     - [ ] Create `tests/ui_refactor/test_views.py`.
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Complex Views' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Complex Views' (Protocol in workflow.md)
 
 ## Phase 4: Main Window & Integration [checkpoint: ]
 - [ ] Task: Refactor Main Window.
