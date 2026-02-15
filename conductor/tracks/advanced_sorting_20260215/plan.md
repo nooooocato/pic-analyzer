@@ -21,7 +21,7 @@
 - [x] Task: Enhance `MainWindow` to extract numeric metrics from the database. 80313ca
     - [ ] Update `src/database.py` or `MainWindow` to fetch all numeric analysis result keys.
     - [ ] Write Tests: Ensure only numeric columns/results are identified as sortable metrics.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Statistical Sorting & Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Statistical Sorting & Logic' (Protocol in workflow.md)
 
 ## Phase 3: Floating Sort UI [checkpoint: ]
 - [ ] Task: Create the `SortOverlay` widget.

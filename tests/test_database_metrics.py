@@ -25,6 +25,8 @@ def test_get_numeric_metrics(tmp_path):
     
     # We need to implement get_numeric_metrics in DatabaseManager
     metrics = db.get_numeric_metrics()
+    assert "file_size" in metrics
+    assert "modified_at" in metrics
     assert "size_kb" in metrics
     assert "density" in metrics
     assert "color" not in metrics
