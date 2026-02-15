@@ -38,3 +38,25 @@ def test_image_viewer_back_button(qtbot):
     with qtbot.waitSignal(viewer.closed, timeout=1000):
         viewer.btn_back.click()
     assert viewer.isHidden()
+
+def test_image_viewer_animations(qtbot):
+    from PySide6.QtCore import QPropertyAnimation
+    viewer = ImageViewer()
+    qtbot.addWidget(viewer)
+    
+    # Check if animations exist
+    assert hasattr(viewer, "fade_animation")
+    assert isinstance(viewer, QWidget)
+    
+    # Show should start fade animation
+    viewer.show_image("dummy.jpg")
+    assert viewer.fade_animation.state() == QPropertyAnimation.Running
+    assert viewer.fade_animation.endValue() == 1.0
+    
+    # Wait for animation to finish
+    qtbot.waitUntil(lambda: viewer.fade_animation.state() == QPropertyAnimation.Stopped, timeout=1000)
+    
+    # Close should start fade animation
+    viewer.close_viewer()
+    assert viewer.fade_animation.state() == QPropertyAnimation.Running
+    assert viewer.fade_animation.endValue() == 0.0
