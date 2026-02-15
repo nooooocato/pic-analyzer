@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [x] **Track: UI Refactor - PySide6 Modular Style**
-*Link: [./tracks/ui_refactor_20260215/](./tracks/ui_refactor_20260215/)*
+- [ ] **Track: Fluent Design Migration (PySide6-Fluent-Widgets)**
+*Link: [./tracks/fluent_migration_20260215/](./tracks/fluent_migration_20260215/)*
