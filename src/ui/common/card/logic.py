@@ -1,16 +1,19 @@
-from PySide6.QtWidgets import QFrame
-from .style import get_style
-from .layout import CardLayout
+from qfluentwidgets import SimpleCardWidget
+from PySide6.QtWidgets import QVBoxLayout
+from src.ui.theme import Theme
 
-class Card(QFrame):
+class Card(SimpleCardWidget):
     def __init__(self, parent=None, setup_layout=True):
         super().__init__(parent)
+        self.setObjectName("Card")
+        
         self.main_layout = None
         if setup_layout:
-            self.layout_engine = CardLayout()
-            self.main_layout = self.layout_engine.setup_ui(self)
-        self.setStyleSheet(get_style())
-    
+            # Setup layout
+            self.main_layout = QVBoxLayout(self)
+            self.main_layout.setContentsMargins(Theme.SPACING_M, Theme.SPACING_M, Theme.SPACING_M, Theme.SPACING_M)
+            self.main_layout.setSpacing(Theme.SPACING_S)
+        
     def addWidget(self, widget):
         if self.main_layout:
             self.main_layout.addWidget(widget)
