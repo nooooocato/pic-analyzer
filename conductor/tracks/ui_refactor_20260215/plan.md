@@ -31,8 +31,8 @@
     - [ ] Create `tests/ui_refactor/test_views.py`.
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Complex Views' (Protocol in workflow.md)
 
-## Phase 4: Main Window & Integration [checkpoint: ]
+## Phase 4: Main Window & Integration [checkpoint: a473136]
 - [x] Task: Refactor Main Window. (e5cafda)
 - [x] Task: Big Bang Integration & Cleanup. (e5cafda)
 - [x] Task: Final Regression Test. (e5cafda)
-- [~] Task: Conductor - User Manual Verification 'Phase 4: Main Window & Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Main Window & Integration' (Protocol in workflow.md)
