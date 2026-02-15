@@ -65,3 +65,29 @@ class DatabaseManager:
         """Closes connection to current DB (if any) and opens/initializes a new one."""
         self.db_path = new_db_path
         self._initialize_db()
+
+    def get_numeric_metrics(self):
+        """
+        Returns a list of result_keys that contain numeric values in the analysis_results table.
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        # Get unique keys
+        cursor.execute("SELECT DISTINCT result_key FROM analysis_results")
+        keys = [row[0] for row in cursor.fetchall()]
+        
+        numeric_keys = []
+        for key in keys:
+            # Check if the first value for this key is numeric
+            cursor.execute("SELECT result_value FROM analysis_results WHERE result_key = ? LIMIT 1", (key,))
+            row = cursor.fetchone()
+            if row:
+                try:
+                    float(row[0])
+                    numeric_keys.append(key)
+                except (ValueError, TypeError):
+                    pass
+        
+        conn.close()
+        return numeric_keys
