@@ -24,7 +24,7 @@
 - [x] Task: Implement "Safe Move" file operations with conflict resolution dialog. aae14dc
     - [ ] Use `shutil.move` for atomic operations.
     - [ ] Create interactive prompt for Rename/Skip/Overwrite.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Plugin Framework & File Operations' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Plugin Framework & File Operations' (Protocol in workflow.md)
 
 ## Phase 4: Integration & Initial Plugins [checkpoint: 059b3ed]
 - [x] Task: Implement the "Date Grouping" logic as a built-in feature/plugin. c8fc9f3
