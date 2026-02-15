@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 class DatabaseManager:
-    def __init__(self, db_path):
+    def __init__(self, db_path: str):
         self.db_path = db_path
         self._initialize_db()
 
@@ -61,14 +61,17 @@ class DatabaseManager:
             
         conn.close()
 
-    def switch_database(self, new_db_path):
-        """Closes connection to current DB (if any) and opens/initializes a new one."""
+    def switch_database(self, new_db_path: str):
+        """Closes connection to current DB (any) and opens/initializes a new one."""
         self.db_path = new_db_path
         self._initialize_db()
 
-    def get_numeric_metrics(self):
+    def get_numeric_metrics(self) -> list[str]:
         """
         Returns a list of keys (from images table or analysis_results) that contain numeric values.
+        
+        Returns:
+            list[str]: A list of metric keys that can be used for numeric sorting.
         """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -98,9 +101,15 @@ class DatabaseManager:
         conn.close()
         return numeric_keys
 
-    def get_metric_values(self, metric_key):
+    def get_metric_values(self, metric_key: str) -> dict[str, float]:
         """
         Returns a mapping of image path to its numeric value for the given metric.
+        
+        Args:
+            metric_key (str): The metric key to fetch values for.
+            
+        Returns:
+            dict[str, float]: A dictionary mapping file paths to numeric values.
         """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -109,9 +118,14 @@ class DatabaseManager:
         if metric_key in ["file_size", "modified_at"]:
             cursor.execute(f"SELECT path, {metric_key} FROM images")
             for path, val in cursor.fetchall():
-                results[path] = float(val)
+                results[path] = float(val) if val is not None else 0.0
         else:
-            cursor.execute("SELECT images.path, analysis_results.result_value FROM images JOIN analysis_results ON images.id = analysis_results.image_id WHERE analysis_results.result_key = ?", (metric_key,))
+            cursor.execute("""
+                SELECT images.path, analysis_results.result_value 
+                FROM images 
+                JOIN analysis_results ON images.id = analysis_results.image_id 
+                WHERE analysis_results.result_key = ?
+            """, (metric_key,))
             for path, val in cursor.fetchall():
                 try:
                     results[path] = float(val)

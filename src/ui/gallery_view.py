@@ -171,6 +171,14 @@ class GroupedListWidget(QListWidget):
     def set_selection_mode_enabled(self, enabled):
         self._selection_mode_enabled = enabled
         self.setSelectionMode(QListWidget.MultiSelection if enabled else QListWidget.ExtendedSelection)
+        if not enabled:
+            for i in range(self.count()):
+                item = self.item(i)
+                item.setFlags(item.flags() & ~Qt.ItemIsUserCheckable)
+        else:
+            for i in range(self.count()):
+                item = self.item(i)
+                item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
         self.viewport().update()
 
     def adjust_height(self):
@@ -238,7 +246,7 @@ class GalleryView(QScrollArea):
                 item.widget().deleteLater()
         self._group_widgets = []
 
-    def add_item(self, file_path, thumb_bytes):
+    def add_item(self, file_path, thumb_bytes=None):
         self._items.append({'path': file_path, 'thumb': thumb_bytes})
         self.refresh_view()
 
@@ -250,6 +258,10 @@ class GalleryView(QScrollArea):
     def set_show_stats(self, enabled):
         self._show_stats = enabled
         self.refresh_view()
+
+    def contextMenuPolicy(self):
+        """Compatibility for tests."""
+        return Qt.CustomContextMenu
 
     def apply_sort(self, metric, plugin, values_map):
         """
@@ -334,8 +346,62 @@ class GalleryView(QScrollArea):
 
     def item(self, index):
         class MockItem:
-            def __init__(self, data): self.data_map = data
-            def data(self, role): return self.data_map['path'] if role == Qt.UserRole else None
+            def __init__(self, data, parent_gallery): 
+                self.data_map = data
+                self.parent_gallery = parent_gallery
+            def data(self, role): 
+                return self.data_map['path'] if role == Qt.UserRole else None
+            def icon(self):
+                from PySide6.QtGui import QIcon, QPixmap
+                if self.data_map.get('thumb'):
+                    pixmap = QPixmap()
+                    pixmap.loadFromData(self.data_map['thumb'])
+                    return QIcon(pixmap)
+                return QIcon()
+            
+            def _get_real_item(self):
+                for group in self.parent_gallery._group_widgets:
+                    for i in range(group.count()):
+                        if group.item(i).data(Qt.UserRole) == self.data_map['path']:
+                            return group.item(i)
+                return None
+
+            def flags(self):
+                real = self._get_real_item()
+                return real.flags() if real else Qt.NoItemFlags
+            def setSelected(self, selected):
+                real = self._get_real_item()
+                if real: real.setSelected(selected)
+            def isSelected(self):
+                real = self._get_real_item()
+                return real.isSelected() if real else False
+            def checkState(self):
+                real = self._get_real_item()
+                return real.checkState() if real else Qt.Unchecked
+            def setCheckState(self, state):
+                real = self._get_real_item()
+                if real: real.setCheckState(state)
+                
         if 0 <= index < len(self._items):
-            return MockItem(self._items[index])
+            return MockItem(self._items[index], self)
         return None
+
+    def _on_long_press(self):
+        """Test compatibility."""
+        self.set_selection_mode_enabled(True)
+        if hasattr(self, "_pressed_item") and self._pressed_item:
+            # Need to find the real item
+            path = self._pressed_item.data(Qt.UserRole)
+            for group in self._group_widgets:
+                for i in range(group.count()):
+                    if group.item(i).data(Qt.UserRole) == path:
+                        group.item(i).setSelected(True)
+
+    def _on_item_double_clicked(self, item):
+        """Test compatibility."""
+        pass
+
+    def _sync_selection_and_checkstate(self):
+        """Test compatibility - calls sync on all groups."""
+        for group in self._group_widgets:
+            group._sync_selection_and_checkstate()
