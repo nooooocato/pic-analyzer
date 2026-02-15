@@ -1,13 +1,14 @@
 from PySide6.QtWidgets import (
     QMainWindow, QToolBar, QTreeView, QDockWidget,
     QVBoxLayout, QWidget, QFileDialog, QMessageBox,
-    QPushButton, QHBoxLayout, QFrame, QStyle
+    QPushButton, QHBoxLayout, QFrame, QStyle, QApplication
 )
 from PySide6.QtCore import Qt, QThreadPool, QSize, QPoint
 import os
 import sqlite3
 import datetime
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QIcon, QAction, QPixmap     
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QIcon, QAction, QPixmap, QPalette, QColor
+     
 from src.file_scanner import FolderScanner
 from src.database import DatabaseManager
 from src.file_ops import hide_file
@@ -68,9 +69,9 @@ class SelectionOverlay(QFrame):
         
         self.setStyleSheet("""
             #SelectionOverlay {
-                background-color: rgba(245, 245, 245, 220);
+                background-color: rgba(245, 245, 245, 240);
                 border-radius: 8px;
-                border: 1px solid rgba(0, 0, 0, 50);
+                border: 1px solid rgba(0, 0, 0, 80);
             }
         """)
         self.adjustSize()
@@ -199,26 +200,20 @@ class MainWindow(QMainWindow):
     def resizeEvent(self, event):
         """Maintains position of overlays on window resize."""
         super().resizeEvent(event)
+        margin = 15
+        
         if hasattr(self, "selection_overlay"):
-            margin = 15
-            x = self.gallery.width() - self.selection_overlay.width() - margin
-            y = margin
-            self.selection_overlay.move(x, y)
+            # Move to top-left
+            self.selection_overlay.move(margin, margin)
             self.selection_overlay.raise_()
         
         if hasattr(self, "image_viewer"):
             self.image_viewer.resize(self.gallery.size())
 
         if hasattr(self, "sort_overlay"):
-            margin = 15
-            # Position it to the left of the selection overlay if it's visible, 
-            # or just in the corner.
-            # For simplicity, let's put it slightly lower than selection overlay 
-            # or just further left.
+            # Keep at top-right
             x = self.gallery.width() - self.sort_overlay.width() - margin
             y = margin
-            if self.selection_overlay.isVisible():
-                y = self.selection_overlay.height() + margin * 2
             self.sort_overlay.move(x, y)
             self.sort_overlay.raise_()
 
@@ -258,18 +253,20 @@ class MainWindow(QMainWindow):
 
     def _on_select_all(self):
         """Selects all items in the gallery."""
-        for i in range(self.gallery.count()):
-            item = self.gallery.item(i)
-            item.setCheckState(Qt.Checked)
-            item.setSelected(True)
+        for group in self.gallery._group_widgets:
+            for i in range(group.count()):
+                item = group.item(i)
+                item.setCheckState(Qt.Checked)
+                item.setSelected(True)
 
     def _on_invert_selection(self):
         """Inverts the current selection in the gallery."""
-        for i in range(self.gallery.count()):
-            item = self.gallery.item(i)
-            new_state = Qt.Unchecked if item.checkState() == Qt.Checked else Qt.Checked  
-            item.setCheckState(new_state)
-            item.setSelected(new_state == Qt.Checked)
+        for group in self.gallery._group_widgets:
+            for i in range(group.count()):
+                item = group.item(i)
+                new_state = Qt.Unchecked if item.checkState() == Qt.Checked else Qt.Checked  
+                item.setCheckState(new_state)
+                item.setSelected(new_state == Qt.Checked)
 
     def _on_cancel_selection(self):
         """Exits multi-selection mode."""
@@ -281,6 +278,9 @@ class MainWindow(QMainWindow):
         from PySide6.QtGui import QAction
         
         menu = QMenu(self)
+        menu.setAttribute(Qt.WA_TranslucentBackground, False)
+        menu.setAutoFillBackground(True)
+        
         metrics = self.db_manager.get_numeric_metrics()
         
         for metric in metrics:
