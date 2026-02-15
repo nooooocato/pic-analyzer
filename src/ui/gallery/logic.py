@@ -20,6 +20,14 @@ class GroupedListWidget(BaseGroupedListWidget):
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self._show_context_menu)
 
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Escape:
+            parent_gallery = self._find_parent_gallery()
+            if parent_gallery and parent_gallery.selection_mode_enabled:
+                parent_gallery.set_selection_mode_enabled(False)
+                return
+        super().keyPressEvent(event)
+
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self._pressed_item = self.itemAt(event.pos())
@@ -188,7 +196,10 @@ class GalleryView(QScrollArea):
             list_widget.addItem(item)
         
         list_widget.itemClicked.connect(lambda it: self.item_selected.emit(it.data(Qt.UserRole)))
-        list_widget.itemDoubleClicked.connect(lambda it: self.item_activated.emit(it.data(Qt.UserRole)))
+        # Only emit activated signal if NOT in selection mode
+        list_widget.itemDoubleClicked.connect(
+            lambda it: self.item_activated.emit(it.data(Qt.UserRole)) if not self.selection_mode_enabled else None
+        )
         
         group_layout.addWidget(list_widget)
         
@@ -209,5 +220,11 @@ class GalleryView(QScrollArea):
         super().resizeEvent(event)
         for group in self._group_widgets:
             group.adjust_height()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Escape and self._selection_mode_enabled:
+            self.set_selection_mode_enabled(False)
+            return # Consume the event
+        super().keyPressEvent(event)
 
     def count(self): return len(self._items)
