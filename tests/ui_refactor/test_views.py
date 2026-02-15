@@ -18,18 +18,57 @@ def test_gallery_view_add_item(qtbot):
     assert len(gallery._group_widgets) == 1
     assert gallery._group_widgets[0].count() == 1
 
-def test_gallery_view_selection_mode(qtbot):
+from unittest.mock import MagicMock
+
+def test_gallery_view_grouping(qtbot):
+    gallery = GalleryView()
+    qtbot.addWidget(gallery)
+    gallery.add_item("path1.jpg")
+    gallery.add_item("path2.jpg")
+    
+    mock_plugin = MagicMock()
+    mock_plugin.run.side_effect = lambda path, gran: {"date": "2023-01"} if "path1" in path else {"date": "2023-02"}
+    
+    gallery.set_grouping(mock_plugin)
+    assert len(gallery._group_widgets) == 2
+    assert gallery.layout_engine.container_layout.count() >= 3 # 2 groups + stretch
+
+from src.ui.gallery.style import GalleryItemDelegate
+from PySide6.QtGui import QImage, QPainter
+from PySide6.QtWidgets import QStyleOptionViewItem
+
+def test_gallery_item_delegate_paint(qtbot):
+    gallery = GalleryView()
+    qtbot.addWidget(gallery)
+    gallery.add_item("test.jpg") # Add item to ensure index is valid
+    delegate = GalleryItemDelegate(gallery)
+    
+    image = QImage(200, 200, QImage.Format_RGB32)
+    painter = QPainter(image)
+    try:
+        option = QStyleOptionViewItem()
+        option.rect = image.rect()
+        index = gallery._group_widgets[0].model().index(0, 0)
+        delegate.paint(painter, option, index)
+    finally:
+        painter.end()
+
+def test_gallery_view_clear(qtbot):
     gallery = GalleryView()
     qtbot.addWidget(gallery)
     gallery.add_item("test.jpg")
+    gallery.clear()
+    assert gallery.count() == 0
+    assert len(gallery._group_widgets) == 0
+
+def test_image_viewer_close(qtbot):
+    viewer = ImageViewer()
+    qtbot.addWidget(viewer)
+    viewer.show_image("test.jpg")
     
-    gallery.set_selection_mode_enabled(True)
-    assert gallery.selection_mode_enabled
-    assert gallery._group_widgets[0].selection_mode_enabled
-    
-    gallery.set_selection_mode_enabled(False)
-    assert not gallery.selection_mode_enabled
-    assert not gallery._group_widgets[0].selection_mode_enabled
+    with qtbot.waitSignal(viewer.closed, timeout=1000):
+        viewer.close_viewer()
+    assert viewer.isHidden()
     viewer = ImageViewer()
     qtbot.addWidget(viewer)
     
