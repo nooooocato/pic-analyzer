@@ -24,7 +24,7 @@
 - [x] Task: Refactor Image Viewer. (8dc1175)
     - [ ] Create `src/ui/image_viewer/` with Style/Layout/Logic triplets.
     - [ ] Move animation and navigation logic to the Logic layer.
-- [ ] Task: Refactor Gallery View & Grouping.
+- [x] Task: Refactor Gallery View & Grouping. (8811240)
     - [ ] Create `src/ui/gallery/` with Style/Layout/Logic triplets for `GroupedListWidget` and `GalleryView`.
     - [ ] Ensure item delegate rendering is handled in the Style layer.
 - [ ] Task: Write Tests for Complex Views.
