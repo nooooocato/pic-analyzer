@@ -41,3 +41,6 @@
 - [ ] Task: Performance optimization for large galleries.
     - [ ] Ensure sorting calculations don't freeze the UI.
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Debug Stats & Refinement' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions 6e4d492
