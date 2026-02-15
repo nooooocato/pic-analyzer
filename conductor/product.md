@@ -49,8 +49,9 @@ I need a quick and simple image management tool for organizing scattered images 
     -   File Type (jpg, png, gif, etc.)
 
 5.  **Sorting & Presentation:**
-    -   Ascending, Descending.
-    -   Normal Distribution Sorting (Mean +/- Sigma).
+    -   **Extensible Sorting Plugins:** Dynamic loading of sorting algorithms (e.g., Ascending, Descending).
+    -   **Statistical Sorting:** Normal Distribution Sorting (Peak First) based on calculated Mean (μ) and Sigma (σ).
+    -   **On-Demand Metrics:** Toggleable display of group-level statistical insights.
 
 6.  **Grouping Logic:**
     -   A group is the result of a set of statistical rules.

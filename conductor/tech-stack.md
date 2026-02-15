@@ -14,6 +14,7 @@
 
 ## Data Visualization
 - **PyQtGraph:** Selected for high-performance, interactive 2D charts (histograms, scatter plots) that integrate smoothly with the Qt event loop.
+- **NumPy:** Used for efficient statistical calculations (Mean, Standard Deviation) in sorting algorithms.
 
 ## Architecture & Infrastructure
 - **Concurrency:** `QThreadPool` and `QRunnable` for multi-threaded, non-blocking image analysis.
