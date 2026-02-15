@@ -32,13 +32,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Complex Views' (Protocol in workflow.md)
 
 ## Phase 4: Main Window & Integration [checkpoint: ]
-- [ ] Task: Refactor Main Window.
-    - [ ] Create `src/ui/main_window/` with Style/Layout/Logic triplets.
-    - [ ] Move Menu/Toolbar assembly to Layout; Move scanner/database orchestration to Logic.
-- [ ] Task: Big Bang Integration & Cleanup.
-    - [ ] Update `run_app.py` to launch the new `MainWindow` logic class.
-    - [ ] Verify all inter-component signals (Gallery -> Viewer, etc.) are restored.
-    - [ ] Delete legacy files in `src/ui/` after verification.
-- [ ] Task: Final Regression Test.
-    - [ ] Run full test suite (new and legacy) to ensure zero feature loss.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Main Window & Integration' (Protocol in workflow.md)
+- [x] Task: Refactor Main Window. (e5cafda)
+- [x] Task: Big Bang Integration & Cleanup. (e5cafda)
+- [x] Task: Final Regression Test. (e5cafda)
+- [~] Task: Conductor - User Manual Verification 'Phase 4: Main Window & Integration' (Protocol in workflow.md)
