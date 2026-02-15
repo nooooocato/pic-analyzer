@@ -68,26 +68,32 @@ class DatabaseManager:
 
     def get_numeric_metrics(self):
         """
-        Returns a list of result_keys that contain numeric values in the analysis_results table.
+        Returns a list of keys (from images table or analysis_results) that contain numeric values.
         """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
-        # Get unique keys
-        cursor.execute("SELECT DISTINCT result_key FROM analysis_results")
-        keys = [row[0] for row in cursor.fetchall()]
+        # Start with standard numeric columns from the images table
+        numeric_keys = ["file_size", "modified_at"]
         
-        numeric_keys = []
-        for key in keys:
-            # Check if the first value for this key is numeric
-            cursor.execute("SELECT result_value FROM analysis_results WHERE result_key = ? LIMIT 1", (key,))
-            row = cursor.fetchone()
-            if row:
-                try:
-                    float(row[0])
-                    numeric_keys.append(key)
-                except (ValueError, TypeError):
-                    pass
+        # Get unique keys from analysis_results
+        try:
+            cursor.execute("SELECT DISTINCT result_key FROM analysis_results")
+            keys = [row[0] for row in cursor.fetchall()]
+            
+            for key in keys:
+                # Check if the first value for this key is numeric
+                cursor.execute("SELECT result_value FROM analysis_results WHERE result_key = ? LIMIT 1", (key,))
+                row = cursor.fetchone()
+                if row:
+                    try:
+                        float(row[0])
+                        numeric_keys.append(key)
+                    except (ValueError, TypeError):
+                        pass
+        except sqlite3.OperationalError:
+            # Table might not exist yet
+            pass
         
         conn.close()
         return numeric_keys
