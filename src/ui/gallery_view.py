@@ -154,6 +154,17 @@ class GalleryView(QScrollArea):
         self._current_granularity = granularity
         self.refresh_view()
 
+    def apply_sort(self, metric, plugin, values_map):
+        """
+        Sorts all items using the provided plugin and metric, then refreshes the view.
+        """
+        # Inject values into items for sorting
+        for item in self._items:
+            item[metric] = values_map.get(item['path'], 0)
+            
+        self._items = plugin.sort(self._items, metric)
+        self.refresh_view()
+
     def refresh_view(self):
         self._clear_layout()
         if not self._current_plugin:

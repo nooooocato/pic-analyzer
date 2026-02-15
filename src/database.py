@@ -97,3 +97,26 @@ class DatabaseManager:
         
         conn.close()
         return numeric_keys
+
+    def get_metric_values(self, metric_key):
+        """
+        Returns a mapping of image path to its numeric value for the given metric.
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        results = {}
+        
+        if metric_key in ["file_size", "modified_at"]:
+            cursor.execute(f"SELECT path, {metric_key} FROM images")
+            for path, val in cursor.fetchall():
+                results[path] = float(val)
+        else:
+            cursor.execute("SELECT images.path, analysis_results.result_value FROM images JOIN analysis_results ON images.id = analysis_results.image_id WHERE analysis_results.result_key = ?", (metric_key,))
+            for path, val in cursor.fetchall():
+                try:
+                    results[path] = float(val)
+                except (ValueError, TypeError):
+                    pass
+        
+        conn.close()
+        return results
