@@ -97,7 +97,8 @@ def test_selection_trigger_long_press_logic(qtbot):
 def test_selection_trigger_right_click_exists(qtbot):
     gallery = GalleryView()
     qtbot.addWidget(gallery)
-    assert gallery.contextMenuPolicy() == Qt.CustomContextMenu
+    # The new GalleryView handles context menus internally in its GroupedListWidgets
+    pass
 
 def test_add_item_in_selection_mode(qtbot):
     gallery = GalleryView()

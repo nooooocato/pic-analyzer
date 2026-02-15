@@ -1,12 +1,12 @@
 import pytest
-from PySide6.QtWidgets import QListWidget
+from PySide6.QtWidgets import QScrollArea
 from src.ui.gallery_view import GalleryView
 from src.ui.main_window import MainWindow
 
 def test_gallery_view_init(qtbot):
     gallery = GalleryView()
     qtbot.addWidget(gallery)
-    assert isinstance(gallery, QListWidget)
+    assert isinstance(gallery, QScrollArea)
 
 def test_main_window_has_gallery(qtbot):
     window = MainWindow()
