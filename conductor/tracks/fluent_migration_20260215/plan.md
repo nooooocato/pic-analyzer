@@ -1,7 +1,7 @@
 # Implementation Plan - Fluent Design Migration
 
 ## Phase 1: Foundation & Main Window
-- [ ] Task: Install `PySide6-Fluent-Widgets` and update `requirements.txt`.
+- [x] Task: Install `PySide6-Fluent-Widgets` and update `requirements.txt`. [a3d8224]
 - [ ] Task: Refactor `src/ui/theme.py` to integrate with `qfluentwidgets` theme system.
 - [ ] Task: Migrate `MainWindow` to `FluentWindow`.
     - Replace `QMainWindow` with `FluentWindow`.
