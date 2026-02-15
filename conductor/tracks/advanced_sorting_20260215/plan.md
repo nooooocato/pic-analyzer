@@ -1,7 +1,7 @@
 # Implementation Plan - Advanced Sorting Plugins
 
 ## Phase 1: Sorting Plugin Framework [checkpoint: ]
-- [ ] Task: Define the `BaseSortPlugin` interface.
+- [x] Task: Define the `BaseSortPlugin` interface. 043e03d
     - [ ] Create `src/plugins/sort/base.py`.
     - [ ] Define methods for calculating order based on a list of values.
 - [ ] Task: Implement `SortPluginManager`.
