@@ -164,6 +164,11 @@ class MainWindow(QMainWindow):
         date_day_action = group_date_menu.addAction("Day")
         date_day_action.triggered.connect(lambda: self._on_group_by_date("day"))
 
+        self.view_menu.addSeparator()
+        self.show_stats_action = self.view_menu.addAction("Show Sorting Stats")
+        self.show_stats_action.setCheckable(True)
+        self.show_stats_action.triggered.connect(self._on_toggle_stats)
+
         # Sidebar (Data Inspector)
         self.inspector_dock = QDockWidget("Data Inspector", self)
         self.inspector_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
@@ -410,6 +415,10 @@ class MainWindow(QMainWindow):
         """Groups gallery items by date using the DateGroupingPlugin."""
         plugin = DateGroupingPlugin()
         self.gallery.set_grouping(plugin, granularity)
+
+    def _on_toggle_stats(self, enabled):
+        """Toggles the display of sorting statistics in the gallery."""
+        self.gallery.set_show_stats(enabled)
 
     def _on_file_found(self, file_path: str, thumb_bytes: bytes):
         """Callback when a file is found by the scanner."""
