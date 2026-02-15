@@ -13,7 +13,7 @@
 - [x] Task: Refactor Selection Overlay. (8752abe)
     - [ ] Create `src/ui/overlays/selection/` with Style/Layout/Logic triplets.
     - [ ] Migrate batch action logic (Select All, Invert, etc.) to Logic layer.
-- [ ] Task: Refactor Sort Overlay.
+- [x] Task: Refactor Sort Overlay. (c01bab3)
     - [ ] Create `src/ui/overlays/sort/` with Style/Layout/Logic triplets.
     - [ ] Integrate SortPluginManager logic into the Logic layer.
 - [ ] Task: Write Tests for Overlays.
