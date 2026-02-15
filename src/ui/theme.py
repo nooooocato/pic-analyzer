@@ -1,12 +1,19 @@
 from PySide6.QtGui import QPalette, QColor, QGuiApplication
 from PySide6.QtCore import Qt
+import qfluentwidgets
 
 class Theme:
     """Provides system-aware colors and Fluent Design geometry/style templates."""
     
     @staticmethod
     def is_dark_mode():
-        return QGuiApplication.styleHints().colorScheme() == Qt.ColorScheme.Dark
+        return qfluentwidgets.isDarkTheme()
+
+    @staticmethod
+    def apply_theme(app=None):
+        """Applies the Fluent theme to the application."""
+        # Auto-detect system theme
+        qfluentwidgets.setTheme(qfluentwidgets.Theme.AUTO)
 
     @staticmethod
     def get_color(role: QPalette.ColorRole) -> QColor:
