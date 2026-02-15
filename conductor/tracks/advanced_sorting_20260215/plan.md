@@ -23,7 +23,7 @@
     - [ ] Write Tests: Ensure only numeric columns/results are identified as sortable metrics.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Statistical Sorting & Logic' (Protocol in workflow.md)
 
-## Phase 3: Floating Sort UI [checkpoint: ]
+## Phase 3: Floating Sort UI [checkpoint: 1fb824a]
 - [x] Task: Create the `SortOverlay` widget. 11f2ecd
     - [ ] Implement a floating button in the top-right of `GalleryView`.
     - [ ] Implement a menu to select Metric and Algorithm.
