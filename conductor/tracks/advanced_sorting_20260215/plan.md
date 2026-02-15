@@ -24,11 +24,11 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Statistical Sorting & Logic' (Protocol in workflow.md)
 
 ## Phase 3: Floating Sort UI [checkpoint: ]
-- [ ] Task: Create the `SortOverlay` widget.
+- [x] Task: Create the `SortOverlay` widget. 11f2ecd
     - [ ] Implement a floating button in the top-right of `GalleryView`.
     - [ ] Implement a menu to select Metric and Algorithm.
     - [ ] Write Tests: Verify the overlay is visible and the menu contains the expected items.
-- [ ] Task: Integrate sorting with `GalleryView`.
+- [x] Task: Integrate sorting with `GalleryView`. 11f2ecd
     - [ ] Update `GalleryView` to trigger the selected sort plugin and refresh the layout.
     - [ ] Handle re-sorting across multiple groups if applicable.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Floating Sort UI' (Protocol in workflow.md)
