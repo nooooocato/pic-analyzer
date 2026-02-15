@@ -10,7 +10,7 @@
     - Update `src/ui/common/icon_button/`.
 - [x] Task: Replace `Card` with `SimpleCardWidget` or `CardWidget`. [a74e7bf]
     - Update `src/ui/common/card/`.
-- [ ] Task: Replace `Toast` with `InfoBar`.
+- [x] Task: Replace `Toast` with `InfoBar`. [f311368]
     - Refactor `src/ui/common/toast/` to wrap `InfoBar.success/warning/error`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
