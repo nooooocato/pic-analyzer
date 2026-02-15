@@ -33,7 +33,7 @@
     - [ ] Handle re-sorting across multiple groups if applicable.
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Floating Sort UI' (Protocol in workflow.md)
 
-## Phase 4: Debug Stats & Refinement [checkpoint: ]
+## Phase 4: Debug Stats & Refinement [checkpoint: 6367cdb]
 - [~] Task: Implement the "Show Stats" toggle and display.
     - [ ] Add the toggle to the `SortOverlay` or View menu.
     - [ ] Update `GalleryView` to display Mean/Sigma labels at the end of groups when enabled.
