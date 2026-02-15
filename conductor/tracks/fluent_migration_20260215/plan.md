@@ -1,6 +1,6 @@
 # Implementation Plan - Fluent Design Migration
 
-## Phase 1: Foundation
+## Phase 1: Foundation [checkpoint: 006e58a]
 - [x] Task: Install `PySide6-Fluent-Widgets` and update `requirements.txt`. [a3d8224]
 - [x] Task: Refactor `src/ui/theme.py` to integrate with `qfluentwidgets` theme system (Ensure compatibility with existing QMainWindow). [b047c94]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
