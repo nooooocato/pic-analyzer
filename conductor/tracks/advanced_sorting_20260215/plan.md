@@ -4,7 +4,7 @@
 - [x] Task: Define the `BaseSortPlugin` interface. 043e03d
     - [ ] Create `src/plugins/sort/base.py`.
     - [ ] Define methods for calculating order based on a list of values.
-- [ ] Task: Implement `SortPluginManager`.
+- [x] Task: Implement `SortPluginManager`. 22b7340
     - [ ] Create `src/plugins/sort/manager.py` for dynamic loading of sorting algorithms.
     - [ ] Write Tests: Verify plugins are correctly discovered and loaded from `src/plugins/sort/`.
 - [ ] Task: Implement basic sorting plugins.
