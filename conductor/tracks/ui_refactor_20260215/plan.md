@@ -1,7 +1,7 @@
 # Implementation Plan - UI Refactor (Triple-Python Pattern)
 
 ## Phase 1: Foundation & Common Components [checkpoint: ]
-- [ ] Task: Initialize Global Theme System.
+- [x] Task: Initialize Global Theme System. (147bba8)
     - [ ] Create `src/ui/theme.py` with standard colors, spacing, and shared QSS fragments.
 - [ ] Task: Refactor Small Reusable Components.
     - [ ] Identify common widgets (e.g., custom buttons, status labels).
