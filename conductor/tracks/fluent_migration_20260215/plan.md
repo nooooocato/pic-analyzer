@@ -2,7 +2,7 @@
 
 ## Phase 1: Foundation
 - [x] Task: Install `PySide6-Fluent-Widgets` and update `requirements.txt`. [a3d8224]
-- [ ] Task: Refactor `src/ui/theme.py` to integrate with `qfluentwidgets` theme system (Ensure compatibility with existing QMainWindow).
+- [x] Task: Refactor `src/ui/theme.py` to integrate with `qfluentwidgets` theme system (Ensure compatibility with existing QMainWindow). [b047c94]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
 ## Phase 2: Atomic Components
