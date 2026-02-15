@@ -6,7 +6,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
 ## Phase 2: Atomic Components
-- [ ] Task: Replace `IconButton` with `TransparentToolButton` / `tool_button`.
+- [x] Task: Replace `IconButton` with `TransparentToolButton` / `tool_button`. [2f510ae]
     - Update `src/ui/common/icon_button/`.
 - [ ] Task: Replace `Card` with `SimpleCardWidget` or `CardWidget`.
     - Update `src/ui/common/card/`.
