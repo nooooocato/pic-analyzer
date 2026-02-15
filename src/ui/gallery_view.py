@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QListWidget, QListWidgetItem, 
-    QListView, QScrollArea, QFrame, QApplication, QStyle, QStyledItemDelegate
+    QListView, QScrollArea, QFrame, QApplication, QStyle, QStyledItemDelegate, QMenu
 )
 from PySide6.QtCore import Qt, QSize, Signal, QTimer, QPoint, QRect
 from PySide6.QtGui import QIcon, QPixmap, QColor, QFont, QPen
@@ -42,18 +42,27 @@ class GalleryItemDelegate(QStyledItemDelegate):
             is_checked = option.state & QStyle.State_Selected
             
             # Position checkbox at top-left with some margin
-            cb_size = 20
-            cb_rect = QRect(option.rect.left() + 5, option.rect.top() + 5, cb_size, cb_size)
+            cb_size = 22
+            cb_rect = QRect(option.rect.left() + 8, option.rect.top() + 8, cb_size, cb_size)
             
-            # Background for checkbox
+            # Background for checkbox with subtle shadow/border
+            painter.setPen(QPen(QColor(0, 0, 0, 60), 1))
             if is_checked:
                 painter.setBrush(QColor(0, 120, 212))
-                painter.setPen(QColor(0, 120, 212))
             else:
-                painter.setBrush(QColor(255, 255, 255, 200))
-                painter.setPen(QColor(100, 100, 100))
+                painter.setBrush(QColor(255, 255, 255, 220))
             
-            painter.drawRoundedRect(cb_rect, 2, 2)
+            painter.drawRoundedRect(cb_rect, 4, 4)
+            
+            # Draw Checkmark if checked
+            if is_checked:
+                painter.setPen(QPen(Qt.white, 2))
+                # Simple checkmark lines
+                p1 = QPoint(cb_rect.left() + 5, cb_rect.top() + 11)
+                p2 = QPoint(cb_rect.left() + 9, cb_rect.top() + 15)
+                p3 = QPoint(cb_rect.left() + 17, cb_rect.top() + 7)
+                painter.drawLine(p1, p2)
+                painter.drawLine(p2, p3)
         
         painter.restore()
 
@@ -74,10 +83,86 @@ class GroupedListWidget(QListWidget):
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setSelectionMode(QListWidget.ExtendedSelection)
-        self.setStyleSheet("background: transparent; outline: none;")
+        self.setStyleSheet("GroupedListWidget { background: transparent; outline: none; }")
         self.setItemDelegate(GalleryItemDelegate(self))
         self.setFocusPolicy(Qt.NoFocus)
         self._selection_mode_enabled = False
+        
+        # Synchronize selection and check state
+        self.itemSelectionChanged.connect(self._sync_selection_and_checkstate)
+
+        # Long press support
+        self._long_press_timer = QTimer()
+        self._long_press_timer.setSingleShot(True)
+        self._long_press_timer.setInterval(800)
+        self._long_press_timer.timeout.connect(self._on_long_press)
+        self._pressed_item = None
+        
+        # Context menu
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self._show_context_menu)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self._pressed_item = self.itemAt(event.pos())
+            if self._pressed_item:
+                self._long_press_timer.start()
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        self._long_press_timer.stop()
+        super().mouseReleaseEvent(event)
+
+    def _on_long_press(self):
+        parent_gallery = self._find_parent_gallery()
+        if parent_gallery and not parent_gallery.selection_mode_enabled:
+            parent_gallery.set_selection_mode_enabled(True)
+            if self._pressed_item:
+                self._pressed_item.setSelected(True)
+
+    def _show_context_menu(self, pos):
+        parent_gallery = self._find_parent_gallery()
+        if not parent_gallery: return
+        
+        menu = QMenu(self)
+        menu.setAttribute(Qt.WA_TranslucentBackground, False)
+        menu.setAutoFillBackground(True)
+        
+        if not parent_gallery.selection_mode_enabled:
+            act = menu.addAction("Select")
+            act.triggered.connect(lambda: parent_gallery.set_selection_mode_enabled(True))
+        
+        item = self.itemAt(pos)
+        if item:
+            act = menu.addAction("Open")
+            act.triggered.connect(lambda: parent_gallery.item_activated.emit(item.data(Qt.UserRole)))
+            
+        if not menu.isEmpty():
+            menu.exec(self.mapToGlobal(pos))
+
+    def _find_parent_gallery(self):
+        p = self.parent()
+        while p:
+            if isinstance(p, GalleryView):
+                return p
+            p = p.parent()
+        return None
+
+    def _sync_selection_and_checkstate(self):
+        """Synchronizes checkbox check state with item selection state."""
+        if not self._selection_mode_enabled:
+            return
+            
+        # Temporarily block signals to avoid recursion
+        self.blockSignals(True)
+        for i in range(self.count()):
+            item = self.item(i)
+            is_sel = item.isSelected()
+            expected_check = Qt.Checked if is_sel else Qt.Unchecked
+            if item.checkState() != expected_check:
+                item.setCheckState(expected_check)
+        self.blockSignals(False)
+        self.viewport().update()
 
     @property
     def selection_mode_enabled(self):
@@ -106,9 +191,10 @@ class GalleryView(QScrollArea):
         super().__init__()
         self.setWidgetResizable(True)
         self.setFrameShape(QFrame.NoFrame)
-        self.setStyleSheet("QScrollArea { background-color: white; }")
+        self.setStyleSheet("QScrollArea { background: transparent; border: none; }")
         
         self.container = QWidget()
+        self.container.setStyleSheet("background: transparent;")
         self.container_layout = QVBoxLayout(self.container)
         self.container_layout.setContentsMargins(10, 10, 10, 10)
         self.container_layout.setSpacing(20)
@@ -132,6 +218,10 @@ class GalleryView(QScrollArea):
         self._selection_mode_enabled = enabled
         for group in self._group_widgets:
             group.set_selection_mode_enabled(enabled)
+            if not enabled:
+                group.clearSelection()
+                for i in range(group.count()):
+                    group.item(i).setCheckState(Qt.Unchecked)
         self.selection_mode_changed.emit(enabled)
 
     def clear(self):

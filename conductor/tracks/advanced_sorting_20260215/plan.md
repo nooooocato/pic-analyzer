@@ -31,7 +31,7 @@
 - [x] Task: Integrate sorting with `GalleryView`. 11f2ecd
     - [ ] Update `GalleryView` to trigger the selected sort plugin and refresh the layout.
     - [ ] Handle re-sorting across multiple groups if applicable.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Floating Sort UI' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Floating Sort UI' (Protocol in workflow.md)
 
 ## Phase 4: Debug Stats & Refinement [checkpoint: ]
 - [ ] Task: Implement the "Show Stats" toggle and display.
