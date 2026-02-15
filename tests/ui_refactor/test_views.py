@@ -1,8 +1,35 @@
 import pytest
 from PySide6.QtCore import Qt
 from src.ui.image_viewer.logic import ImageViewer
+from src.ui.gallery.logic import GalleryView
 
-def test_image_viewer_initial_state(qtbot):
+def test_gallery_view_initial_state(qtbot):
+    gallery = GalleryView()
+    qtbot.addWidget(gallery)
+    assert gallery.count() == 0
+    assert not gallery.selection_mode_enabled
+
+def test_gallery_view_add_item(qtbot):
+    gallery = GalleryView()
+    qtbot.addWidget(gallery)
+    gallery.add_item("test.jpg")
+    assert gallery.count() == 1
+    # Check if a group was created
+    assert len(gallery._group_widgets) == 1
+    assert gallery._group_widgets[0].count() == 1
+
+def test_gallery_view_selection_mode(qtbot):
+    gallery = GalleryView()
+    qtbot.addWidget(gallery)
+    gallery.add_item("test.jpg")
+    
+    gallery.set_selection_mode_enabled(True)
+    assert gallery.selection_mode_enabled
+    assert gallery._group_widgets[0].selection_mode_enabled
+    
+    gallery.set_selection_mode_enabled(False)
+    assert not gallery.selection_mode_enabled
+    assert not gallery._group_widgets[0].selection_mode_enabled
     viewer = ImageViewer()
     qtbot.addWidget(viewer)
     
