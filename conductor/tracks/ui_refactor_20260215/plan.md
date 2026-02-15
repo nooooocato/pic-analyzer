@@ -3,7 +3,7 @@
 ## Phase 1: Foundation & Common Components [checkpoint: ]
 - [x] Task: Initialize Global Theme System. (147bba8)
     - [ ] Create `src/ui/theme.py` with standard colors, spacing, and shared QSS fragments.
-- [ ] Task: Refactor Small Reusable Components.
+- [x] Task: Refactor Small Reusable Components. (45fd835)
     - [ ] Identify common widgets (e.g., custom buttons, status labels).
     - [ ] Create `src/ui/common/` and implement the Style/Layout/Logic triplet for each.
     - [ ] Write Tests: Create `tests/ui_refactor/test_common.py`.
