@@ -8,7 +8,7 @@
 ## Phase 2: Atomic Components
 - [x] Task: Replace `IconButton` with `TransparentToolButton` / `tool_button`. [2f510ae]
     - Update `src/ui/common/icon_button/`.
-- [ ] Task: Replace `Card` with `SimpleCardWidget` or `CardWidget`.
+- [x] Task: Replace `Card` with `SimpleCardWidget` or `CardWidget`. [a74e7bf]
     - Update `src/ui/common/card/`.
 - [ ] Task: Replace `Toast` with `InfoBar`.
     - Refactor `src/ui/common/toast/` to wrap `InfoBar.success/warning/error`.
