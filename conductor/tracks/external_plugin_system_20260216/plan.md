@@ -29,7 +29,7 @@ This phase involves moving the built-in plugins to the new system and adapting t
 ## Phase 4: Verification & Hardening
 Final testing and error handling improvements.
 
-- [ ] Task: Write integration tests for the new plugin loading and UI injection lifecycle
-- [ ] Task: Verify that a malformed plugin does not crash the entire application
+- [x] Task: Write integration tests for the new plugin loading and UI injection lifecycle [be60464]
+- [~] Task: Verify that a malformed plugin does not crash the entire application
 - [ ] Task: Verify that plugin conflicts are correctly logged and handled
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Verification' (Protocol in workflow.md)
