@@ -14,7 +14,7 @@ This phase introduces the mechanism for plugins to interact with and inject comp
 
 - [x] Task: Define the `BasePlugin` interface update to include an `initialize_ui(self, main_window)` method [f3294b6]
 - [x] Task: Modify `MainWindow` or UI controllers to call `initialize_ui` for all loaded plugins during startup [9439754]
-- [ ] Task: Implement a registration/hooks system in `MainWindow` to allow safe access to UI containers (e.g., toolbar, status bar)
+- [x] Task: Implement a registration/hooks system in `MainWindow` to allow safe access to UI containers (e.g., toolbar, status bar) [bd4c545]
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Framework' (Protocol in workflow.md)
 
 ## Phase 3: Migration of Existing Plugins
