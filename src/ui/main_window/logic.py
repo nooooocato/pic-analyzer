@@ -3,7 +3,7 @@ import os
 import sqlite3
 import datetime
 import logging
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QApplication, QStyleFactory
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QApplication, QStyleFactory, QMenu
 from PySide6.QtCore import Qt, QThreadPool, QPoint, QEvent
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QAction, QCursor
 
@@ -227,3 +227,24 @@ class MainWindow(QMainWindow):
 
     def _on_group_by_date(self, granularity):
         self.layout_engine.gallery.set_grouping(DateGroupingPlugin(), granularity)
+
+    # Plugin Hooks
+    def get_menu(self, name: str) -> QMenu:
+        """
+        Returns an existing menu by its title (ignoring '&') or creates a new one.
+        """
+        menu_bar = self.menuBar()
+        for action in menu_bar.actions():
+            if action.menu():
+                title = action.menu().title().replace("&", "")
+                if title.lower() == name.lower():
+                    return action.menu()
+        
+        # Create new menu if not found
+        return menu_bar.addMenu(f"&{name}")
+
+    def add_toolbar_action(self, action: QAction):
+        """
+        Adds an action to the main toolbar.
+        """
+        self.layout_engine.toolbar.addAction(action)
