@@ -77,6 +77,7 @@ A "geeky," high-performance image management and analysis tool designed for scie
 - **Interactive Visualization:**
     - **Distribution Charts:** Histograms and scatter plots that act as interactive filters.
     - **Data Inspector:** A sidebar for deep-dives into raw metrics (pHash, information density).
+- **Externalized Plugin System:** Users and developers can extend the application with new sorting and grouping algorithms via the root-level `./plugins` directory.
 - **Safe Operations:** Strictly uses `move` operations to protect SSD lifespan and ensures analysis data (SQLite) is isolated from original files.
 
 ## High-Level Requirements
