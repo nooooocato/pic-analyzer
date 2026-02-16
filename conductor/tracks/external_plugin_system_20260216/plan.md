@@ -5,7 +5,7 @@ This phase focuses on setting up the new directory structure and implementing th
 
 - [x] Task: Create new root-level `./plugins` directory and subdirectories (`sort`, `group`, etc.) [8461cd8]
 - [x] Task: Implement new `PluginManager` logic to scan the root `./plugins` directory instead of `src/plugins` [1d8a543]
-- [ ] Task: Implement conflict detection (name/ID) in the `PluginManager` with error logging
+- [x] Task: Implement conflict detection (name/ID) in the `PluginManager` with error logging [3c9ac5c]
 - [ ] Task: Update `run_app.py` or initialization logic to ensure `./plugins` is in the Python path
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure' (Protocol in workflow.md)
 
