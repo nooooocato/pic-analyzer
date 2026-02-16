@@ -20,3 +20,11 @@ class BasePlugin(ABC):
         Returns a dictionary of results.
         """
         pass
+
+    @abstractmethod
+    def initialize_ui(self, main_window) -> None:
+        """
+        Initialize the plugin's UI components.
+        Receives a reference to the MainWindow.
+        """
+        pass
