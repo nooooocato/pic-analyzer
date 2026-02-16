@@ -6,11 +6,12 @@ from .style import get_style
 
 class SortOverlay(Card):
     """Floating overlay for sorting selection."""
-    sortRequested = Signal(str)  # Signal emitting the plugin name
+    sortRequested = Signal(str, str)  # Signal emitting (metric, plugin_name)
 
-    def __init__(self, sort_manager, parent=None):
+    def __init__(self, sort_manager, db_manager, parent=None):
         super().__init__(parent, setup_layout=False)
         self.sort_manager = sort_manager
+        self.db_manager = db_manager
         self.setObjectName("Card")
         self.setWindowFlags(Qt.SubWindow)
         
@@ -33,13 +34,16 @@ class SortOverlay(Card):
         from src.ui.theme import Theme
         menu = QMenu(self)
         menu.setStyleSheet(Theme.get_menu_qss())
+        
+        metrics = self.db_manager.get_numeric_metrics()
         plugins = self.sort_manager.plugins.keys()
         
-        for plugin_name in plugins:
-            action = menu.addAction(plugin_name)
-            # Use a helper function to avoid lambda closure issues in a loop
-            self._connect_action(action, plugin_name)
+        for metric in metrics:
+            metric_menu = menu.addMenu(metric.replace("_", " ").title())
+            for plugin_name in plugins:
+                action = metric_menu.addAction(plugin_name)
+                self._connect_action(action, metric, plugin_name)
         return menu
 
-    def _connect_action(self, action, plugin_name):
-        action.triggered.connect(lambda: self.sortRequested.emit(plugin_name))
+    def _connect_action(self, action, metric, plugin_name):
+        action.triggered.connect(lambda: self.sortRequested.emit(metric, plugin_name))

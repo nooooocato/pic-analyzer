@@ -8,7 +8,7 @@ class GroupedListWidget(BaseGroupedListWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._selection_mode_enabled = False
-        self.itemSelectionChanged.connect(self._sync_selection_and_checkstate)
+        self.selectionModel().selectionChanged.connect(self._on_selection_changed)
         
         # Long press support
         self._long_press_timer = QTimer()
@@ -73,12 +73,15 @@ class GroupedListWidget(BaseGroupedListWidget):
             p = p.parent()
         return None
 
-    def _sync_selection_and_checkstate(self):
+    def _on_selection_changed(self, selected, deselected):
         if not self._selection_mode_enabled: return
         self.blockSignals(True)
-        for i in range(self.count()):
-            item = self.item(i)
-            item.setCheckState(Qt.Checked if item.isSelected() else Qt.Unchecked)
+        for index in selected.indexes():
+            item = self.item(index.row())
+            if item: item.setCheckState(Qt.Checked)
+        for index in deselected.indexes():
+            item = self.item(index.row())
+            if item: item.setCheckState(Qt.Unchecked)
         self.blockSignals(False)
         self.viewport().update()
 

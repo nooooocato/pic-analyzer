@@ -134,3 +134,43 @@ class DatabaseManager:
         
         conn.close()
         return results
+
+    def get_image_metadata(self, path: str) -> dict:
+        """
+        Fetches all stored metadata and analysis results for a given image path.
+        
+        Args:
+            path (str): The absolute path to the image.
+            
+        Returns:
+            dict: A dictionary of metadata keys and values.
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        # Get basic info from images table
+        cursor.execute("SELECT id, filename, file_size, modified_at FROM images WHERE path = ?", (path,))
+        row = cursor.fetchone()
+        if not row:
+            conn.close()
+            return {}
+            
+        img_id, filename, size, modified = row
+        metadata = {
+            "Filename": filename,
+            "Size": f"{size / 1024:.2f} KB" if size else "Unknown",
+            "Modified": modified
+        }
+        
+        # Get analysis results
+        cursor.execute("SELECT result_key, result_value FROM analysis_results WHERE image_id = ?", (img_id,))
+        for key, val in cursor.fetchall():
+            # Try to format numeric values
+            try:
+                f_val = float(val)
+                metadata[key] = f"{f_val:.4f}" if "." in val else val
+            except (ValueError, TypeError):
+                metadata[key] = val
+                
+        conn.close()
+        return metadata

@@ -40,8 +40,8 @@ class MainWindow(QMainWindow):
         # Toast
         self.toast = Toast("", parent=self)
         
-        # Initialize Sort Overlay (needs manager)
-        self.layout_engine.sort_overlay = SortOverlay(self.sort_manager, self.layout_engine.gallery)
+        # Initialize Sort Overlay (needs manager and db)
+        self.layout_engine.sort_overlay = SortOverlay(self.sort_manager, self.db_manager, self.layout_engine.gallery)
         self.layout_engine.sort_overlay.sortRequested.connect(self._on_sort_requested)
         self.layout_engine.sort_overlay.show()
         
@@ -157,12 +157,10 @@ class MainWindow(QMainWindow):
     def _on_cancel_selection(self):
         self.layout_engine.gallery.set_selection_mode_enabled(False)
 
-    def _on_sort_requested(self, plugin_name):
-        # We need the metric - the SortOverlay logic I wrote earlier only sends plugin name.
-        # Legacy code showed a complex nested menu. 
-        # For now, let's just use 'size' as a default or refactor SortOverlay to handle metrics.
-        # Looking at legacy code: it showed metrics first, then plugins.
-        pass
+    def _on_sort_requested(self, metric, plugin_name):
+        plugin = self.sort_manager.get_plugin(plugin_name)
+        if plugin:
+            self._apply_sort(metric, plugin)
 
     def _apply_sort(self, metric, plugin):
         values = self.db_manager.get_metric_values(metric)
@@ -170,14 +168,22 @@ class MainWindow(QMainWindow):
 
     def _on_item_selected(self, file_path: str):
         if not os.path.exists(file_path): return
-        stats = os.stat(file_path)
-        metadata = {
-            "Filename": os.path.basename(file_path),
-            "Path": file_path,
-            "Size": f"{stats.st_size / 1024:.2f} KB",
-            "Modified": stats.st_mtime,
-        }
-        # ... Fetch DB metadata ...
+        
+        # Try to get metadata from database
+        metadata = self.db_manager.get_image_metadata(file_path)
+        
+        if not metadata:
+            # Fallback to filesystem
+            stats = os.stat(file_path)
+            metadata = {
+                "Filename": os.path.basename(file_path),
+                "Path": file_path,
+                "Size": f"{stats.st_size / 1024:.2f} KB",
+                "Modified": stats.st_mtime,
+            }
+        else:
+            metadata["Path"] = file_path
+            
         self._update_inspector(metadata)
 
     def _update_inspector(self, metadata: dict):
