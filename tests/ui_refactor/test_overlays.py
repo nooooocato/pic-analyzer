@@ -2,7 +2,7 @@ import pytest
 from PySide6.QtCore import Qt
 from src.ui.overlays.selection.logic import SelectionOverlay
 from src.ui.overlays.sort.logic import SortOverlay
-from qfluentwidgets import FlyoutView, CommandBar
+from qfluentwidgets import FlyoutView, SimpleCardWidget
 from unittest.mock import MagicMock
 
 def test_selection_overlay_signals(qtbot):
@@ -31,7 +31,7 @@ def test_sort_overlay_ui(qtbot):
     overlay = SortOverlay(mock_manager)
     qtbot.addWidget(overlay)
     
-    assert isinstance(overlay, CommandBar)
+    assert isinstance(overlay, SimpleCardWidget)
     assert overlay.sort_action is not None
     assert overlay.windowFlags() & Qt.SubWindow
 
@@ -44,7 +44,6 @@ def test_sort_overlay_menu_creation(qtbot):
     menu = overlay.create_menu()
     actions = menu.actions()
     assert len(actions) == 2
-    # Action text might have shortcuts or be formatted, checking substring
     assert "Plugin1" in actions[0].text()
     assert "Plugin2" in actions[1].text()
     
