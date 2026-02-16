@@ -36,3 +36,6 @@
 - [x] Task: Big Bang Integration & Cleanup. (e5cafda)
 - [x] Task: Final Regression Test. (e5cafda)
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Main Window & Integration' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (a53d2f9)
