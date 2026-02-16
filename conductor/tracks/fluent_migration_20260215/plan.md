@@ -21,7 +21,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md) [7b9d55e]
 
 ## Phase 4: Complex Views
-- [ ] Task: Update `GalleryView` styling.
+- [x] Task: Update `GalleryView` styling. [37c82a9]
     - Apply Fluent styles to `QListWidget` (or switch to `ListWidget` from library).
     - Ensure `GalleryItemDelegate` plays nicely with Fluent selection styles.
 - [ ] Task: Update `ImageViewer`.
