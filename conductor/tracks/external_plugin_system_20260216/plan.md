@@ -9,7 +9,7 @@ This phase focuses on setting up the new directory structure and implementing th
 - [x] Task: Update `run_app.py` or initialization logic to ensure `./plugins` is in the Python path [2e68e10]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure' (Protocol in workflow.md)
 
-## Phase 2: Dynamic UI Injection Framework
+## Phase 2: Dynamic UI Injection Framework [checkpoint: 8efdecd]
 This phase introduces the mechanism for plugins to interact with and inject components into the main UI.
 
 - [x] Task: Define the `BasePlugin` interface update to include an `initialize_ui(self, main_window)` method [f3294b6]
