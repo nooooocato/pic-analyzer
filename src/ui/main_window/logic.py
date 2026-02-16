@@ -33,14 +33,6 @@ class MainWindow(QMainWindow):
         hide_file(db_path)
         self.sort_manager = SortPluginManager()
         
-        # New Plugin System
-        self.plugin_manager = PluginManager("plugins")
-        for plugin in self.plugin_manager.plugins.values():
-            try:
-                plugin.initialize_ui(self)
-            except Exception as e:
-                logger.error(f"Failed to initialize UI for plugin {plugin.name}: {e}")
-        
         # UI Setup
         self.layout_engine = MainWindowLayout()
         self.layout_engine.setup_ui(self)
@@ -68,6 +60,14 @@ class MainWindow(QMainWindow):
         
         self._setup_connections()
         self._setup_menus()
+
+        # New Plugin System
+        self.plugin_manager = PluginManager("plugins")
+        for plugin in self.plugin_manager.plugins.values():
+            try:
+                plugin.initialize_ui(self)
+            except Exception as e:
+                logger.error(f"Failed to initialize UI for plugin {plugin.name}: {e}")
 
     def event(self, event):
         if event.type() == QEvent.PaletteChange:
