@@ -14,11 +14,11 @@
     - Refactor `src/ui/common/toast/` to wrap `InfoBar.success/warning/error`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
-## Phase 3: Overlays & Specialized UI
+## Phase 3: Overlays & Specialized UI [checkpoint: 7b9d55e]
 - [x] Task: Refactor `SelectionOverlay` to use `Flyout` or `TeachingTip`. [9385fef]
 - [x] Task: Refactor `SortOverlay` to use `CommandBar` or `DropDownMenu`. [9385fef, 0702038, 084b833, 1b5e388]
     - Ensure sorting logic connected in previous track is preserved.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md) [7b9d55e]
 
 ## Phase 4: Complex Views
 - [ ] Task: Update `GalleryView` styling.
