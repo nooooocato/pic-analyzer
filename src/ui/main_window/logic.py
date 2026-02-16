@@ -10,6 +10,7 @@ from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QAction, Q
 from src.file_scanner import FolderScanner
 from src.database import DatabaseManager
 from src.file_ops import hide_file
+from src.plugins.manager import PluginManager
 from src.plugins.date_grouping import DateGroupingPlugin
 from src.plugins.sort.manager import SortPluginManager
 from src.ui.overlays.sort.logic import SortOverlay
@@ -31,6 +32,14 @@ class MainWindow(QMainWindow):
         self.db_manager = DatabaseManager(db_path)
         hide_file(db_path)
         self.sort_manager = SortPluginManager()
+        
+        # New Plugin System
+        self.plugin_manager = PluginManager("plugins")
+        for plugin in self.plugin_manager.plugins.values():
+            try:
+                plugin.initialize_ui(self)
+            except Exception as e:
+                logger.error(f"Failed to initialize UI for plugin {plugin.name}: {e}")
         
         # UI Setup
         self.layout_engine = MainWindowLayout()
