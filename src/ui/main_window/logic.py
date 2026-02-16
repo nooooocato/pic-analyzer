@@ -1,11 +1,11 @@
-import sys
+from qfluentwidgets import FluentWindow, FluentIcon, NavigationItemPosition
+from PySide6.QtCore import Qt, QThreadPool, QEvent
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QAction
+from PySide6.QtWidgets import QFileDialog, QWidget, QVBoxLayout
+
 import os
-import sqlite3
 import datetime
 import logging
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QApplication, QStyleFactory
-from PySide6.QtCore import Qt, QThreadPool, QPoint, QEvent
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QAction, QCursor
 
 from src.file_scanner import FolderScanner
 from src.database import DatabaseManager
@@ -14,14 +14,17 @@ from src.plugins.date_grouping import DateGroupingPlugin
 from src.plugins.sort.manager import SortPluginManager
 from src.ui.overlays.sort.logic import SortOverlay
 from src.ui.common.toast.logic import Toast
+from src.ui.gallery.logic import GalleryView
+from src.ui.image_viewer.logic import ImageViewer
+from src.ui.overlays.selection.logic import SelectionOverlay
 
 from .layout import MainWindowLayout
 from .style import get_style
 
 logger = logging.getLogger(__name__)
 
-class MainWindow(QMainWindow):
-    """The main application window for Pic-Analyzer."""
+class MainWindow(FluentWindow):
+    """The main application window for Pic-Analyzer using Fluent Design."""
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Pic-Analyzer")
@@ -33,25 +36,40 @@ class MainWindow(QMainWindow):
         self.sort_manager = SortPluginManager()
         
         # UI Setup
-        self.layout_engine = MainWindowLayout()
-        self.layout_engine.setup_ui(self)
-        self.setStyleSheet(get_style())
+        # FluentWindow handles title bar and navigation. 
+        self.gallery = GalleryView(self)
+        self.gallery.setObjectName("galleryInterface")
+        self.addSubInterface(self.gallery, FluentIcon.PHOTO, 'Gallery')
+        
+        # Overlays
+        self.image_viewer = ImageViewer(self.gallery)
+        self.selection_overlay = SelectionOverlay(self.gallery)
+        self.selection_overlay.hide()
+        
+        # Initialize Sort Overlay
+        self.sort_overlay = SortOverlay(self.sort_manager, self.gallery)
+        self.sort_overlay.sortRequested.connect(self._on_sort_requested)
+        
+        # Set overlays on gallery for repositioning
+        self.gallery.set_overlays(
+            self.selection_overlay,
+            self.sort_overlay,
+            self.image_viewer
+        )
         
         # Toast
         self.toast = Toast("", parent=self)
         
-        # Initialize Sort Overlay (needs manager)
-        self.layout_engine.sort_overlay = SortOverlay(self.sort_manager, self.layout_engine.gallery)
-        self.layout_engine.sort_overlay.sortRequested.connect(self._on_sort_requested)
-        self.layout_engine.sort_overlay.show()
+        self.layout_engine = MainWindowLayout()
+        self.tree_view = self.layout_engine.tree_view
         
-        # Set overlays on gallery for repositioning
-        self.layout_engine.gallery.set_overlays(
-            self.layout_engine.selection_overlay,
-            self.layout_engine.sort_overlay,
-            self.layout_engine.image_viewer
-        )
-        
+        # Add Inspector to navigation
+        self.inspector_widget = QWidget()
+        self.inspector_widget.setObjectName("inspectorInterface")
+        inspector_layout = QVBoxLayout(self.inspector_widget)
+        inspector_layout.addWidget(self.tree_view)
+        self.addSubInterface(self.inspector_widget, FluentIcon.INFO, 'Inspector', NavigationItemPosition.BOTTOM)
+
         # App State
         self.current_folder = None
         self.active_scanners = []
@@ -59,114 +77,78 @@ class MainWindow(QMainWindow):
         
         self._setup_connections()
         self._setup_menus()
-
-    def event(self, event):
-        if event.type() == QEvent.PaletteChange:
-            # System theme changed, update styles that depend on it
-            self.setStyleSheet(get_style())
-            if hasattr(self.layout_engine, "gallery"):
-                self.layout_engine.gallery.setStyleSheet(self.layout_engine.gallery.styleSheet())
-        return super().event(event)
+        
+        self.setStyleSheet(get_style())
 
     def _setup_connections(self):
-        l = self.layout_engine
-        l.gallery.item_selected.connect(self._on_item_selected)
-        l.gallery.item_activated.connect(self._open_image_viewer)
-        l.gallery.selection_mode_changed.connect(l.selection_overlay.setVisible)
+        self.gallery.item_selected.connect(self._on_item_selected)
+        self.gallery.item_activated.connect(self._open_image_viewer)
+        self.gallery.selection_mode_changed.connect(self.selection_overlay.setVisible)
         
-        l.image_viewer.next_requested.connect(self._on_next_image)
-        l.image_viewer.prev_requested.connect(self._on_prev_image)
+        self.image_viewer.next_requested.connect(self._on_next_image)
+        self.image_viewer.prev_requested.connect(self._on_prev_image)
         
-        l.selection_overlay.selectAllRequested.connect(self._on_select_all)
-        l.selection_overlay.invertSelectionRequested.connect(self._on_invert_selection)
-        l.selection_overlay.cancelRequested.connect(self._on_cancel_selection)
+        self.selection_overlay.selectAllRequested.connect(self._on_select_all)
+        self.selection_overlay.invertSelectionRequested.connect(self._on_invert_selection)
+        self.selection_overlay.cancelRequested.connect(self._on_cancel_selection)
 
     def _setup_menus(self):
-        l = self.layout_engine
-        
-        # File Menu
-        self.open_folder_action = l.file_menu.addAction("&Open Folder")
-        self.open_folder_action.setShortcut("Ctrl+O")
-        self.open_folder_action.triggered.connect(self._on_open_folder)
-        
-        # View Menu
-        self.group_menu = l.view_menu.addMenu("Group By")
-        self.group_menu.addAction("None").triggered.connect(lambda: l.gallery.set_grouping(None))
-        
-        date_menu = self.group_menu.addMenu("Date")
-        date_menu.addAction("Year").triggered.connect(lambda: self._on_group_by_date("year"))
-        date_menu.addAction("Month").triggered.connect(lambda: self._on_group_by_date("month"))
-        date_menu.addAction("Day").triggered.connect(lambda: self._on_group_by_date("day"))
-        
-        l.view_menu.addSeparator()
-        self.show_stats_action = l.view_menu.addAction("Show Sorting Stats")
-        self.show_stats_action.setCheckable(True)
-        self.show_stats_action.triggered.connect(l.gallery.set_show_stats)
-
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
-        # Positioning is now handled by l.gallery.resizeEvent
+        self.navigationInterface.addItem(
+            routeKey='openFolder',
+            icon=FluentIcon.FOLDER,
+            text='Open Folder',
+            onClick=self._on_open_folder,
+            position=NavigationItemPosition.BOTTOM
+        )
 
     def _open_image_viewer(self, file_path: str):
-        l = self.layout_engine
         new_index = -1
-        # Use visible items for correct ordering
-        for i in range(len(l.gallery._visible_items)):
-            if l.gallery._visible_items[i]['path'] == file_path:
+        for i in range(len(self.gallery._visible_items)):
+            if self.gallery._visible_items[i]['path'] == file_path:
                 new_index = i
                 break
         
         if new_index != -1:
-            if l.image_viewer.isVisible():
+            if self.image_viewer.isVisible():
                 direction = "next" if new_index > self._current_viewer_index else "prev"
-                l.image_viewer.switch_image(file_path, direction)
+                self.image_viewer.switch_image(file_path, direction)
             else:
-                l.image_viewer.show_image(file_path)
+                self.image_viewer.show_image(file_path)
             self._current_viewer_index = new_index
             self._on_item_selected(file_path)
 
     def _on_next_image(self):
-        l = self.layout_engine
         new_index = self._current_viewer_index + 1
-        if new_index < l.gallery.count():
-            self._open_image_viewer(l.gallery._visible_items[new_index]['path'])
+        if new_index < self.gallery.count():
+            self._open_image_viewer(self.gallery._visible_items[new_index]['path'])
         else:
-            self.toast.show_message("Wrapped to first image", reference_widget=l.image_viewer)
-            self._open_image_viewer(l.gallery._visible_items[0]['path'])
+            self.toast.show_message("Wrapped to first image", reference_widget=self.image_viewer)
+            self._open_image_viewer(self.gallery._visible_items[0]['path'])
 
     def _on_prev_image(self):
-        l = self.layout_engine
         new_index = self._current_viewer_index - 1
         if new_index >= 0:
-            self._open_image_viewer(l.gallery._visible_items[new_index]['path'])
+            self._open_image_viewer(self.gallery._visible_items[new_index]['path'])
         else:
-            self.toast.show_message("Wrapped to last image", reference_widget=l.image_viewer)
-            self._open_image_viewer(l.gallery._visible_items[l.gallery.count()-1]['path'])
+            self.toast.show_message("Wrapped to last image", reference_widget=self.image_viewer)
+            self._open_image_viewer(self.gallery._visible_items[self.gallery.count()-1]['path'])
 
     def _on_select_all(self):
-        for group in self.layout_engine.gallery._group_widgets:
+        for group in self.gallery._group_widgets:
             for i in range(group.count()):
                 group.item(i).setSelected(True)
 
     def _on_invert_selection(self):
-        for group in self.layout_engine.gallery._group_widgets:
+        for group in self.gallery._group_widgets:
             for i in range(group.count()):
                 item = group.item(i)
                 item.setSelected(not item.isSelected())
 
     def _on_cancel_selection(self):
-        self.layout_engine.gallery.set_selection_mode_enabled(False)
+        self.gallery.set_selection_mode_enabled(False)
 
     def _on_sort_requested(self, plugin_name):
-        # We need the metric - the SortOverlay logic I wrote earlier only sends plugin name.
-        # Legacy code showed a complex nested menu. 
-        # For now, let's just use 'size' as a default or refactor SortOverlay to handle metrics.
-        # Looking at legacy code: it showed metrics first, then plugins.
         pass
-
-    def _apply_sort(self, metric, plugin):
-        values = self.db_manager.get_metric_values(metric)
-        self.layout_engine.gallery.apply_sort(metric, plugin, values)
 
     def _on_item_selected(self, file_path: str):
         if not os.path.exists(file_path): return
@@ -177,7 +159,6 @@ class MainWindow(QMainWindow):
             "Size": f"{stats.st_size / 1024:.2f} KB",
             "Modified": stats.st_mtime,
         }
-        # ... Fetch DB metadata ...
         self._update_inspector(metadata)
 
     def _update_inspector(self, metadata: dict):
@@ -191,8 +172,8 @@ class MainWindow(QMainWindow):
                     display_value = dt.strftime("%Y-%m-%d %H:%M:%S")
                 except: pass
             model.appendRow([QStandardItem(str(key)), QStandardItem(display_value)])
-        self.layout_engine.tree_view.setModel(model)
-        self.layout_engine.tree_view.expandAll()
+        self.tree_view.setModel(model)
+        self.tree_view.expandAll()
 
     def _on_open_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder to Scan")
@@ -201,14 +182,11 @@ class MainWindow(QMainWindow):
             self._start_scan(folder)
 
     def _start_scan(self, path: str):
-        self.layout_engine.gallery.clear()
+        self.gallery.clear()
         db_path = os.path.join(path, ".pic_analyzer.db")
         self.db_manager.switch_database(db_path)
         hide_file(db_path)
         scanner = FolderScanner(path, db_path)
-        scanner.signals.file_found.connect(self.layout_engine.gallery.add_item)
+        scanner.signals.file_found.connect(self.gallery.add_item)
         self.active_scanners.append(scanner)
         QThreadPool.globalInstance().start(scanner)
-
-    def _on_group_by_date(self, granularity):
-        self.layout_engine.gallery.set_grouping(DateGroupingPlugin(), granularity)
