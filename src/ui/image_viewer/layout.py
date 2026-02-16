@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QLabel, QPushButton, QFrame, QStyle
+from qfluentwidgets import TransparentToolButton, FluentIcon
+from PySide6.QtWidgets import QLabel, QFrame
 from PySide6.QtCore import Qt, QSize
-from .style import IMAGE_VIEWER_BUTTON_STYLE
 
 class ImageViewerLayout:
     def setup_ui(self, widget: QFrame):
@@ -14,23 +14,18 @@ class ImageViewerLayout:
         self.next_label.setAlignment(Qt.AlignCenter)
         self.next_label.hide()
         
-        # Navigation Buttons
-        self.btn_back = QPushButton(widget)
+        # Navigation Buttons using Fluent Icons
+        self.btn_back = TransparentToolButton(FluentIcon.PAGE_LEFT, widget)
         self.btn_back.setFixedSize(40, 40)
-        self.btn_back.setIcon(widget.style().standardIcon(QStyle.SP_ArrowBack))
-        self.btn_back.setStyleSheet(IMAGE_VIEWER_BUTTON_STYLE)
+        self.btn_back.setIconSize(QSize(24, 24))
         
-        self.btn_prev = QPushButton(widget)
+        self.btn_prev = TransparentToolButton(FluentIcon.LEFT_ARROW, widget)
         self.btn_prev.setFixedSize(60, 100)
-        self.btn_prev.setIcon(widget.style().standardIcon(QStyle.SP_ArrowLeft))
         self.btn_prev.setIconSize(QSize(32, 32))
-        self.btn_prev.setStyleSheet(IMAGE_VIEWER_BUTTON_STYLE)
         
-        self.btn_next = QPushButton(widget)
+        self.btn_next = TransparentToolButton(FluentIcon.RIGHT_ARROW, widget)
         self.btn_next.setFixedSize(60, 100)
-        self.btn_next.setIcon(widget.style().standardIcon(QStyle.SP_ArrowRight))
         self.btn_next.setIconSize(QSize(32, 32))
-        self.btn_next.setStyleSheet(IMAGE_VIEWER_BUTTON_STYLE)
 
     def update_geometries(self, widget: QFrame):
         size = widget.size()
