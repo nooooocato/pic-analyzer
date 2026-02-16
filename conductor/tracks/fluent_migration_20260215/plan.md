@@ -20,14 +20,14 @@
     - Ensure sorting logic connected in previous track is preserved.
 - [x] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md) [7b9d55e]
 
-## Phase 4: Complex Views
+## Phase 4: Complex Views [checkpoint: 8d58018]
 - [x] Task: Update `GalleryView` styling. [37c82a9]
     - Apply Fluent styles to `QListWidget` (or switch to `ListWidget` from library).
     - Ensure `GalleryItemDelegate` plays nicely with Fluent selection styles.
-- [x] Task: Update `ImageViewer`. [46cb66e, 26f6e4f, 6e2c9d6, eddc6d0]
+- [x] Task: Update `ImageViewer`. [46cb66e, 26f6e4f, 6e2c9d6]
     - Use Fluent buttons for navigation.
     - Ensure background transparency/blur works.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4' (Protocol in workflow.md) [8d58018]
 
 ## Phase 5: Main Window Integration
 - [ ] Task: Migrate `MainWindow` to `FluentWindow`.
