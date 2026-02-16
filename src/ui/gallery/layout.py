@@ -1,5 +1,6 @@
+from qfluentwidgets import ListWidget
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QLabel, QScrollArea, QFrame, QListWidget, QListView
+    QWidget, QVBoxLayout, QLabel, QScrollArea, QFrame, QListView
 )
 from PySide6.QtCore import Qt, QSize
 from src.ui.theme import Theme
@@ -31,19 +32,22 @@ class GalleryLayout:
         
         return group_container, group_layout
 
-class GroupedListWidget(QListWidget):
-    """Internal widget for grouped list items."""
+class GroupedListWidget(ListWidget):
+    """Internal widget for grouped list items using Fluent ListWidget."""
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setViewMode(QListView.IconMode)
         self.setResizeMode(QListView.Adjust)
         self.setMovement(QListView.Static)
-        self.setSpacing(2)
+        self.setSpacing(8)
         self.setIconSize(QSize(148, 148))
-        self.setGridSize(QSize(150, 150))
-        self.setFrameShape(QListWidget.NoFrame)
+        self.setGridSize(QSize(160, 160)) # Slightly larger grid for margins
+        self.setFrameShape(QFrame.NoFrame)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setSelectionMode(QListWidget.ExtendedSelection)
+        self.setSelectionMode(ListWidget.ExtendedSelection)
         self.setItemDelegate(GalleryItemDelegate(self))
         self.setFocusPolicy(Qt.NoFocus)
+        
+        # Transparent background for the list widget itself
+        self.setStyleSheet("background: transparent; border: none;")
