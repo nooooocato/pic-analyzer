@@ -4,6 +4,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Externalized plugin system with dynamic UI injection from root ./plugins directory.**
+- [~] **Track: Externalized plugin system with dynamic UI injection from root ./plugins directory.**
 *Link: [./tracks/external_plugin_system_20260216/](./tracks/external_plugin_system_20260216/)*
 
