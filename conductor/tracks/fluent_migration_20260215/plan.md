@@ -15,8 +15,8 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
 ## Phase 3: Overlays & Specialized UI
-- [ ] Task: Refactor `SelectionOverlay` to use `Flyout` or `TeachingTip`.
-- [ ] Task: Refactor `SortOverlay` to use `CommandBar` or `DropDownMenu`.
+- [x] Task: Refactor `SelectionOverlay` to use `Flyout` or `TeachingTip`. [9385fef]
+- [x] Task: Refactor `SortOverlay` to use `CommandBar` or `DropDownMenu`. [9385fef]
     - Ensure sorting logic connected in previous track is preserved.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
 
