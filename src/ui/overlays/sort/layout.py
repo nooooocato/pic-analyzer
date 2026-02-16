@@ -1,21 +1,13 @@
-from PySide6.QtWidgets import QHBoxLayout
-from PySide6.QtCore import QSize
-from qfluentwidgets import FluentIcon
-from src.ui.common.icon_button.logic import IconButton
-from src.ui.common.card.logic import Card
+from qfluentwidgets import CommandBar, Action, FluentIcon
 
 class SortOverlayLayout:
-    def setup_ui(self, widget: Card):
-        layout = QHBoxLayout(widget)
-        layout.setContentsMargins(5, 5, 5, 5)
+    def setup_ui(self, widget: CommandBar):
+        """Sets up the UI. 'widget' is expected to be a CommandBar."""
+        # Add Sort action
+        self.sort_action = Action(FluentIcon.FILTER, 'Sort Options', widget)
+        widget.addAction(self.sort_action)
         
-        self.btn_sort = IconButton(
-            FluentIcon.FILTER,
-            tooltip="Sort Options"
-        )
-        
-        # Increase icon size slightly if needed, but default is usually fine for Fluent
-        # self.btn_sort.setIconSize(QSize(20, 20)) 
-        
-        layout.addWidget(self.btn_sort)
-        return layout
+        # In CommandBar, we don't have a 'btn_sort' button directly accessible 
+        # like before, but we can access the widget created for the action 
+        # if needed. However, it's better to use the Action's menu.
+        return self.sort_action

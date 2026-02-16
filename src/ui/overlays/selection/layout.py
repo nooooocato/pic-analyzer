@@ -1,13 +1,14 @@
-from PySide6.QtWidgets import QHBoxLayout
+from PySide6.QtWidgets import QHBoxLayout, QWidget
 from qfluentwidgets import FluentIcon
 from src.ui.common.icon_button.logic import IconButton
-from src.ui.common.card.logic import Card
 
 class SelectionOverlayLayout:
-    def setup_ui(self, widget: Card):
-        # Change Card's default vertical layout to horizontal for the overlay
-        layout = QHBoxLayout(widget)
-        layout.setContentsMargins(10, 10, 10, 10)
+    def setup_ui(self, widget):
+        """Sets up the UI. 'widget' is expected to be a FlyoutView."""
+        # Create a container for the action buttons
+        self.container = QWidget()
+        layout = QHBoxLayout(self.container)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(10)
         
         # Select All Button
@@ -31,5 +32,8 @@ class SelectionOverlayLayout:
         layout.addWidget(self.btn_all)
         layout.addWidget(self.btn_invert)
         layout.addWidget(self.btn_cancel)
+        
+        # Add the container to the FlyoutView
+        widget.addWidget(self.container)
         
         return layout

@@ -1,43 +1,36 @@
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QMenu
-from src.ui.common.card.logic import Card
+from PySide6.QtGui import QAction
+from qfluentwidgets import CommandBar, RoundMenu, Action, FluentIcon
 from .layout import SortOverlayLayout
-from .style import get_style
 
-class SortOverlay(Card):
-    """Floating overlay for sorting selection."""
+class SortOverlay(CommandBar):
+    """Floating overlay for sorting selection using CommandBar."""
     sortRequested = Signal(str)  # Signal emitting the plugin name
 
     def __init__(self, sort_manager, parent=None):
-        super().__init__(parent, setup_layout=False)
+        super().__init__(parent)
         self.sort_manager = sort_manager
-        self.setObjectName("Card")
+        
         self.setWindowFlags(Qt.SubWindow)
         
         self.layout_engine = SortOverlayLayout()
-        self.layout_engine.setup_ui(self)
+        self.sort_action = self.layout_engine.setup_ui(self)
         
-        self.setStyleSheet(self.styleSheet() + get_style())
+        # Create and set the menu
+        self.sort_menu = self.create_menu()
+        self.sort_action.setMenu(self.sort_menu)
         
-        # Connect button to show menu
-        self.layout_engine.btn_sort.clicked.connect(self._show_sort_menu)
         self.adjustSize()
 
-    def _show_sort_menu(self):
-        menu = self.create_menu()
-        menu.exec(self.layout_engine.btn_sort.mapToGlobal(
-            self.layout_engine.btn_sort.rect().bottomLeft()
-        ))
-
     def create_menu(self):
-        from src.ui.theme import Theme
-        menu = QMenu(self)
-        menu.setStyleSheet(Theme.get_menu_qss())
-        plugins = self.sort_manager.plugins.keys()
+        menu = RoundMenu(parent=self)
         
+        plugins = self.sort_manager.plugins.keys()
         for plugin_name in plugins:
-            action = menu.addAction(plugin_name)
-            # Use a helper function to avoid lambda closure issues in a loop
+            # Use qfluentwidgets.Action for better compatibility with RoundMenu
+            # We don't have specific icons for each plugin yet, using a generic one
+            action = Action(FluentIcon.TAG, plugin_name, self)
+            menu.addAction(action)
             self._connect_action(action, plugin_name)
         return menu
 

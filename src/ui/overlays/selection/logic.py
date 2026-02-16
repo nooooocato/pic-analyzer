@@ -1,17 +1,23 @@
-from PySide6.QtCore import Qt, Signal
-from src.ui.common.card.logic import Card
+from PySide6.QtCore import Signal
+from qfluentwidgets import FlyoutView, FluentIcon
 from .layout import SelectionOverlayLayout
 from .style import get_style
 
-class SelectionOverlay(Card):
-    """Floating overlay for batch actions in multi-selection mode."""
+class SelectionOverlay(FlyoutView):
+    """Floating overlay for batch actions using FlyoutView style."""
     selectAllRequested = Signal()
     invertSelectionRequested = Signal()
     cancelRequested = Signal()
 
     def __init__(self, parent=None):
-        super().__init__(parent, setup_layout=False)
-        self.setObjectName("Card")
+        super().__init__(
+            title="Selection Mode",
+            content="Manage selected items",
+            icon=FluentIcon.CHECKBOX,
+            isClosable=False,
+            parent=parent
+        )
+        from PySide6.QtCore import Qt
         self.setWindowFlags(Qt.SubWindow)
         
         self.layout_engine = SelectionOverlayLayout()
@@ -22,5 +28,9 @@ class SelectionOverlay(Card):
         self.layout_engine.btn_invert.clicked.connect(self.invertSelectionRequested.emit)
         self.layout_engine.btn_cancel.clicked.connect(self.cancelRequested.emit)
         
-        self.setStyleSheet(self.styleSheet() + get_style())
+        # Apply additional styles if any
+        custom_style = get_style()
+        if custom_style:
+            self.setStyleSheet(self.styleSheet() + custom_style)
+            
         self.adjustSize()
