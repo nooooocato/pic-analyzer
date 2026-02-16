@@ -13,7 +13,7 @@ This phase focuses on setting up the new directory structure and implementing th
 This phase introduces the mechanism for plugins to interact with and inject components into the main UI.
 
 - [x] Task: Define the `BasePlugin` interface update to include an `initialize_ui(self, main_window)` method [f3294b6]
-- [ ] Task: Modify `MainWindow` or UI controllers to call `initialize_ui` for all loaded plugins during startup
+- [x] Task: Modify `MainWindow` or UI controllers to call `initialize_ui` for all loaded plugins during startup [9439754]
 - [ ] Task: Implement a registration/hooks system in `MainWindow` to allow safe access to UI containers (e.g., toolbar, status bar)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Framework' (Protocol in workflow.md)
 
