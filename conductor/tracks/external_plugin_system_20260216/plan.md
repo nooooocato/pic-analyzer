@@ -1,6 +1,6 @@
 # Implementation Plan: Externalized Plugin System with Dynamic UI Injection
 
-## Phase 1: Infrastructure & Discovery Refactor
+## Phase 1: Infrastructure & Discovery Refactor [checkpoint: c7fc649]
 This phase focuses on setting up the new directory structure and implementing the robust discovery mechanism.
 
 - [x] Task: Create new root-level `./plugins` directory and subdirectories (`sort`, `group`, etc.) [8461cd8]
