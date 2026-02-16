@@ -1,9 +1,9 @@
 import pytest
 import numpy as np
-from src.plugins.sort.normal_dist import NormalDistributionSortPlugin
+from sort.normal_dist.algo import NormalDistributionSort
 
 def test_normal_distribution_sort():
-    plugin = NormalDistributionSortPlugin()
+    plugin = NormalDistributionSort()
     # Data centered around 10
     # Values: 10 (diff 0), 9 (diff 1), 11 (diff 1), 5 (diff 5), 15 (diff 5)
     items = [
@@ -22,7 +22,7 @@ def test_normal_distribution_sort():
     assert set([sorted_items[-1]["val"], sorted_items[-2]["val"]]) == {5, 15}
     
 def test_normal_distribution_stats():
-    plugin = NormalDistributionSortPlugin()
+    plugin = NormalDistributionSort()
     items = [
         {"path": "a", "val": 10},
         {"path": "b", "val": 20}

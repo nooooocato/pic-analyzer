@@ -1,5 +1,8 @@
 import os
-from src.plugins.date_grouping import DateGroupingPlugin
+import sys
+# Add plugins to path for standalone test
+sys.path.append(os.path.join(os.getcwd(), "plugins"))
+from group.date_grouping.ui import DateGroupingPlugin
 
 plugin = DateGroupingPlugin()
 with open("test_date.txt", "w") as f: f.write("test")

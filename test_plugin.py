@@ -1,11 +1,11 @@
 import os
-from src.plugins.manager import PluginManager
+from src.plugin_manager import PluginManager
 
 # Create a dummy plugin in the actual project plugins dir for verification
 plugin_path = "plugins/verify_plugin.py"
 with open(plugin_path, "w") as f:
     f.write("""
-from src.plugins.base import BasePlugin
+from base import BasePlugin
 class VerifyPlugin(BasePlugin):
     @property
     def name(self): return "Verify Plugin"

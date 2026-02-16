@@ -10,9 +10,7 @@ from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QAction, Q
 from src.file_scanner import FolderScanner
 from src.database import DatabaseManager
 from src.file_ops import hide_file
-from src.plugins.manager import PluginManager
-from src.plugins.date_grouping import DateGroupingPlugin
-from src.plugins.sort.manager import SortPluginManager
+from src.plugin_manager import PluginManager
 from src.ui.overlays.sort.logic import SortOverlay
 from src.ui.common.toast.logic import Toast
 
@@ -31,7 +29,7 @@ class MainWindow(QMainWindow):
         db_path = "app_metadata.db"
         self.db_manager = DatabaseManager(db_path)
         hide_file(db_path)
-        self.sort_manager = SortPluginManager()
+        self._sort_plugins = []
         
         # UI Setup
         self.layout_engine = MainWindowLayout()
@@ -41,8 +39,8 @@ class MainWindow(QMainWindow):
         # Toast
         self.toast = Toast("", parent=self)
         
-        # Initialize Sort Overlay (needs manager and db)
-        self.layout_engine.sort_overlay = SortOverlay(self.sort_manager, self.db_manager, self.layout_engine.gallery)
+        # Initialize Sort Overlay (needs db)
+        self.layout_engine.sort_overlay = SortOverlay(self.db_manager, self.layout_engine.gallery)
         self.layout_engine.sort_overlay.sortRequested.connect(self._on_sort_requested)
         self.layout_engine.sort_overlay.show()
         
@@ -92,6 +90,10 @@ class MainWindow(QMainWindow):
 
     def _setup_menus(self):
         l = self.layout_engine
+        self._menu_cache = {
+            "File": l.file_menu,
+            "View": l.view_menu
+        }
         
         # File Menu
         self.open_folder_action = l.file_menu.addAction("&Open Folder")
@@ -100,12 +102,8 @@ class MainWindow(QMainWindow):
         
         # View Menu
         self.group_menu = l.view_menu.addMenu("Group By")
+        self._menu_cache["View/Group By"] = self.group_menu
         self.group_menu.addAction("None").triggered.connect(lambda: l.gallery.set_grouping(None))
-        
-        date_menu = self.group_menu.addMenu("Date")
-        date_menu.addAction("Year").triggered.connect(lambda: self._on_group_by_date("year"))
-        date_menu.addAction("Month").triggered.connect(lambda: self._on_group_by_date("month"))
-        date_menu.addAction("Day").triggered.connect(lambda: self._on_group_by_date("day"))
         
         l.view_menu.addSeparator()
         self.show_stats_action = l.view_menu.addAction("Show Sorting Stats")
@@ -167,7 +165,7 @@ class MainWindow(QMainWindow):
         self.layout_engine.gallery.set_selection_mode_enabled(False)
 
     def _on_sort_requested(self, metric, plugin_name):
-        plugin = self.sort_manager.get_plugin(plugin_name)
+        plugin = next((p for p in self._sort_plugins if p.name == plugin_name), None)
         if plugin:
             self._apply_sort(metric, plugin)
 
@@ -225,26 +223,57 @@ class MainWindow(QMainWindow):
         self.active_scanners.append(scanner)
         QThreadPool.globalInstance().start(scanner)
 
-    def _on_group_by_date(self, granularity):
-        self.layout_engine.gallery.set_grouping(DateGroupingPlugin(), granularity)
-
     # Plugin Hooks
-    def get_menu(self, name: str) -> QMenu:
+    def get_menu(self, path: str) -> QMenu:
         """
-        Returns an existing menu by its title (ignoring '&') or creates a new one.
+        Returns an existing menu by its path (e.g., 'View/Group By') or creates it.
+        Uses a cache to ensure stability.
         """
-        menu_bar = self.menuBar()
-        for action in menu_bar.actions():
-            if action.menu():
-                title = action.menu().title().replace("&", "")
-                if title.lower() == name.lower():
-                    return action.menu()
+        if not hasattr(self, "_menu_cache"):
+            self._menu_cache = {}
         
-        # Create new menu if not found
-        return menu_bar.addMenu(f"&{name}")
+        path = path.strip("/")
+        if path in self._menu_cache:
+            return self._menu_cache[path]
+        
+        parts = path.split("/")
+        parent = self.menuBar()
+        current_path = ""
+        
+        for part in parts:
+            current_path = f"{current_path}/{part}" if current_path else part
+            if current_path in self._menu_cache:
+                parent = self._menu_cache[current_path]
+                continue
+            
+            found_menu = None
+            # Search in current parent's actions
+            for action in parent.actions():
+                if action.menu():
+                    title = action.menu().title().replace("&", "")
+                    if title.lower() == part.lower():
+                        found_menu = action.menu()
+                        break
+            
+            if not found_menu:
+                found_menu = parent.addMenu(f"&{part}")
+            
+            self._menu_cache[current_path] = found_menu
+            parent = found_menu
+        
+        return self._menu_cache[path]
 
     def add_toolbar_action(self, action: QAction):
         """
         Adds an action to the main toolbar.
         """
         self.layout_engine.toolbar.addAction(action)
+
+    def register_sort_plugin(self, plugin):
+        """
+        Registers a sorting plugin to be used in the SortOverlay.
+        """
+        self._sort_plugins.append(plugin)
+        # Update SortOverlay if it exists
+        if self.layout_engine.sort_overlay:
+            self.layout_engine.sort_overlay.add_external_plugin(plugin)

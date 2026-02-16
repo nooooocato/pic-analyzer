@@ -1,11 +1,11 @@
 import os
 import pytest
 import shutil
-from src.plugins.manager import PluginManager
+from src.plugin_manager import PluginManager
 
 def test_plugin_manager_detects_conflicts():
     plugin1_content = """
-from src.plugins.base import BasePlugin
+from base import BasePlugin
 
 class Plugin1(BasePlugin):
     @property
@@ -15,7 +15,7 @@ class Plugin1(BasePlugin):
     def run(self, *args, **kwargs): return "1"
 """
     plugin2_content = """
-from src.plugins.base import BasePlugin
+from base import BasePlugin
 
 class Plugin2(BasePlugin):
     @property

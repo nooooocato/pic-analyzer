@@ -1,11 +1,11 @@
 import pytest
 import os
 import time
-from src.plugins.date_grouping import DateGroupingPlugin
+from group.date_grouping.ui import DateGroupingPlugin
 
 def test_date_grouping_plugin_metadata():
     plugin = DateGroupingPlugin()
-    assert plugin.name == "Date Grouping"
+    assert plugin.name == "Date Grouping (Ext)"
     assert "date" in plugin.description.lower()
 
 def test_date_grouping_run(tmp_path):

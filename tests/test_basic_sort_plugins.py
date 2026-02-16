@@ -1,9 +1,9 @@
 import pytest
-from src.plugins.sort.ascending import AscendingSortPlugin
-from src.plugins.sort.descending import DescendingSortPlugin
+from sort.ascending.algo import AscendingSort
+from sort.descending.algo import DescendingSort
 
 def test_ascending_sort():
-    plugin = AscendingSortPlugin()
+    plugin = AscendingSort()
     items = [
         {"path": "a", "val": 10},
         {"path": "b", "val": 5},
@@ -13,7 +13,7 @@ def test_ascending_sort():
     assert [item["val"] for item in sorted_items] == [5, 10, 20]
 
 def test_descending_sort():
-    plugin = DescendingSortPlugin()
+    plugin = DescendingSort()
     items = [
         {"path": "a", "val": 10},
         {"path": "b", "val": 5},

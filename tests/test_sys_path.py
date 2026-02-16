@@ -1,6 +1,6 @@
 import sys
 import os
-from src.plugins.manager import PluginManager
+from src.plugin_manager import PluginManager
 
 def test_plugins_dir_in_sys_path():
     plugins_dir = "plugins"

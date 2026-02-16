@@ -1,16 +1,7 @@
 import os
 import datetime
-from .base import BasePlugin
 
-class DateGroupingPlugin(BasePlugin):
-    @property
-    def name(self) -> str:
-        return "Date Grouping"
-
-    @property
-    def description(self) -> str:
-        return "Groups images by their modification date (YYYY-MM-DD)."
-
+class DateGroupingAlgo:
     def run(self, image_path: str, granularity: str = "month") -> dict:
         if not os.path.exists(image_path):
             return {"error": "File not found"}

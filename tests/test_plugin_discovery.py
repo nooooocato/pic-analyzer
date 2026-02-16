@@ -1,13 +1,13 @@
 import os
 import pytest
 import shutil
-from src.plugins.manager import PluginManager
-from src.plugins.base import BasePlugin
+from src.plugin_manager import PluginManager
+from base import BasePlugin
 
 def test_plugin_manager_discovers_external_plugins():
     # Create a dummy plugin in the new directory
     plugin_content = """
-from src.plugins.base import BasePlugin
+from base import BasePlugin
 
 class MockExternalPlugin(BasePlugin):
     @property
@@ -20,6 +20,9 @@ class MockExternalPlugin(BasePlugin):
     
     def run(self, *args, **kwargs):
         return "Success"
+    
+    def initialize_ui(self, main_window):
+        pass
 """
     os.makedirs("plugins/sort", exist_ok=True)
     with open("plugins/sort/mock_plugin.py", "w") as f:
@@ -35,7 +38,7 @@ class MockExternalPlugin(BasePlugin):
 def test_plugin_manager_discovers_nested_plugins():
     # Create a dummy plugin in a nested category
     plugin_content = """
-from src.plugins.base import BasePlugin
+from base import BasePlugin
 
 class NestedPlugin(BasePlugin):
     @property
@@ -48,6 +51,9 @@ class NestedPlugin(BasePlugin):
     
     def run(self, *args, **kwargs):
         return "Nested Success"
+    
+    def initialize_ui(self, main_window):
+        pass
 """
     os.makedirs("plugins/test_category", exist_ok=True)
     with open("plugins/test_category/nested_plugin.py", "w") as f:
