@@ -1,4 +1,5 @@
 import os
+import sys
 import importlib.util
 import inspect
 from .base import BasePlugin
@@ -8,7 +9,9 @@ logger = get_logger(__name__)
 
 class PluginManager:
     def __init__(self, plugins_dir):
-        self.plugins_dir = plugins_dir
+        self.plugins_dir = os.path.abspath(plugins_dir)
+        if self.plugins_dir not in sys.path:
+            sys.path.append(self.plugins_dir)
         self.plugins = {}
         self.conflicts = set()
         self.load_plugins()
