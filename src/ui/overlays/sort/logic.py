@@ -1,10 +1,10 @@
 from PySide6.QtCore import Qt, Signal, QSize
 from PySide6.QtWidgets import QVBoxLayout
-from qfluentwidgets import SimpleCardWidget, TransparentToolButton, RoundMenu, Action, FluentIcon
+from qfluentwidgets import SimpleCardWidget, ToolButton, RoundMenu, Action, FluentIcon
 from .layout import SortOverlayLayout
 
 class SortOverlay(SimpleCardWidget):
-    """Floating overlay for sorting selection using Card with TransparentToolButton."""
+    """Floating overlay for sorting selection using Card with ToolButton."""
     sortRequested = Signal(str)  # Signal emitting the plugin name
 
     def __init__(self, sort_manager, parent=None):
@@ -13,9 +13,8 @@ class SortOverlay(SimpleCardWidget):
         
         self.setWindowFlags(Qt.SubWindow)
         
-        # Use a TransparentToolButton to avoid the drop-down arrow and dual icons
-        # FluentIcon.VIEW is a good representation for 'view/sort options'
-        self.btn_sort = TransparentToolButton(FluentIcon.VIEW, self)
+        # Use ToolButton for standard theme-aware background
+        self.btn_sort = ToolButton(FluentIcon.VIEW, self)
         self.btn_sort.setFixedSize(32, 32)
         self.btn_sort.setIconSize(QSize(20, 20))
         
@@ -24,7 +23,7 @@ class SortOverlay(SimpleCardWidget):
         
         # Set menu and popup mode
         self.btn_sort.setMenu(self.sort_menu)
-        self.btn_sort.setPopupMode(TransparentToolButton.InstantPopup)
+        self.btn_sort.setPopupMode(ToolButton.InstantPopup)
         
         layout = QVBoxLayout(self)
         layout.setContentsMargins(2, 2, 2, 2)

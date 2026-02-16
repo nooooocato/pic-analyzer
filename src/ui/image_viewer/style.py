@@ -1,30 +1,13 @@
 from src.ui.theme import Theme
 
 def get_style():
-    # Keep it dark for image viewing experience, using a semi-transparent black
-    # Style the navigation buttons with circular semi-transparent white background and black icons
+    # Background for image viewer - using a semi-transparent theme-aware color
+    # Typically image viewers stay dark for focus, but we can make it adapt.
+    # However, for now let's just make the buttons standard Fluent ToolButtons 
+    # which already handle theme.
     return """
         QFrame#ImageViewerOverlay {
             background-color: rgba(0, 0, 0, 0.85);
-        }
-        
-        ToolButton#navButtonBack,
-        ToolButton#navButtonPrev,
-        ToolButton#navButtonNext {
-            background-color: rgba(255, 255, 255, 0.6);
-            border: none;
-        }
-        
-        ToolButton#navButtonBack:hover,
-        ToolButton#navButtonPrev:hover,
-        ToolButton#navButtonNext:hover {
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-        
-        ToolButton#navButtonBack:pressed,
-        ToolButton#navButtonPrev:pressed,
-        ToolButton#navButtonNext:pressed {
-            background-color: rgba(255, 255, 255, 0.4);
         }
         
         ToolButton#navButtonBack {
