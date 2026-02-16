@@ -26,7 +26,7 @@ This phase involves moving the built-in plugins to the new system and adapting t
 - [ ] Task: Update existing unit tests in `tests/` to target the new plugin locations
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Migration' (Protocol in workflow.md)
 
-## Phase 4: Verification & Hardening
+## Phase 4: Verification & Hardening [checkpoint: f7f8fed]
 Final testing and error handling improvements.
 
 - [x] Task: Write integration tests for the new plugin loading and UI injection lifecycle [be60464]
