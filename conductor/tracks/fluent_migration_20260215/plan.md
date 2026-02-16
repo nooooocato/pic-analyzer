@@ -30,7 +30,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 4' (Protocol in workflow.md) [8d58018]
 
 ## Phase 5: Main Window Integration
-- [ ] Task: Migrate `MainWindow` to `FluentWindow`.
+- [x] Task: Migrate `MainWindow` to `FluentWindow`. [f354c14]
     - Replace `QMainWindow` with `FluentWindow`.
     - Setup `NavigationInterface` (Sidebar) if applicable, or keep current Toolbar structure using Fluent equivalent.
 - [ ] Task: Conductor - User Manual Verification 'Phase 5' (Protocol in workflow.md)
