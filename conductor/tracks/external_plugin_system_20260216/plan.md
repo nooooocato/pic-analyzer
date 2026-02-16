@@ -17,7 +17,7 @@ This phase introduces the mechanism for plugins to interact with and inject comp
 - [x] Task: Implement a registration/hooks system in `MainWindow` to allow safe access to UI containers (e.g., toolbar, status bar) [bd4c545]
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Framework' (Protocol in workflow.md)
 
-## Phase 3: Migration of Existing Plugins
+## Phase 3: Migration of Existing Plugins [checkpoint: be60464]
 This phase involves moving the built-in plugins to the new system and adapting them to the new UI injection model.
 
 - [ ] Task: Migrate `src/plugins/sort` logic to `./plugins/sort/` (e.g., `ascending`, `descending`, `normal_dist`)
