@@ -24,7 +24,7 @@
 - [x] Task: Update `GalleryView` styling. [37c82a9]
     - Apply Fluent styles to `QListWidget` (or switch to `ListWidget` from library).
     - Ensure `GalleryItemDelegate` plays nicely with Fluent selection styles.
-- [x] Task: Update `ImageViewer`. [46cb66e]
+- [x] Task: Update `ImageViewer`. [46cb66e, 26f6e4f]
     - Use Fluent buttons for navigation.
     - Ensure background transparency/blur works.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4' (Protocol in workflow.md)
