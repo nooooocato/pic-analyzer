@@ -32,7 +32,7 @@ def test_sort_overlay_ui(qtbot):
     qtbot.addWidget(overlay)
     
     assert isinstance(overlay, SimpleCardWidget)
-    assert overlay.sort_action is not None
+    assert overlay.btn_sort is not None
     assert overlay.windowFlags() & Qt.SubWindow
 
 def test_sort_overlay_menu_creation(qtbot):
