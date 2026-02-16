@@ -2,16 +2,22 @@ import os
 import importlib.util
 import inspect
 from .base import BasePlugin
+from src.logger import get_logger
+
+logger = get_logger(__name__)
 
 class PluginManager:
     def __init__(self, plugins_dir):
         self.plugins_dir = plugins_dir
         self.plugins = {}
+        self.conflicts = set()
         self.load_plugins()
 
     def load_plugins(self):
         if not os.path.exists(self.plugins_dir):
             return
+
+        loaded_instances = {}
 
         for root, dirs, files in os.walk(self.plugins_dir):
             for filename in files:
@@ -30,6 +36,24 @@ class PluginManager:
                                     issubclass(obj, BasePlugin) and 
                                     obj is not BasePlugin):
                                     plugin_instance = obj()
-                                    self.plugins[plugin_instance.name] = plugin_instance
+                                    plugin_name = plugin_instance.name
+                                    
+                                    if plugin_name in self.conflicts:
+                                        logger.error(f"Conflict detected for plugin '{plugin_name}' at {file_path}. Plugin will not be loaded.")
+                                        continue
+                                    
+                                    if plugin_name in loaded_instances:
+                                        logger.error(f"Conflict detected: Plugin name '{plugin_name}' already exists. "
+                                                     f"First found at {loaded_instances[plugin_name]._file_path}, "
+                                                     f"second found at {file_path}. Refusing to load either.")
+                                        self.conflicts.add(plugin_name)
+                                        del loaded_instances[plugin_name]
+                                        continue
+                                    
+                                    # Attach file path for logging purposes
+                                    plugin_instance._file_path = file_path
+                                    loaded_instances[plugin_name] = plugin_instance
                     except Exception as e:
-                        print(f"Failed to load plugin {file_path}: {e}")
+                        logger.error(f"Failed to load plugin {file_path}: {e}")
+        
+        self.plugins = loaded_instances
