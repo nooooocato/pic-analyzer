@@ -2,13 +2,29 @@ import os
 import sys
 import importlib.util
 import inspect
-from base import BasePlugin
+from plugins.base import BasePlugin
 from src.logger import get_logger
 
 logger = get_logger(__name__)
 
 class PluginManager:
+    """Manages the lifecycle of external plugins.
+
+    Scans a specified directory for Python files containing subclasses of BasePlugin,
+    handles dynamic loading via importlib, and manages naming conflicts.
+
+    Attributes:
+        plugins_dir (str): Absolute path to the directory containing plugins.
+        plugins (dict): Dictionary mapping plugin names to their instances.
+        conflicts (set): Set of plugin names that had loading conflicts.
+    """
+
     def __init__(self, plugins_dir):
+        """Initializes the PluginManager and loads plugins from the specified directory.
+
+        Args:
+            plugins_dir (str): The relative or absolute path to the plugins directory.
+        """
         self.plugins_dir = os.path.abspath(plugins_dir)
         if self.plugins_dir not in sys.path:
             sys.path.append(self.plugins_dir)
@@ -17,6 +33,12 @@ class PluginManager:
         self.load_plugins()
 
     def load_plugins(self):
+        """Scans the plugins directory and loads valid BasePlugin subclasses.
+
+        Iterates recursively through the plugins directory, importing each .py file
+        and instantiating classes that inherit from BasePlugin. Handles naming
+        conflicts by refusing to load plugins with duplicate names.
+        """
         if not os.path.exists(self.plugins_dir):
             return
 
@@ -27,24 +49,24 @@ class PluginManager:
                 if filename.endswith(".py") and filename != "__init__.py":
                     module_name = filename[:-3]
                     file_path = os.path.join(root, filename)
-                    
+
                     try:
                         spec = importlib.util.spec_from_file_location(module_name, file_path)
                         if spec and spec.loader:
                             module = importlib.util.module_from_spec(spec)
                             spec.loader.exec_module(module)
-                            
+
                             for name, obj in inspect.getmembers(module):
                                 if (inspect.isclass(obj) and 
                                     issubclass(obj, BasePlugin) and 
                                     obj is not BasePlugin):
                                     plugin_instance = obj()
                                     plugin_name = plugin_instance.name
-                                    
+
                                     if plugin_name in self.conflicts:
                                         logger.error(f"Conflict detected for plugin '{plugin_name}' at {file_path}. Plugin will not be loaded.")
                                         continue
-                                    
+
                                     if plugin_name in loaded_instances:
                                         logger.error(f"Conflict detected: Plugin name '{plugin_name}' already exists. "
                                                      f"First found at {loaded_instances[plugin_name]._file_path}, "
@@ -52,10 +74,10 @@ class PluginManager:
                                         self.conflicts.add(plugin_name)
                                         del loaded_instances[plugin_name]
                                         continue
-                                    
+
                                     # Attach file path for logging purposes
                                     plugin_instance._file_path = file_path
-                                    loaded_instances[plugin_name] = plugin_instance
+                                    loaded_instances[plugin_name] = plugin_instance      
                     except Exception as e:
                         logger.error(f"Failed to load plugin {file_path}: {e}")
         

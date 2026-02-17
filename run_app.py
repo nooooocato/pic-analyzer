@@ -10,9 +10,13 @@ if plugins_path not in sys.path:
 from src.ui.main_window.logic import MainWindow
 from src.logger import setup_logging
 
-if __name__ == "__main__":
+def main():
+    """Main entry point for the Pic-Analyzer application."""
     setup_logging()
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
+
+if __name__ == "__main__":
+    main()

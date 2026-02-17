@@ -10,7 +10,7 @@ def test_full_plugin_lifecycle_integration(qtbot, tmp_path, monkeypatch):
     (plugins_dir / "sort").mkdir()
     
     plugin_content = """
-from base import BasePlugin
+from plugins.base import BasePlugin
 from PySide6.QtGui import QAction
 
 class IntegrationTestPlugin(BasePlugin):
@@ -30,24 +30,11 @@ class IntegrationTestPlugin(BasePlugin):
         f.write(plugin_content)
     
     # Use monkeypatch to make MainWindow look at our temp plugins dir
-    # We need to ensure 'base' is importable. It is in the real plugins dir.
-    # In this test, we might need to add the real 'plugins' dir to sys.path
-    # so that 'from base import BasePlugin' works.
     import sys
     real_plugins_path = os.path.abspath("plugins")
     if real_plugins_path not in sys.path:
         sys.path.append(real_plugins_path)
 
-    # Monkeypatch the plugins_dir path used in MainWindow
-    # Actually, PluginManager takes it as an argument.
-    # In MainWindow.__init__: self.plugin_manager = PluginManager("plugins")
-    
-    original_init = MainWindow.__init__
-    def mocked_init(self):
-        # We need to call the original init but override the plugins_dir
-        # This is tricky because PluginManager is instantiated inside init.
-        pass
-    
     # Instead, let's patch PluginManager to always use our temp dir if requested
     from src.plugin_manager import PluginManager
     original_pm_init = PluginManager.__init__

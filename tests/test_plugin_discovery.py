@@ -2,12 +2,12 @@ import os
 import pytest
 import shutil
 from src.plugin_manager import PluginManager
-from base import BasePlugin
+from plugins.base import BasePlugin
 
 def test_plugin_manager_discovers_external_plugins():
     # Create a dummy plugin in the new directory
     plugin_content = """
-from base import BasePlugin
+from plugins.base import BasePlugin
 
 class MockExternalPlugin(BasePlugin):
     @property
@@ -38,7 +38,7 @@ class MockExternalPlugin(BasePlugin):
 def test_plugin_manager_discovers_nested_plugins():
     # Create a dummy plugin in a nested category
     plugin_content = """
-from base import BasePlugin
+from plugins.base import BasePlugin
 
 class NestedPlugin(BasePlugin):
     @property
