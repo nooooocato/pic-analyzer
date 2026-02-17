@@ -4,7 +4,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Merge dev branch into main and cleanup redundant legacy files**
+- [~] **Track: Merge dev branch into main and cleanup redundant legacy files**
 *Link: [./tracks/merge_and_cleanup_20260217/](./tracks/merge_and_cleanup_20260217/)*
 
 ---

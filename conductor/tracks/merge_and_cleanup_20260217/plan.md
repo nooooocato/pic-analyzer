@@ -5,7 +5,7 @@ Integrating development progress into `main`, cleaning up legacy artifacts, and 
 ## Phase 1: Preparation and Merge
 Integration of `dev` into `main` and initial environment synchronization.
 
-- [ ] Task: Switch to `main` branch and ensure it is up to date with remote
+- [~] Task: Switch to `main` branch and ensure it is up to date with remote
 - [ ] Task: Merge `dev` into `main` using standard merge
 - [ ] Task: Resolve any merge conflicts (if any) and verify basic app startup
 - [ ] Task: Update `requirements.txt` to match `dev` environment
