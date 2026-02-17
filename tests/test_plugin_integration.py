@@ -2,6 +2,8 @@ import pytest
 import os
 import shutil
 from src.ui.main_window.logic import MainWindow
+from src.plugin.manager import PluginManager
+from src.app.state import state
 
 def test_full_plugin_lifecycle_integration(qtbot, tmp_path, monkeypatch):
     # Create a temporary plugins directory
@@ -29,20 +31,17 @@ class IntegrationTestPlugin(BasePlugin):
     with open(plugins_dir / "sort" / "integration_plugin.py", "w") as f:
         f.write(plugin_content)
     
-    # Use monkeypatch to make MainWindow look at our temp plugins dir
-    import sys
-    real_plugins_path = os.path.abspath("plugins")
-    if real_plugins_path not in sys.path:
-        sys.path.append(real_plugins_path)
-
-    # Instead, let's patch PluginManager to always use our temp dir if requested
-    from src.plugin.manager import PluginManager
+    # Patch PluginManager to always use our temp dir if requested
     original_pm_init = PluginManager.__init__
     def patched_pm_init(self, p_dir):
         original_pm_init(self, str(plugins_dir))
+
+    monkeypatch.setattr("src.plugin.manager.PluginManager.__init__", patched_pm_init) 
     
-    monkeypatch.setattr("src.plugin.manager.PluginManager.__init__", patched_pm_init)
-    
+    # Reset and re-initialize state to use the patched PluginManager
+    state.initialized = False
+    state.initialize(plugins_dir=str(plugins_dir))
+
     window = MainWindow()
     qtbot.addWidget(window)
     

@@ -7,10 +7,9 @@ from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QApplicatio
 from PySide6.QtCore import Qt, QThreadPool, QPoint, QEvent
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QAction, QCursor
 
+from src.app.state import state
 from src.app.file_scanner import FolderScanner
-from src.app.database import DatabaseManager
 from src.app.file_ops import hide_file
-from src.plugin.manager import PluginManager
 from src.ui.overlays.sort.logic import SortOverlay
 from src.ui.common.toast.logic import Toast
 
@@ -25,12 +24,10 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Pic-Analyzer")
         
-        # Backend Managers
-        db_path = "app_metadata.db"
-        self.db_manager = DatabaseManager(db_path)
-        hide_file(db_path)
-        self._sort_plugins = []
-        
+        # Ensure app state is initialized (if not already by main.py)
+        if not state.initialized:
+            state.initialize()
+            
         # UI Setup
         self.layout_engine = MainWindowLayout()
         self.layout_engine.setup_ui(self)
@@ -39,8 +36,12 @@ class MainWindow(QMainWindow):
         # Toast
         self.toast = Toast("", parent=self)
         
-        # Initialize Sort Overlay (needs db)
-        self.layout_engine.sort_overlay = SortOverlay(self.db_manager, self.layout_engine.gallery)
+        # Backward compatibility aliases for plugins/tests
+        self.plugin_manager = state.plugin_manager
+        self._sort_plugins = list(state.plugin_manager.sort_plugins.values())
+        
+        # Initialize Sort Overlay (needs db from state)
+        self.layout_engine.sort_overlay = SortOverlay(state.db_manager, self.layout_engine.gallery)
         self.layout_engine.sort_overlay.sortRequested.connect(self._on_sort_requested)
         self.layout_engine.sort_overlay.show()
         
@@ -51,17 +52,11 @@ class MainWindow(QMainWindow):
             self.layout_engine.image_viewer
         )
         
-        # App State
-        self.current_folder = None
-        self.active_scanners = []
-        self._current_viewer_index = -1
-        
         self._setup_connections()
         self._setup_menus()
 
-        # New Plugin System
-        self.plugin_manager = PluginManager("plugins")
-        for plugin in self.plugin_manager.plugins.values():
+        # Initialize UI for all discovered plugins
+        for plugin in state.plugin_manager.plugins.values():
             try:
                 plugin.initialize_ui(self)
             except Exception as e:
@@ -125,16 +120,16 @@ class MainWindow(QMainWindow):
         
         if new_index != -1:
             if l.image_viewer.isVisible():
-                direction = "next" if new_index > self._current_viewer_index else "prev"
+                direction = "next" if new_index > state.current_viewer_index else "prev"
                 l.image_viewer.switch_image(file_path, direction)
             else:
                 l.image_viewer.show_image(file_path)
-            self._current_viewer_index = new_index
+            state.current_viewer_index = new_index
             self._on_item_selected(file_path)
 
     def _on_next_image(self):
         l = self.layout_engine
-        new_index = self._current_viewer_index + 1
+        new_index = state.current_viewer_index + 1
         if new_index < l.gallery.count():
             self._open_image_viewer(l.gallery._visible_items[new_index]['path'])
         else:
@@ -143,7 +138,7 @@ class MainWindow(QMainWindow):
 
     def _on_prev_image(self):
         l = self.layout_engine
-        new_index = self._current_viewer_index - 1
+        new_index = state.current_viewer_index - 1
         if new_index >= 0:
             self._open_image_viewer(l.gallery._visible_items[new_index]['path'])
         else:
@@ -165,19 +160,19 @@ class MainWindow(QMainWindow):
         self.layout_engine.gallery.set_selection_mode_enabled(False)
 
     def _on_sort_requested(self, metric, plugin_name):
-        plugin = next((p for p in self._sort_plugins if p.name == plugin_name), None)
+        plugin = state.plugin_manager.sort_plugins.get(plugin_name)
         if plugin:
             self._apply_sort(metric, plugin)
 
     def _apply_sort(self, metric, plugin):
-        values = self.db_manager.get_metric_values(metric)
+        values = state.db_manager.get_metric_values(metric)
         self.layout_engine.gallery.apply_sort(metric, plugin, values)
 
     def _on_item_selected(self, file_path: str):
         if not os.path.exists(file_path): return
         
         # Try to get metadata from database
-        metadata = self.db_manager.get_image_metadata(file_path)
+        metadata = state.db_manager.get_image_metadata(file_path)
         
         if not metadata:
             # Fallback to filesystem
@@ -210,17 +205,17 @@ class MainWindow(QMainWindow):
     def _on_open_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder to Scan")
         if folder:
-            self.current_folder = folder
+            state.set_current_folder(folder)
             self._start_scan(folder)
 
     def _start_scan(self, path: str):
         self.layout_engine.gallery.clear()
         db_path = os.path.join(path, ".pic_analyzer.db")
-        self.db_manager.switch_database(db_path)
+        state.db_manager.switch_database(db_path)
         hide_file(db_path)
         scanner = FolderScanner(path, db_path)
         scanner.signals.file_found.connect(self.layout_engine.gallery.add_item)
-        self.active_scanners.append(scanner)
+        state.active_scanners.append(scanner)
         QThreadPool.globalInstance().start(scanner)
 
     # Plugin Hooks

@@ -13,7 +13,10 @@ def test_gallery_view_add_item(qtbot):
     gallery = GalleryView()
     qtbot.addWidget(gallery)
     gallery.add_item("test.jpg")
-    assert gallery.count() == 1
+    
+    # Debounce is 50ms, wait a bit
+    qtbot.waitUntil(lambda: gallery.count() == 1, timeout=1000)
+    
     # Check if a group was created
     assert len(gallery._group_widgets) == 1
     assert gallery._group_widgets[0].count() == 1
@@ -25,6 +28,8 @@ def test_gallery_view_grouping(qtbot):
     qtbot.addWidget(gallery)
     gallery.add_item("path1.jpg")
     gallery.add_item("path2.jpg")
+    
+    qtbot.waitUntil(lambda: gallery.count() == 2, timeout=1000)
     
     mock_plugin = MagicMock()
     mock_plugin.run.side_effect = lambda path, gran: {"date": "2023-01"} if "path1" in path else {"date": "2023-02"}
@@ -41,6 +46,9 @@ def test_gallery_item_delegate_paint(qtbot):
     gallery = GalleryView()
     qtbot.addWidget(gallery)
     gallery.add_item("test.jpg") # Add item to ensure index is valid
+    
+    qtbot.waitUntil(lambda: len(gallery._group_widgets) > 0, timeout=1000)
+    
     delegate = GalleryItemDelegate(gallery)
     
     image = QImage(200, 200, QImage.Format_RGB32)
@@ -58,6 +66,8 @@ def test_gallery_view_esc_exits_selection(qtbot):
     qtbot.addWidget(gallery)
     gallery.add_item("test.jpg")
     
+    qtbot.waitUntil(lambda: len(gallery._group_widgets) > 0, timeout=1000)
+    
     gallery.set_selection_mode_enabled(True)
     assert gallery.selection_mode_enabled
     
@@ -73,22 +83,13 @@ def test_image_viewer_close(qtbot):
     with qtbot.waitSignal(viewer.closed, timeout=1000):
         viewer.close_viewer()
     assert viewer.isHidden()
-    viewer = ImageViewer()
-    qtbot.addWidget(viewer)
-    
-    assert viewer.isHidden()
-    assert viewer.layout_engine.btn_back is not None
-    assert viewer.layout_engine.btn_prev is not None
-    assert viewer.layout_engine.btn_next is not None
 
 def test_image_viewer_signals(qtbot):
     viewer = ImageViewer()
     qtbot.addWidget(viewer)
     
     with qtbot.waitSignal(viewer.closed, timeout=1000):
-        # Trigger close via back button (bypassing animation for speed if possible)
-        # But here we test the real logic
-        viewer.show_image("") # empty path still triggers some logic
+        viewer.show_image("") 
         qtbot.mouseClick(viewer.layout_engine.btn_back, Qt.LeftButton)
         
     with qtbot.waitSignal(viewer.prev_requested, timeout=1000):
@@ -101,7 +102,7 @@ def test_image_viewer_show_image(qtbot):
     viewer = ImageViewer()
     qtbot.addWidget(viewer)
     
-    viewer.show_image("") # empty path
+    viewer.show_image("") 
     assert viewer.isVisible()
     assert viewer.opacity_effect.opacity() == 0.0 # Starts at 0 for animation
 
