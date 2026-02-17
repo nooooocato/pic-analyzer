@@ -1,0 +1,8 @@
+{
+  "track_id": "merge_and_cleanup_20260217",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-02-17T14:18:00Z",
+  "updated_at": "2026-02-17T14:18:00Z",
+  "description": "Merge dev branch into main and cleanup redundant legacy files."
+}
