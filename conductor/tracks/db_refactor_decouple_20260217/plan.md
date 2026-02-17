@@ -6,11 +6,11 @@ Establish the new ORM-based database infrastructure in `/src/db` and define mode
 - [x] Task: Create Peewee Models and Initial Setup (84b2f4e)
     - [x] Create `/src/db/models.py` with `Workspace`, `Image`, and `AnalysisResult` models.
     - [x] Create `/src/db/manager.py` for database initialization and connection handling.
-- [ ] Task: Implement Standardized CRUD Methods
-    - [ ] Write tests for `upsert_image` and implement.
-    - [ ] Write tests for `manage_workspace` and implement.
-    - [ ] Write tests for `query_images` (returning `Select` objects) and implement.
-    - [ ] Write tests for `update_metrics` and implement.
+- [x] Task: Implement Standardized CRUD Methods (ef6660a)
+    - [x] Write tests for `upsert_image` and implement.
+    - [x] Write tests for `manage_workspace` and implement.
+    - [x] Write tests for `query_images` (returning `Select` objects) and implement.
+    - [x] Write tests for `update_metrics` and implement.
 - [ ] Task: Integrate with Existing App Layer
     - [ ] Update `src/app/state.py` to use the new Peewee manager.
     - [ ] Migrate `src/app/file_scanner.py` to use Peewee models.
