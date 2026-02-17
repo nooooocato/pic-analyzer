@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Database Refactor and Component Decoupling**
+- [~] **Track: Database Refactor and Component Decoupling**
 *Link: [./tracks/db_refactor_decouple_20260217/](./tracks/db_refactor_decouple_20260217/)*
