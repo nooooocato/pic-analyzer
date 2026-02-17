@@ -29,7 +29,7 @@ Removing confirmed files using a "soft delete" safety net.
 - [x] Task: Perform full regression test suite to ensure no breakage from removal 39566a3
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Safe Cleanup (Soft Delete)' (Protocol in workflow.md) 39566a3
 
-## Phase 4: Finalization and Documentation
+## Phase 4: Finalization and Documentation [checkpoint: c1c9beb]
 Final cleanup, documentation updates, and project synchronization.
 
 - [x] Task: Permanently delete files in `.cleanup_backup/` 39566a3
