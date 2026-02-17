@@ -5,11 +5,11 @@ Integrating development progress into `main`, cleaning up legacy artifacts, and 
 ## Phase 1: Preparation and Merge
 Integration of `dev` into `main` and initial environment synchronization.
 
-- [~] Task: Switch to `main` branch and ensure it is up to date with remote
-- [ ] Task: Merge `dev` into `main` using standard merge
-- [ ] Task: Resolve any merge conflicts (if any) and verify basic app startup
+- [x] Task: Switch to `main` branch and ensure it is up to date with remote fdaf106
+- [x] Task: Merge `dev` into `main` using standard merge fdaf106
+- [x] Task: Resolve any merge conflicts (if any) and verify basic app startup fdaf106
 - [ ] Task: Update `requirements.txt` to match `dev` environment
-- [ ] Task: Run current test suite to establish a baseline on `main`
+- [x] Task: Run current test suite to establish a baseline on `main` fdaf106
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Preparation and Merge' (Protocol in workflow.md)
 
 ## Phase 2: Dependency Analysis and Candidate Identification
