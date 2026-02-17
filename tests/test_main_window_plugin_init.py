@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import MagicMock
 from src.ui.main_window.logic import MainWindow
-from src.plugin_manager import PluginManager
+from src.plugin.manager import PluginManager
 
 def test_main_window_calls_initialize_ui_on_plugins(qtbot):
     # Mock PluginManager to return a mock plugin

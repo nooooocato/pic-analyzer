@@ -1,5 +1,5 @@
 import pytest
-from plugins.base import BasePlugin
+from src.plugin.base import BasePlugin
 
 def test_base_plugin_has_initialize_ui():
     class ConcretePlugin(BasePlugin):

@@ -1,4 +1,4 @@
-from plugins.base import BasePlugin
+from src.plugin.base import BasePlugin
 from plugins.group.date_grouping.algo import DateGroupingAlgo
 
 class DateGroupingPlugin(BasePlugin):

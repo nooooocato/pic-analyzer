@@ -10,7 +10,7 @@ from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QAction, Q
 from src.file_scanner import FolderScanner
 from src.database import DatabaseManager
 from src.file_ops import hide_file
-from src.plugin_manager import PluginManager
+from src.plugin.manager import PluginManager
 from src.ui.overlays.sort.logic import SortOverlay
 from src.ui.common.toast.logic import Toast
 

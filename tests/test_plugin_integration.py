@@ -10,7 +10,7 @@ def test_full_plugin_lifecycle_integration(qtbot, tmp_path, monkeypatch):
     (plugins_dir / "sort").mkdir()
     
     plugin_content = """
-from plugins.base import BasePlugin
+from src.plugin.base import BasePlugin
 from PySide6.QtGui import QAction
 
 class IntegrationTestPlugin(BasePlugin):
@@ -36,12 +36,12 @@ class IntegrationTestPlugin(BasePlugin):
         sys.path.append(real_plugins_path)
 
     # Instead, let's patch PluginManager to always use our temp dir if requested
-    from src.plugin_manager import PluginManager
+    from src.plugin.manager import PluginManager
     original_pm_init = PluginManager.__init__
     def patched_pm_init(self, p_dir):
         original_pm_init(self, str(plugins_dir))
     
-    monkeypatch.setattr("src.plugin_manager.PluginManager.__init__", patched_pm_init)
+    monkeypatch.setattr("src.plugin.manager.PluginManager.__init__", patched_pm_init)
     
     window = MainWindow()
     qtbot.addWidget(window)

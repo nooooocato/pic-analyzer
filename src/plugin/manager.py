@@ -2,7 +2,7 @@ import os
 import sys
 import importlib.util
 import inspect
-from plugins.base import BasePlugin
+from .base import BasePlugin
 from src.logger import get_logger
 
 logger = get_logger(__name__)
@@ -29,6 +29,9 @@ class PluginManager:
         if self.plugins_dir not in sys.path:
             sys.path.append(self.plugins_dir)
         self.plugins = {}
+        self.sort_plugins = {}
+        self.group_plugins = {}
+        self.general_plugins = {}
         self.conflicts = set()
         self.load_plugins()
 
@@ -77,7 +80,25 @@ class PluginManager:
 
                                     # Attach file path for logging purposes
                                     plugin_instance._file_path = file_path
-                                    loaded_instances[plugin_name] = plugin_instance      
+                                    loaded_instances[plugin_name] = plugin_instance
+
+                                    # Categorize based on directory structure or plugin property
+                                    category = plugin_instance.category
+                                    if category == "general":
+                                        # Heuristic categorization based on folder
+                                        rel_path = os.path.relpath(root, self.plugins_dir)
+                                        if rel_path.startswith("sort"):
+                                            category = "sort"
+                                        elif rel_path.startswith("group"):
+                                            category = "group"
+                                    
+                                    if category == "sort":
+                                        self.sort_plugins[plugin_name] = plugin_instance
+                                    elif category == "group":
+                                        self.group_plugins[plugin_name] = plugin_instance
+                                    else:
+                                        self.general_plugins[plugin_name] = plugin_instance
+
                     except Exception as e:
                         logger.error(f"Failed to load plugin {file_path}: {e}")
         

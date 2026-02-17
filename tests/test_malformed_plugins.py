@@ -1,6 +1,6 @@
 import pytest
 import os
-from src.plugin_manager import PluginManager
+from src.plugin.manager import PluginManager
 
 def test_malformed_plugin_does_not_crash_manager(tmp_path):
     plugins_dir = tmp_path / "plugins"
@@ -12,7 +12,7 @@ def test_malformed_plugin_does_not_crash_manager(tmp_path):
     
     # 2. Logic error in initialization
     logic_error_content = """
-from plugins.base import BasePlugin
+from src.plugin.base import BasePlugin
 class LogicErrorPlugin(BasePlugin):
     @property
     def name(self): return "Logic Error"
@@ -27,7 +27,7 @@ class LogicErrorPlugin(BasePlugin):
         
     # 3. Missing abstract method
     missing_method_content = """
-from plugins.base import BasePlugin
+from src.plugin.base import BasePlugin
 class MissingMethodPlugin(BasePlugin):
     @property
     def name(self): return "Missing Method"

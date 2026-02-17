@@ -1,4 +1,4 @@
-from plugins.base import BasePlugin
+from src.plugin.base import BasePlugin
 from plugins.sort.base import BaseSortPlugin
 from plugins.sort.normal_dist.algo import NormalDistributionSort
 

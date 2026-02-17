@@ -27,6 +27,15 @@ class BasePlugin(ABC):
         """
         pass
 
+    @property
+    def category(self) -> str:
+        """Return the category of the plugin (e.g., 'sort', 'group', 'general').
+
+        Returns:
+            str: The plugin category. Defaults to 'general'.
+        """
+        return "general"
+
     @abstractmethod
     def run(self, image_path: str) -> dict:
         """Execute the analysis on the given image.

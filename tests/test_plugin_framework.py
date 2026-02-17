@@ -1,8 +1,8 @@
 import pytest
 import os
 import shutil
-from plugins.base import BasePlugin
-from src.plugin_manager import PluginManager
+from src.plugin.base import BasePlugin
+from src.plugin.manager import PluginManager
 
 class MockPlugin(BasePlugin):
     @property
@@ -27,7 +27,7 @@ def test_plugin_manager_loading(tmp_path):
     # and add it to sys.path
     
     plugin_content = """
-from plugins.base import BasePlugin
+from src.plugin.base import BasePlugin
 class TestPlugin(BasePlugin):
     @property
     def name(self): return "Test Plugin"

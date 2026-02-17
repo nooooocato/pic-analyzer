@@ -1,7 +1,7 @@
 import os
 import pytest
 import shutil
-from src.plugin_manager import PluginManager
+from src.plugin.manager import PluginManager
 
 def test_plugin_manager_detects_conflicts():
     plugin1_content = """

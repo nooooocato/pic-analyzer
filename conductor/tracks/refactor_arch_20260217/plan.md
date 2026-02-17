@@ -9,12 +9,12 @@ This plan outlines the steps for refactoring the plugin system and separating th
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Preparation and Baseline' (Protocol in workflow.md)
 
 ## Phase 2: Refactor Plugin System (`src/plugin/`)
-- [ ] Task: Create the `src/plugin/` directory structure if it doesn't exist.
-- [ ] Task: Move `PluginBase` and `PluginManager` from their current locations to `src/plugin/`.
-- [ ] Task: Update all internal imports within the plugin system to reflect the new structure.
-- [ ] Task: Refactor the plugin discovery mechanism to separate "Statistical Rules" plugins from core management logic.
-- [ ] Task: Write/Update unit tests for `PluginManager` in its new location.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Refactor Plugin System' (Protocol in workflow.md)
+- [x] Task: Create the `src/plugin/` directory structure if it doesn't exist.
+- [x] Task: Move `PluginBase` and `PluginManager` from their current locations to `src/plugin/`.
+- [x] Task: Update all internal imports within the plugin system to reflect the new structure.
+- [x] Task: Refactor the plugin discovery mechanism to separate "Statistical Rules" plugins from core management logic.
+- [x] Task: Write/Update unit tests for `PluginManager` in its new location.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Refactor Plugin System' (Protocol in workflow.md)
 
 ## Phase 3: Establish Core Application Layer (`src/app/`)
 - [ ] Task: Create the `src/app/` directory.
