@@ -15,10 +15,10 @@ Integration of `dev` into `main` and initial environment synchronization.
 ## Phase 2: Dependency Analysis and Candidate Identification
 Identifying files that are no longer needed after the UI refactor and architectural changes.
 
-- [ ] Task: Script/Automated check for unused imports across the codebase
-- [ ] Task: Manually identify legacy UI files in `src/ui/` (e.g., `gallery_view_new.py` if replaced)
-- [ ] Task: Identify orphaned test files in `tests/` and legacy root scripts (e.g., `test_sf_move.py`)
-- [ ] Task: Present list of cleanup candidates to user for confirmation
+- [x] Task: Script/Automated check for unused imports across the codebase 3a079d4
+- [x] Task: Manually identify legacy UI files in `src/ui/` (e.g., `gallery_view_new.py` if replaced) 3a079d4
+- [x] Task: Identify orphaned test files in `tests/` and legacy root scripts (e.g., `test_sf_move.py`) 3a079d4
+- [~] Task: Present list of cleanup candidates to user for confirmation
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Dependency Analysis and Candidate Identification' (Protocol in workflow.md)
 
 ## Phase 3: Safe Cleanup (Soft Delete)
