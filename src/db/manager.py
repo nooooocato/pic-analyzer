@@ -31,13 +31,23 @@ class DBManager:
     def manage_workspace(self, action: str, data: dict):
         """Manage Workspace records: create, load, delete."""
         if action == "create":
-            return Workspace.create(name=data["name"], path=data["path"])
+            ws, created = Workspace.get_or_create(
+                name=data["name"], 
+                defaults={"path": data["path"]}
+            )
+            if not created and ws.path != data["path"]:
+                ws.path = data["path"]
+                ws.save()
+            return ws
         elif action == "load":
             return Workspace.get(Workspace.name == data["name"])
         elif action == "delete":
-            ws = Workspace.get(Workspace.name == data["name"])
-            ws.delete_instance(recursive=True)
-            return True
+            try:
+                ws = Workspace.get(Workspace.name == data["name"])
+                ws.delete_instance(recursive=True)
+                return True
+            except Workspace.DoesNotExist:
+                return False
         return None
 
     def upsert_image(self, metadata: dict, analysis_data: dict):
@@ -50,7 +60,8 @@ class DBManager:
                     "file_size": metadata.get("file_size"),
                     "created_at": metadata.get("created_at"),
                     "modified_at": metadata.get("modified_at"),
-                    "workspace": metadata["workspace"]
+                    "workspace": metadata["workspace"],
+                    "thumbnail": metadata.get("thumbnail")
                 }
             )
             
@@ -58,8 +69,12 @@ class DBManager:
                 # Update existing image record
                 img.filename = metadata["filename"]
                 img.file_size = metadata.get("file_size")
-                img.created_at = metadata.get("created_at")
-                img.modified_at = metadata.get("modified_at")
+                if "created_at" in metadata:
+                    img.created_at = metadata["created_at"]
+                if "modified_at" in metadata:
+                    img.modified_at = metadata["modified_at"]
+                if "thumbnail" in metadata:
+                    img.thumbnail = metadata["thumbnail"]
                 img.save()
             
             # Upsert AnalysisResult (simplification: one AnalysisResult per image per plugin for now, 

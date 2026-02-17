@@ -14,6 +14,9 @@ class Workspace(BaseModel):
     name = CharField(unique=True)
     path = CharField()
     created_at = DateTimeField(default=datetime.datetime.now)
+    
+    class Meta:
+        table_name = 'workspaces'
 
 class Image(BaseModel):
     workspace = ForeignKeyField(Workspace, backref='images', on_delete='CASCADE')
@@ -23,9 +26,15 @@ class Image(BaseModel):
     created_at = DateTimeField(null=True)
     modified_at = DateTimeField(null=True)
     thumbnail = BlobField(null=True)
+    
+    class Meta:
+        table_name = 'images'
 
 class AnalysisResult(BaseModel):
     image = ForeignKeyField(Image, backref='analysis_results', on_delete='CASCADE')
     plugin_name = CharField()
     result_data = TextField() # Store as JSON string or text
     timestamp = DateTimeField(default=datetime.datetime.now)
+    
+    class Meta:
+        table_name = 'analysis_results'

@@ -49,22 +49,16 @@ def test_folder_scanner_finds_images(temp_image_dir, qtbot):
 
 def test_folder_scanner_persistence(temp_image_dir, qtbot, tmp_path):
     db_path = str(tmp_path / "persistence.db")
-    from src.app.database import DatabaseManager
-    db_manager = DatabaseManager(db_path) # Initialize schema
+    from src.db.manager import DBManager
+    from src.db.models import Image
+    db_manager = DBManager(db_path) # Initialize schema
     
     scanner = FolderScanner(temp_image_dir, db_path)
     scanner.run()
     
     # Verify data is in DB
-    import sqlite3
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute("SELECT count(*) FROM images")
-    assert cursor.fetchone()[0] == 4
-    
-    cursor.execute("SELECT thumbnail FROM images WHERE thumbnail IS NOT NULL")
-    assert len(cursor.fetchall()) == 4
-    conn.close()
+    assert Image.select().count() == 4
+    assert Image.select().where(Image.thumbnail.is_null(False)).count() == 4
     
     # Run again, should load from DB (we can mock thumbnail_gen to verify)
     import unittest.mock as mock
@@ -81,7 +75,6 @@ def test_folder_scanner_persistence(temp_image_dir, qtbot, tmp_path):
     time.sleep(0.1)
     with open(img_path, "wb") as f:
         from PIL import Image
-        import io
         img = Image.new('RGB', (20, 20), color='blue') # Different content
         img.save(f, format="JPEG")
     

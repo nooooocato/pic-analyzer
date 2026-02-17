@@ -1,8 +1,10 @@
 import os
-import sqlite3
 import logging
+import datetime
 from PySide6.QtCore import QRunnable, QObject, Signal
 from src.ui.thumbnail_gen import ThumbnailGenerator
+from src.db.manager import DBManager
+from src.db.models import Image, Workspace
 
 logger = logging.getLogger(__name__)
 
@@ -27,11 +29,18 @@ class FolderScanner(QRunnable):
 
     def run(self):
         logger.info(f"Starting scan for folder: {self.folder_path}")
-        conn = None
+        db_manager = None
+        workspace = None
+        
         if self.db_path:
             try:
-                conn = sqlite3.connect(self.db_path)
+                db_manager = DBManager(self.db_path)
                 logger.debug(f"Connected to database at {self.db_path}")
+                # Ensure workspace exists
+                workspace = db_manager.manage_workspace("create", {
+                    "name": os.path.basename(self.folder_path),
+                    "path": self.folder_path
+                })
             except Exception as e:
                 logger.error(f"Failed to connect to database: {e}")
         
@@ -46,39 +55,35 @@ class FolderScanner(QRunnable):
                         
                         thumb_bytes = None
                         stats = os.stat(file_path)
-                        if conn:
+                        modified_at = datetime.datetime.fromtimestamp(stats.st_mtime)
+                        
+                        if db_manager:
                             # Check if already in DB and if it has changed
                             try:
-                                cursor = conn.cursor()
-                                cursor.execute(
-                                    "SELECT thumbnail, file_size, modified_at FROM images WHERE path = ?", 
-                                    (file_path,)
-                                )
-                                row = cursor.fetchone()
-                                if row and row[0]:
-                                    db_thumb, db_size, db_mtime = row
-                                    if db_size == int(stats.st_size) and db_mtime == int(stats.st_mtime):
+                                img = Image.get_or_none(Image.path == file_path)
+                                if img and img.thumbnail:
+                                    # Use naive comparison for modification time (or just compare timestamps)
+                                    # Since we store as DateTimeField, Peewee handles conversion.
+                                    if img.file_size == int(stats.st_size) and img.modified_at == modified_at:
                                         logger.debug(f"Loading thumbnail from cache for {file}")
-                                        thumb_bytes = db_thumb
+                                        thumb_bytes = img.thumbnail
                             except Exception as db_e:
                                 logger.warning(f"Database read error for {file}: {db_e}")
                         
                         if not thumb_bytes:
                             logger.debug(f"Generating new thumbnail for {file}")
                             thumb_bytes = self.thumbnail_gen.generate(file_path)
-                            if thumb_bytes and conn:
+                            if thumb_bytes and db_manager:
                                 try:
-                                    # Save to DB
-                                    filename = os.path.basename(file_path)
-                                    cursor = conn.cursor()
-                                    cursor.execute(
-                                        """INSERT OR REPLACE INTO images 
-                                        (path, filename, file_size, modified_at, thumbnail) 
-                                        VALUES (?, ?, ?, ?, ?)""",
-                                        (file_path, filename, int(stats.st_size), 
-                                         int(stats.st_mtime), thumb_bytes)
-                                    )
-                                    conn.commit()
+                                    # Save to DB using upsert
+                                    db_manager.upsert_image({
+                                        "path": file_path,
+                                        "filename": os.path.basename(file_path),
+                                        "file_size": int(stats.st_size),
+                                        "modified_at": modified_at,
+                                        "workspace": workspace,
+                                        "thumbnail": thumb_bytes
+                                    }, {})
                                 except Exception as db_e:
                                     logger.warning(f"Database write error for {file}: {db_e}")
                         
@@ -93,6 +98,3 @@ class FolderScanner(QRunnable):
         except Exception as e:
             logger.exception(f"Unexpected error during scan: {e}")
             self.signals.error.emit(str(e))
-        finally:
-            if conn:
-                conn.close()
