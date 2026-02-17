@@ -8,7 +8,7 @@ This plan outlines the steps for refactoring the plugin system and separating th
 - [x] Task: Create a baseline of existing unit tests and ensure they pass before refactoring begins.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Preparation and Baseline' (Protocol in workflow.md)
 
-## Phase 2: Refactor Plugin System (`src/plugin/`)
+## Phase 2: Refactor Plugin System (`src/plugin/`) [checkpoint: 571e00d]
 - [x] Task: Create the `src/plugin/` directory structure if it doesn't exist.
 - [x] Task: Move `PluginBase` and `PluginManager` from their current locations to `src/plugin/`.
 - [x] Task: Update all internal imports within the plugin system to reflect the new structure.
