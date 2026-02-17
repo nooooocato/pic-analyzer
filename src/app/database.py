@@ -2,11 +2,30 @@ import sqlite3
 import os
 
 class DatabaseManager:
+    """Manages SQLite database operations for image metadata and analysis results.
+
+    This class handles database initialization, schema management, and provides
+    methods for retrieving metrics and image-specific metadata.
+
+    Attributes:
+        db_path (str): The file path to the SQLite database.
+    """
+
     def __init__(self, db_path: str):
+        """Initializes the DatabaseManager with the specified database path.
+
+        Args:
+            db_path (str): The path to the SQLite database file.
+        """
         self.db_path = db_path
         self._initialize_db()
 
     def _initialize_db(self):
+        """Initializes the database schema if it doesn't already exist.
+
+        Creates tables for images, analysis_results, and plugin_metadata.
+        Also handles basic schema migrations for existing databases.
+        """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
