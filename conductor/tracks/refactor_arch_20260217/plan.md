@@ -26,7 +26,7 @@ This plan outlines the steps for refactoring the plugin system and separating th
 - [~] Task: Write unit tests for new components in `src/app/` (State, DB, File Ops, Logger).
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Establish Core Application Layer' (Protocol in workflow.md)
 
-## Phase 4: Decouple MainWindow Logic (`src/ui/`)
+## Phase 4: Decouple MainWindow Logic (`src/ui/`) [checkpoint: b512d77]
 - [x] Task: Refactor `src/ui/main_window/logic.py` to delegate business logic calls to the `src/app/` services.
 - [x] Task: Migrate application state from `MainWindow` to `src/app/state.py`.
 - [x] Task: Update `MainWindow` to use the new registration hooks for plugins via the `src/app/` layer.
