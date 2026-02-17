@@ -26,6 +26,10 @@ class FolderScanner(QRunnable):
         self.db_path = db_path
         self.signals = ScannerSignals()
         self.thumbnail_gen = ThumbnailGenerator()
+        self._is_cancelled = False
+
+    def cancel(self):
+        self._is_cancelled = True
 
     def run(self):
         logger.info(f"Starting scan for folder: {self.folder_path}")
@@ -47,7 +51,14 @@ class FolderScanner(QRunnable):
         try:
             count = 0
             for root, _, files in os.walk(self.folder_path):
+                if self._is_cancelled:
+                    logger.info("Scan cancelled.")
+                    return
+
                 for file in files:
+                    if self._is_cancelled:
+                        return
+                        
                     ext = os.path.splitext(file)[1].lower()
                     if ext in self.SUPPORTED_EXTENSIONS:
                         file_path = os.path.join(root, file)
@@ -55,15 +66,13 @@ class FolderScanner(QRunnable):
                         
                         thumb_bytes = None
                         stats = os.stat(file_path)
-                        modified_at = datetime.datetime.fromtimestamp(stats.st_mtime)
+                        modified_at = int(stats.st_mtime)
                         
                         if db_manager:
                             # Check if already in DB and if it has changed
                             try:
                                 img = Image.get_or_none(Image.path == file_path)
                                 if img and img.thumbnail:
-                                    # Use naive comparison for modification time (or just compare timestamps)
-                                    # Since we store as DateTimeField, Peewee handles conversion.
                                     if img.file_size == int(stats.st_size) and img.modified_at == modified_at:
                                         logger.debug(f"Loading thumbnail from cache for {file}")
                                         thumb_bytes = img.thumbnail

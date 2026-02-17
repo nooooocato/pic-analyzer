@@ -104,3 +104,26 @@ def test_folder_scanner_error(qtbot, monkeypatch):
         scanner.run()
     
     assert "Permission denied" in blocker.args[0]
+
+def test_folder_scanner_cancellation(temp_image_dir, qtbot):
+    scanner = FolderScanner(temp_image_dir)
+    found_files = []
+    scanner.signals.file_found.connect(lambda p, t: found_files.append(p))
+    
+    # Mock walk to simulate progress then cancellation
+    import os
+    original_walk = os.walk
+    
+    def mock_walk(path):
+        for root, dirs, files in original_walk(path):
+            for file in files:
+                # Cancel after finding first file
+                scanner.cancel()
+                yield root, dirs, [file]
+    
+    import unittest.mock as mock
+    with mock.patch('os.walk', side_effect=mock_walk):
+        scanner.run()
+    
+    # Should stop early
+    assert len(found_files) <= 1

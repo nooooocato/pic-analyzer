@@ -209,6 +209,11 @@ class MainWindow(QMainWindow):
             self._start_scan(folder)
 
     def _start_scan(self, path: str):
+        # Cancel previous scanners
+        for scanner in state.active_scanners:
+            scanner.cancel()
+        state.active_scanners.clear()
+        
         self.layout_engine.gallery.clear()
         db_path = os.path.join(path, ".pic_analyzer.db")
         state.db_manager.switch_database(db_path)
