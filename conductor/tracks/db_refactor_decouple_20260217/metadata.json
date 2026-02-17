@@ -1,0 +1,8 @@
+{
+  "track_id": "db_refactor_decouple_20260217",
+  "type": "refactor",
+  "status": "new",
+  "created_at": "2026-02-17T18:45:00Z",
+  "updated_at": "2026-02-17T18:45:00Z",
+  "description": "1.重构数据库让数据库采用Peewee orm重新规范写过，让cudr变成方法供上层调用，写进/src/db中。2.把Toast和data_inspector从mainwindow中解耦，成为单独的组件。"
+}
