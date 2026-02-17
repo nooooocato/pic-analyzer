@@ -16,7 +16,7 @@ This plan outlines the steps for refactoring the plugin system and separating th
 - [x] Task: Write/Update unit tests for `PluginManager` in its new location.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Refactor Plugin System' (Protocol in workflow.md)
 
-## Phase 3: Establish Core Application Layer (`src/app/`)
+## Phase 3: Establish Core Application Layer (`src/app/`) [checkpoint: da44476]
 - [x] Task: Create the `src/app/` directory.
 - [x] Task: Implement/Move Global State Management to `src/app/state.py` (or similar).
 - [x] Task: Implement/Move Database Operations to `src/app/database.py`.
