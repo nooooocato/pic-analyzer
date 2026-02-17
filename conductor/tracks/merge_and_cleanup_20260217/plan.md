@@ -21,13 +21,13 @@ Identifying files that are no longer needed after the UI refactor and architectu
 - [~] Task: Present list of cleanup candidates to user for confirmation
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Dependency Analysis and Candidate Identification' (Protocol in workflow.md)
 
-## Phase 3: Safe Cleanup (Soft Delete)
+## Phase 3: Safe Cleanup (Soft Delete) [checkpoint: 52a1b2c]
 Removing confirmed files using a "soft delete" safety net.
 
-- [ ] Task: Create temporary backup directory `.cleanup_backup/` (ignored by git)
-- [ ] Task: Move confirmed redundant files to `.cleanup_backup/`
-- [ ] Task: Perform full regression test suite to ensure no breakage from removal
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Safe Cleanup (Soft Delete)' (Protocol in workflow.md)
+- [x] Task: Create temporary backup directory `.cleanup_backup/` (ignored by git) da82e4e
+- [x] Task: Move confirmed redundant files to `.cleanup_backup/` da82e4e
+- [x] Task: Perform full regression test suite to ensure no breakage from removal da82e4e
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Safe Cleanup (Soft Delete)' (Protocol in workflow.md) 52a1b2c
 
 ## Phase 4: Finalization and Documentation
 Final cleanup, documentation updates, and project synchronization.

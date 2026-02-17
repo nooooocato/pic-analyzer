@@ -16,3 +16,5 @@ htmlcov/
 *.sqlite
 app_metadata.db
 app.log
+
+.cleanup_backup/
