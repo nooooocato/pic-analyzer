@@ -24,7 +24,7 @@ I need a quick and simple image management tool for organizing scattered images 
     
     2.  **Architecture:**
     
-    -   Separation of analysis and file manipulation.
+    -   Separation of business logic (App Layer) and Presentation (UI Layer).
     -   Analysis results stored in SQLite.
     -   **Performance:** Multi-threaded analysis.
     -   **Maintainability:** Factory pattern, plugin-based architecture for statistical rules.
@@ -72,6 +72,7 @@ A "geeky," high-performance image management and analysis tool designed for scie
 ## Key Features
 - **Utility-First UI:** A functional, data-dense interface following native Windows design patterns.
 - **On-Demand Analysis:** Statistical rules are triggered manually via buttons to conserve resources.
+- **Centralized App Layer:** Business logic, global state, and core services (DB, File Ops) are decoupled from the UI.
 - **Lazy Loading:** UI elements and thumbnails are generated only as needed.
 - **Workspace Management:** Users can open folders as discrete workspaces, with analysis data stored in hidden local databases.
 - **Interactive Visualization:**
@@ -81,6 +82,6 @@ A "geeky," high-performance image management and analysis tool designed for scie
 - **Safe Operations:** Strictly uses `move` operations to protect SSD lifespan and ensures analysis data (SQLite) is isolated from original files.
 
 ## High-Level Requirements
-- Separation of analysis logic and file system manipulation.
+- Separation of core application logic and UI presentation.
 - Multi-threaded processing for statistical plugins.
 - Advanced grouping using AND/OR logic and prioritized rules.

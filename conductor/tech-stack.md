@@ -18,8 +18,11 @@
 
 ## Architecture & Infrastructure
 - **Concurrency:** `QThreadPool` and `QRunnable` for multi-threaded, non-blocking image analysis.
+- **Centralized State:** Dedicated `src/app/state.py` for global application state and service management.
 - **Plugin System:** 
-    - **Externalized Discovery:** Plugins reside in the root-level `./plugins` directory and are discovered recursively at runtime via `importlib`.
+    - **Core Abstraction:** Base classes located in `src/plugin/` for better separation from UI.
+    - **Externalized Discovery:** Plugins reside in the root-level `./plugins` directory and are discovered recursively at runtime.
+    - **Categorization:** Automatic categorization of plugins into `sort`, `group`, and `general` based on directory structure.
     - **Dynamic UI Injection:** Plugins programmatically inject UI components (menus, toolbar actions) into the main window via a registration hooks system.
 - **Storage:** Safe file operations using Python's `shutil.move` with manual conflict resolution logic.
 
