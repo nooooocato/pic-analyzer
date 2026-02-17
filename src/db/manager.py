@@ -1,3 +1,4 @@
+import json
 from peewee import SqliteDatabase
 from .models import db_proxy, Workspace, Image, AnalysisResult
 import os
@@ -26,3 +27,84 @@ class DBManager:
 
     def get_db(self):
         return self.db
+
+    def manage_workspace(self, action: str, data: dict):
+        """Manage Workspace records: create, load, delete."""
+        if action == "create":
+            return Workspace.create(name=data["name"], path=data["path"])
+        elif action == "load":
+            return Workspace.get(Workspace.name == data["name"])
+        elif action == "delete":
+            ws = Workspace.get(Workspace.name == data["name"])
+            ws.delete_instance(recursive=True)
+            return True
+        return None
+
+    def upsert_image(self, metadata: dict, analysis_data: dict):
+        """Insert or update an image and its analysis results."""
+        with self.db.atomic():
+            img, created = Image.get_or_create(
+                path=metadata["path"],
+                defaults={
+                    "filename": metadata["filename"],
+                    "file_size": metadata.get("file_size"),
+                    "created_at": metadata.get("created_at"),
+                    "modified_at": metadata.get("modified_at"),
+                    "workspace": metadata["workspace"]
+                }
+            )
+            
+            if not created:
+                # Update existing image record
+                img.filename = metadata["filename"]
+                img.file_size = metadata.get("file_size")
+                img.created_at = metadata.get("created_at")
+                img.modified_at = metadata.get("modified_at")
+                img.save()
+            
+            # Upsert AnalysisResult (simplification: one AnalysisResult per image per plugin for now, 
+            # or just one global one. The spec says AnalysisResult has plugin_name).
+            # If analysis_data is provided, we merge it or replace it?
+            # Existing code used result_key/result_value pairs.
+            # New model has result_data (JSON).
+            
+            # For simplicity, we'll store all results under "default" plugin for now if not specified.
+            plugin_name = metadata.get("plugin_name", "default")
+            
+            ar, ar_created = AnalysisResult.get_or_create(
+                image=img,
+                plugin_name=plugin_name,
+                defaults={"result_data": json.dumps(analysis_data)}
+            )
+            
+            if not ar_created and analysis_data:
+                # Merge or replace? Let's merge for flexibility
+                current_data = json.loads(ar.result_data)
+                current_data.update(analysis_data)
+                ar.result_data = json.dumps(current_data)
+                ar.save()
+                
+            return img
+
+    def query_images(self, filters: dict = None, group_by: str = None):
+        """Query images and return a Peewee Select object."""
+        query = Image.select()
+        
+        if filters:
+            for field_name, value in filters.items():
+                if hasattr(Image, field_name):
+                    field = getattr(Image, field_name)
+                    query = query.where(field == value)
+        
+        # Note: group_by implementation can be complex for plugins, 
+        # but basic support here:
+        if group_by and hasattr(Image, group_by):
+            query = query.group_by(getattr(Image, group_by))
+            
+        return query
+
+    def update_metrics(self, image_id: int, metrics: dict):
+        """Update specific metrics for an image."""
+        img = Image.get_by_id(image_id)
+        # Use upsert_image logic or specialized update
+        self.upsert_image({"path": img.path, "filename": img.filename, "workspace": img.workspace}, metrics)
