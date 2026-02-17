@@ -1,6 +1,6 @@
 # Implementation Plan: Database Refactor and Component Decoupling
 
-## Phase 1: Database Layer - Peewee ORM Implementation
+## Phase 1: Database Layer - Peewee ORM Implementation [checkpoint: f108ebd]
 Establish the new ORM-based database infrastructure in `/src/db` and define models.
 
 - [x] Task: Create Peewee Models and Initial Setup (84b2f4e)
@@ -14,7 +14,7 @@ Establish the new ORM-based database infrastructure in `/src/db` and define mode
 - [x] Task: Integrate with Existing App Layer (9f8d38d)
     - [x] Update `src/app/state.py` to use the new Peewee manager.
     - [x] Migrate `src/app/file_scanner.py` to use Peewee models.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Database Layer' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Database Layer' (f108ebd)
 
 ## Phase 2: Component Decoupling - Event Bus and Toast
 Decouple the notification system from the Main Window using a signal-based event bus.
