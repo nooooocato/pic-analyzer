@@ -3,9 +3,9 @@
 ## Phase 1: Database Layer - Peewee ORM Implementation
 Establish the new ORM-based database infrastructure in `/src/db` and define models.
 
-- [ ] Task: Create Peewee Models and Initial Setup
-    - [ ] Create `/src/db/models.py` with `Workspace`, `Image`, and `AnalysisResult` models.
-    - [ ] Create `/src/db/manager.py` for database initialization and connection handling.
+- [x] Task: Create Peewee Models and Initial Setup (84b2f4e)
+    - [x] Create `/src/db/models.py` with `Workspace`, `Image`, and `AnalysisResult` models.
+    - [x] Create `/src/db/manager.py` for database initialization and connection handling.
 - [ ] Task: Implement Standardized CRUD Methods
     - [ ] Write tests for `upsert_image` and implement.
     - [ ] Write tests for `manage_workspace` and implement.
