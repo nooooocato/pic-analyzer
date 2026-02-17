@@ -2,15 +2,15 @@
 
 Integrating development progress into `main`, cleaning up legacy artifacts, and ensuring project consistency.
 
-## Phase 1: Preparation and Merge
+## Phase 1: Preparation and Merge [checkpoint: e8d693d]
 Integration of `dev` into `main` and initial environment synchronization.
 
 - [x] Task: Switch to `main` branch and ensure it is up to date with remote fdaf106
 - [x] Task: Merge `dev` into `main` using standard merge fdaf106
 - [x] Task: Resolve any merge conflicts (if any) and verify basic app startup fdaf106
-- [ ] Task: Update `requirements.txt` to match `dev` environment
+- [x] Task: Update `requirements.txt` to match `dev` environment fdaf106
 - [x] Task: Run current test suite to establish a baseline on `main` fdaf106
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Preparation and Merge' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Preparation and Merge' (Protocol in workflow.md) e8d693d
 
 ## Phase 2: Dependency Analysis and Candidate Identification
 Identifying files that are no longer needed after the UI refactor and architectural changes.
