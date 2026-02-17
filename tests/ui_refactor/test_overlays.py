@@ -25,22 +25,26 @@ def test_selection_overlay_ui_elements(qtbot):
     assert overlay.windowFlags() & Qt.SubWindow
 
 def test_sort_overlay_ui(qtbot):
-    mock_manager = MagicMock()
     mock_db = MagicMock()
-    overlay = SortOverlay(mock_manager, mock_db)
+    overlay = SortOverlay(mock_db)
     qtbot.addWidget(overlay)
     
     assert overlay.layout_engine.btn_sort is not None
     assert overlay.windowFlags() & Qt.SubWindow
 
 def test_sort_overlay_menu_creation(qtbot):
-    mock_manager = MagicMock()
-    mock_manager.plugins = {"Plugin1": MagicMock(), "Plugin2": MagicMock()}
     mock_db = MagicMock()
     mock_db.get_numeric_metrics.return_value = ["size"]
     
-    overlay = SortOverlay(mock_manager, mock_db)
+    overlay = SortOverlay(mock_db)
     qtbot.addWidget(overlay)
+
+    plugin1 = MagicMock()
+    plugin1.name = "Plugin1"
+    plugin2 = MagicMock()
+    plugin2.name = "Plugin2"
+    overlay.add_external_plugin(plugin1)
+    overlay.add_external_plugin(plugin2)
     
     menu = overlay.create_menu()
     actions = menu.actions()

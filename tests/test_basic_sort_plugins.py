@@ -1,6 +1,6 @@
 import pytest
-from sort.ascending.algo import AscendingSort
-from sort.descending.algo import DescendingSort
+from plugins.sort.ascending.algo import AscendingSort
+from plugins.sort.descending.algo import DescendingSort
 
 def test_ascending_sort():
     plugin = AscendingSort()

@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from sort.normal_dist.algo import NormalDistributionSort
+from plugins.sort.normal_dist.algo import NormalDistributionSort
 
 def test_normal_distribution_sort():
     plugin = NormalDistributionSort()

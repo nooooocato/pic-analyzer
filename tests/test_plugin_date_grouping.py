@@ -1,7 +1,7 @@
 import pytest
 import os
 import time
-from group.date_grouping.ui import DateGroupingPlugin
+from plugins.group.date_grouping.ui import DateGroupingPlugin
 
 def test_date_grouping_plugin_metadata():
     plugin = DateGroupingPlugin()
