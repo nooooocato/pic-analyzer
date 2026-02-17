@@ -1,7 +1,7 @@
 import pytest
 import os
 import shutil
-from src.file_ops import FileManager
+from src.app.file_ops import FileManager
 
 def test_safe_move_basic(tmp_path):
     src_dir = tmp_path / "src"

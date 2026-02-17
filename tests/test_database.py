@@ -1,7 +1,7 @@
 import sqlite3
 import pytest
 import os
-from src.database import DatabaseManager
+from src.app.database import DatabaseManager
 
 @pytest.fixture
 def db_manager(tmp_path):

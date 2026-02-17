@@ -1,7 +1,7 @@
 import pytest
 import sqlite3
 import os
-from src.database import DatabaseManager
+from src.app.database import DatabaseManager
 
 def test_get_numeric_metrics(tmp_path):
     db_path = str(tmp_path / "test.db")

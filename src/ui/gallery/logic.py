@@ -183,8 +183,32 @@ class GalleryView(QScrollArea):
         self._group_widgets = []
 
     def add_item(self, file_path, thumb_bytes=None):
-        self._items.append({'path': file_path, 'thumb': thumb_bytes})
-        self.refresh_view()
+        item_data = {'path': file_path, 'thumb': thumb_bytes}
+        self._items.append(item_data)
+        
+        # Debounce the refresh to avoid O(N^2) UI freezing
+        if not hasattr(self, "_refresh_timer"):
+            self._refresh_timer = QTimer()
+            self._refresh_timer.setSingleShot(True)
+            self._refresh_timer.setInterval(50) # 50ms is enough for responsiveness
+            self._refresh_timer.timeout.connect(self.refresh_view)
+        
+        # If no grouping and already initialized, we can append directly for better perf
+        if not self._current_plugin and self._group_widgets:
+            self._visible_items.append(item_data)
+            list_widget = self._group_widgets[0]
+            item = QListWidgetItem()
+            item.setData(Qt.UserRole, file_path)
+            if thumb_bytes:
+                pixmap = QPixmap()
+                if pixmap.loadFromData(thumb_bytes):
+                    item.setIcon(QIcon(pixmap))
+            list_widget.addItem(item)
+            # Re-adjust height after adding
+            QTimer.singleShot(0, list_widget.adjust_height)
+        else:
+            if not self._refresh_timer.isActive():
+                self._refresh_timer.start()
 
     def set_grouping(self, plugin, granularity="month"):
         self._current_plugin = plugin

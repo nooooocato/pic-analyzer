@@ -17,13 +17,13 @@ This plan outlines the steps for refactoring the plugin system and separating th
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Refactor Plugin System' (Protocol in workflow.md)
 
 ## Phase 3: Establish Core Application Layer (`src/app/`)
-- [ ] Task: Create the `src/app/` directory.
-- [ ] Task: Implement/Move Global State Management to `src/app/state.py` (or similar).
-- [ ] Task: Implement/Move Database Operations to `src/app/database.py`.
-- [ ] Task: Implement/Move File Operations (Safe move logic) to `src/app/file_ops.py`.
-- [ ] Task: Implement/Move Centralized Logging to `src/app/logger.py`.
-- [ ] Task: Implement the new application entry point in `src/app/main.py` and migrate initialization logic.
-- [ ] Task: Write unit tests for new components in `src/app/` (State, DB, File Ops, Logger).
+- [x] Task: Create the `src/app/` directory.
+- [x] Task: Implement/Move Global State Management to `src/app/state.py` (or similar).
+- [x] Task: Implement/Move Database Operations to `src/app/database.py`.
+- [x] Task: Implement/Move File Operations (Safe move logic) to `src/app/file_ops.py`.
+- [x] Task: Implement/Move Centralized Logging to `src/app/logger.py`.
+- [x] Task: Implement the new application entry point in `src/app/main.py` and migrate initialization logic.
+- [~] Task: Write unit tests for new components in `src/app/` (State, DB, File Ops, Logger).
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Establish Core Application Layer' (Protocol in workflow.md)
 
 ## Phase 4: Decouple MainWindow Logic (`src/ui/`)

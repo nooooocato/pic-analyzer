@@ -2,7 +2,7 @@ import pytest
 import os
 import shutil
 from PySide6.QtCore import QCoreApplication
-from src.file_scanner import FolderScanner
+from src.app.file_scanner import FolderScanner
 
 @pytest.fixture
 def temp_image_dir(tmp_path):
@@ -49,7 +49,7 @@ def test_folder_scanner_finds_images(temp_image_dir, qtbot):
 
 def test_folder_scanner_persistence(temp_image_dir, qtbot, tmp_path):
     db_path = str(tmp_path / "persistence.db")
-    from src.database import DatabaseManager
+    from src.app.database import DatabaseManager
     db_manager = DatabaseManager(db_path) # Initialize schema
     
     scanner = FolderScanner(temp_image_dir, db_path)

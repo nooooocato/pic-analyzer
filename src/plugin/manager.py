@@ -3,7 +3,7 @@ import sys
 import importlib.util
 import inspect
 from .base import BasePlugin
-from src.logger import get_logger
+from src.app.logger import get_logger
 
 logger = get_logger(__name__)
 

@@ -7,9 +7,9 @@ from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox, QApplicatio
 from PySide6.QtCore import Qt, QThreadPool, QPoint, QEvent
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QAction, QCursor
 
-from src.file_scanner import FolderScanner
-from src.database import DatabaseManager
-from src.file_ops import hide_file
+from src.app.file_scanner import FolderScanner
+from src.app.database import DatabaseManager
+from src.app.file_ops import hide_file
 from src.plugin.manager import PluginManager
 from src.ui.overlays.sort.logic import SortOverlay
 from src.ui.common.toast.logic import Toast
