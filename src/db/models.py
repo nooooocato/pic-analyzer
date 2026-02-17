@@ -24,7 +24,7 @@ class Image(BaseModel):
     filename = CharField()
     file_size = IntegerField(null=True)
     created_at = DateTimeField(null=True)
-    modified_at = DateTimeField(null=True)
+    modified_at = IntegerField(null=True)
     thumbnail = BlobField(null=True)
     
     class Meta:
