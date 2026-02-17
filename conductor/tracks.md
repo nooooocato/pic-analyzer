@@ -9,3 +9,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
+- [ ] **Track: Architecture Refactoring - Plugin System & App/UI Separation**
+*Link: [./tracks/refactor_arch_20260217/](./tracks/refactor_arch_20260217/)*

@@ -1,0 +1,8 @@
+{
+  "track_id": "refactor_arch_20260217",
+  "type": "refactor",
+  "status": "new",
+  "created_at": "2026-02-17T15:29:00Z",
+  "updated_at": "2026-02-17T15:29:00Z",
+  "description": "重构。1.plugin系统，让base类和具体的实现分离。base和manager应该在/src/plugin下。2.MainWindow的app逻辑和ui逻辑分离。app的入口和各种数据的注册，全局状态管理应该和ui做适当的分离。/src/app/中放程序的入口、全局状态，数据库、文件操作功能类，日志类。"
+}
