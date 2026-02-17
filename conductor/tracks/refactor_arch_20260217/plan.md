@@ -34,7 +34,7 @@ This plan outlines the steps for refactoring the plugin system and separating th
 - [x] Task: Verify that all UI events correctly trigger the corresponding application logic in `src/app/`.
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Decouple MainWindow Logic' (Protocol in workflow.md)
 
-## Phase 5: Final Integration and Verification
+## Phase 5: Final Integration and Verification [checkpoint: acfc0ab]
 - [x] Task: Run the full test suite (automated and manual) to ensure no regressions in file operations, analysis, or preview features.
 - [x] Task: Verify that all statistical plugins load and function correctly.
 - [x] Task: Perform a final code review to ensure adherence to architectural goals (separation of concerns).
