@@ -11,9 +11,9 @@ Establish the new ORM-based database infrastructure in `/src/db` and define mode
     - [x] Write tests for `manage_workspace` and implement.
     - [x] Write tests for `query_images` (returning `Select` objects) and implement.
     - [x] Write tests for `update_metrics` and implement.
-- [ ] Task: Integrate with Existing App Layer
-    - [ ] Update `src/app/state.py` to use the new Peewee manager.
-    - [ ] Migrate `src/app/file_scanner.py` to use Peewee models.
+- [x] Task: Integrate with Existing App Layer (9f8d38d)
+    - [x] Update `src/app/state.py` to use the new Peewee manager.
+    - [x] Migrate `src/app/file_scanner.py` to use Peewee models.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Database Layer' (Protocol in workflow.md)
 
 ## Phase 2: Component Decoupling - Event Bus and Toast
