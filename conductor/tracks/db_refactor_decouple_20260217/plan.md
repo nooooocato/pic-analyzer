@@ -1,6 +1,6 @@
 # Implementation Plan: Database Refactor and Component Decoupling
 
-## Phase 1: Database Layer - Peewee ORM Implementation
+## Phase 1: Database Layer - Peewee ORM Implementation [checkpoint: 61e5d3f]
 Establish the new ORM-based database infrastructure in `/src/db` and define models.
 
 - [x] Task: Create Peewee Models and Initial Setup (84b2f4e)
