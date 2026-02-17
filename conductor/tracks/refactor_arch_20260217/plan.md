@@ -2,7 +2,7 @@
 
 This plan outlines the steps for refactoring the plugin system and separating the application logic from the UI logic.
 
-## Phase 1: Preparation and Baseline
+## Phase 1: Preparation and Baseline [checkpoint: 9eb0a01]
 - [x] Task: Conduct a thorough audit of `src/ui/main_window/logic.py` to identify all business logic, state management, and core service calls.
 - [x] Task: Identify and document all current dependencies of the `PluginManager` and `PluginBase`.
 - [x] Task: Create a baseline of existing unit tests and ensure they pass before refactoring begins.
