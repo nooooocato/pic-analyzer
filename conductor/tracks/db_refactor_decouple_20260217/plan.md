@@ -1,6 +1,6 @@
 # Implementation Plan: Database Refactor and Component Decoupling
 
-## Phase 1: Database Layer - Peewee ORM Implementation [checkpoint: 61e5d3f]
+## Phase 1: Database Layer - Peewee ORM Implementation
 Establish the new ORM-based database infrastructure in `/src/db` and define models.
 
 - [x] Task: Create Peewee Models and Initial Setup (84b2f4e)
@@ -14,14 +14,14 @@ Establish the new ORM-based database infrastructure in `/src/db` and define mode
 - [x] Task: Integrate with Existing App Layer (9f8d38d)
     - [x] Update `src/app/state.py` to use the new Peewee manager.
     - [x] Migrate `src/app/file_scanner.py` to use Peewee models.
-- [x] Task: Conductor - User Manual Verification 'Phase 1: Database Layer' (Protocol in workflow.md)
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Database Layer' (Protocol in workflow.md)
 
 ## Phase 2: Component Decoupling - Event Bus and Toast
 Decouple the notification system from the Main Window using a signal-based event bus.
 
-- [x] Task: Implement Global Communicator (253f2ad)
-    - [x] Create `src/app/communicator.py` with singleton `Communicator` class and PySide6 signals.
-- [~] Task: Refactor Toast Component
+- [ ] Task: Implement Global Communicator
+    - [ ] Create `src/app/communicator.py` with singleton `Communicator` class and PySide6 signals.
+- [ ] Task: Refactor Toast Component
     - [ ] Modify `src/ui/common/toast` to subscribe to `Communicator` signals.
     - [ ] Remove Toast management logic from `src/ui/main_window/logic.py`.
     - [ ] Update all callers (e.g., file_ops, plugins) to use `Communicator.notify`.
