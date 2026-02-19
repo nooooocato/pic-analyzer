@@ -1,0 +1,40 @@
+# Implementation Plan: Test Suite Reorganization and Decentralization
+
+## Phase 1: Preparation and Environment Check
+- [ ] Task: Verify current test state by running all tests.
+    - [ ] Run `pytest` and ensure 100% pass rate before starting.
+- [ ] Task: Create new directory structure in `tests/`.
+    - [ ] Create `tests/app/`
+    - [ ] Create `tests/db/`
+    - [ ] Create `tests/plugin/`
+    - [ ] Create `tests/ui/`
+
+## Phase 2: Core Test Categorization
+- [ ] Task: Move App-related tests to `tests/app/`.
+    - [ ] Move `tests/test_app_state.py`, `tests/test_communicator.py`, `tests/test_file_ops.py`, `tests/test_file_scanner.py`, `tests/test_scaffolding.py`, `tests/test_sys_path.py` to `tests/app/`.
+- [ ] Task: Move DB-related tests to `tests/db/`.
+    - [ ] Move `tests/test_peewee_db.py` to `tests/db/`.
+- [ ] Task: Move Plugin-framework-related tests to `tests/plugin/`.
+    - [ ] Move `tests/test_plugin_discovery.py`, `tests/test_plugin_framework.py`, `tests/test_plugin_structure.py`, `tests/test_malformed_plugins.py`, `tests/test_plugin_conflicts.py`, `tests/test_plugin_integration.py`, `tests/test_base_plugin_update.py` to `tests/plugin/`.
+- [ ] Task: Reorganize and rename UI tests.
+    - [ ] Move `tests/test_thumbnail_gen.py`, `tests/test_toast_decoupled.py`, `tests/test_data_inspector.py`, `tests/test_main_window_hooks.py`, `tests/test_main_window_plugin_init.py` to `tests/ui/`.
+    - [ ] Move and rename `tests/ui_refactor/` to `tests/ui/ui_basic/`.
+- [ ] Task: Conductor - User Manual Verification 'Core Categorization' (Protocol in workflow.md)
+
+## Phase 3: Plugin Test Decentralization
+- [ ] Task: Extract and move Sort plugin tests.
+    - [ ] Split `tests/test_basic_sort_plugins.py` into `plugins/sort/ascending/test_algo.py` and `plugins/sort/descending/test_algo.py`.
+    - [ ] Move `tests/test_normal_dist_plugin.py` to `plugins/sort/normal_dist/test_algo.py`.
+- [ ] Task: Move Group plugin tests.
+    - [ ] Move `tests/test_plugin_date_grouping.py` to `plugins/group/date_grouping/test_plugin.py`.
+- [ ] Task: Conductor - User Manual Verification 'Plugin Decentralization' (Protocol in workflow.md)
+
+## Phase 4: Verification and Cleanup
+- [ ] Task: Update test discovery (if necessary).
+    - [ ] Check if `pytest` discovers tests in `plugins/` automatically; if not, add configuration.
+- [ ] Task: Run all tests to ensure no regressions.
+    - [ ] Run `pytest` from the root and verify all tests pass.
+- [ ] Task: Final Cleanup.
+    - [ ] Remove empty directories and delete `tests/test_basic_sort_plugins.py`.
+    - [ ] Clean up `__pycache__` and `.pytest_cache`.
+- [ ] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
