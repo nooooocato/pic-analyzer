@@ -126,3 +126,40 @@ def test_update_metrics(db_manager):
     assert "new_metric" in ar.result_data
     assert "100" in ar.result_data
     assert "2" in ar.result_data
+
+def test_get_image_metadata(db_manager):
+    """Test fetching full metadata for an image."""
+    ws = db_manager.manage_workspace("create", {"name": "WS_META", "path": "/ws_meta"})
+    img = db_manager.upsert_image({"path": "/meta.jpg", "filename": "meta.jpg", "file_size": 512, "workspace": ws}, {"brightness": 0.5})
+    
+    metadata = db_manager.get_image_metadata("/meta.jpg")
+    assert metadata["Filename"] == "meta.jpg"
+    assert "0.5000" in metadata["brightness"]
+    assert "0.50 KB" in metadata["Size"]
+
+def test_get_numeric_metrics(db_manager):
+    """Test retrieving list of numeric metrics."""
+    ws = db_manager.manage_workspace("create", {"name": "WS_NUM", "path": "/ws_num"})
+    db_manager.upsert_image({"path": "/num.jpg", "filename": "num.jpg", "workspace": ws}, {"score": 95, "label": "cat"})
+    
+    metrics = db_manager.get_numeric_metrics()
+    assert "file_size" in metrics
+    assert "modified_at" in metrics
+    assert "score" in metrics
+    assert "label" not in metrics
+
+def test_get_metric_values(db_manager):
+    """Test retrieving values for a specific metric."""
+    ws = db_manager.manage_workspace("create", {"name": "WS_VAL", "path": "/ws_val"})
+    db_manager.upsert_image({"path": "/v1.jpg", "filename": "v1.jpg", "file_size": 100, "workspace": ws}, {"val": 10.0})
+    db_manager.upsert_image({"path": "/v2.jpg", "filename": "v2.jpg", "file_size": 200, "workspace": ws}, {"val": 20.0})
+    
+    # Internal metric
+    sizes = db_manager.get_metric_values("file_size")
+    assert sizes["/v1.jpg"] == 100.0
+    assert sizes["/v2.jpg"] == 200.0
+    
+    # External metric
+    vals = db_manager.get_metric_values("val")
+    assert vals["/v1.jpg"] == 10.0
+    assert vals["/v2.jpg"] == 20.0

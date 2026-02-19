@@ -123,3 +123,97 @@ class DBManager:
         img = Image.get_by_id(image_id)
         # Use upsert_image logic or specialized update
         self.upsert_image({"path": img.path, "filename": img.filename, "workspace": img.workspace}, metrics)
+
+    def get_image_metadata(self, path: str) -> dict:
+        """Fetches all stored metadata and analysis results for a given image path."""
+        try:
+            img = Image.get(Image.path == path)
+        except Image.DoesNotExist:
+            return {}
+            
+        metadata = {
+            "Filename": img.filename,
+            "Size": f"{img.file_size / 1024:.2f} KB" if img.file_size else "Unknown",
+            "Modified": img.modified_at
+        }
+        
+        # Merge all analysis results
+        for ar in img.analysis_results:
+            try:
+                data = json.loads(ar.result_data)
+                for key, val in data.items():
+                    # Try to format numeric values for display
+                    if isinstance(val, (int, float)):
+                        metadata[key] = f"{val:.4f}" if isinstance(val, float) else str(val)
+                    else:
+                        metadata[key] = str(val)
+            except (ValueError, TypeError, json.JSONDecodeError):
+                continue
+                
+        return metadata
+
+    def get_numeric_metrics(self) -> list[str]:
+        """Returns a list of keys that contain numeric values across all images."""
+        numeric_keys = {"file_size", "modified_at"}
+        
+        # Scan AnalysisResults to find other numeric keys
+        for ar in AnalysisResult.select(AnalysisResult.result_data):
+            try:
+                data = json.loads(ar.result_data)
+                for key, val in data.items():
+                    try:
+                        float(val)
+                        numeric_keys.add(key)
+                    except (ValueError, TypeError):
+                        pass
+            except (json.JSONDecodeError, TypeError):
+                continue
+                
+        return sorted(list(numeric_keys))
+
+    def get_metric_values(self, metric_key: str) -> dict[str, float]:
+        """Returns a mapping of image path to its numeric value for the given metric."""
+        results = {}
+        
+        if metric_key in ["file_size", "modified_at"]:
+            for img in Image.select(Image.path, getattr(Image, metric_key)):
+                val = getattr(img, metric_key)
+                results[img.path] = float(val) if val is not None else 0.0
+        else:
+            # Join Image and AnalysisResult to get path and result_data
+            query = (Image
+                     .select(Image.path, AnalysisResult.result_data)
+                     .join(AnalysisResult))
+            
+            for row in query:
+                try:
+                    data = json.loads(row.analysis_results[0].result_data) # This might be problematic if multiple ARs
+                    if metric_key in data:
+                        val = data[metric_key]
+                        try:
+                            results[row.path] = float(val)
+                        except (ValueError, TypeError):
+                            pass
+                except (IndexError, json.JSONDecodeError, TypeError):
+                    continue
+                    
+            # Actually, the above join logic is slightly flawed for multiple ARs per image.
+            # Let's do it more robustly:
+            results = {}
+            if metric_key in ["file_size", "modified_at"]:
+                for img in Image.select(Image.path, getattr(Image, metric_key)):
+                    val = getattr(img, metric_key)
+                    results[img.path] = float(val) if val is not None else 0.0
+            else:
+                for ar in AnalysisResult.select(AnalysisResult.result_data, Image.path).join(Image):
+                    try:
+                        data = json.loads(ar.result_data)
+                        if metric_key in data:
+                            val = data[metric_key]
+                            try:
+                                results[ar.image.path] = float(val)
+                            except (ValueError, TypeError):
+                                pass
+                    except (json.JSONDecodeError, TypeError):
+                        continue
+        return results
