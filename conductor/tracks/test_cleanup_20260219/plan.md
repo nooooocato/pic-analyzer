@@ -25,8 +25,8 @@
 - [x] Task: Extract and move Sort plugin tests. (ccf248c)
     - [x] Split `tests/test_basic_sort_plugins.py` into `plugins/sort/ascending/test_algo.py` and `plugins/sort/descending/test_algo.py`.
     - [x] Move `tests/test_normal_dist_plugin.py` to `plugins/sort/normal_dist/test_algo.py`.
-- [ ] Task: Move Group plugin tests.
-    - [ ] Move `tests/test_plugin_date_grouping.py` to `plugins/group/date_grouping/test_plugin.py`.
+- [x] Task: Move Group plugin tests. (2d4019e)
+    - [x] Move `tests/test_plugin_date_grouping.py` to `plugins/group/date_grouping/test_plugin.py`.
 - [ ] Task: Conductor - User Manual Verification 'Plugin Decentralization' (Protocol in workflow.md)
 
 ## Phase 4: Verification and Cleanup
