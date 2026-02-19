@@ -3,7 +3,7 @@
 ## Core Technologies
 - **Language:** Python 3.10+ (for modern typing and concurrency support)
 - **UI Framework:** PySide6 (Qt for Python) - Chosen for its native Windows integration and support for modern Fluent Design styles.
-- **Database:** SQLite - Used for local, high-performance storage of image analysis results and metadata.
+- **Database & ORM:** SQLite with **Peewee ORM** - Provides type-safe, structured access to Workspace, Image, and AnalysisResult models.
 
 ## Image Processing & Media
 - **Pillow (PIL):** Primary library for image loading, thumbnail generation, and basic manipulation.

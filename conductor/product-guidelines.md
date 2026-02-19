@@ -12,7 +12,8 @@
 - **Conflict Resolution:** Mandatory interactive prompts for filename conflicts during "Move" operations (Rename, Skip, Overwrite).
 
 ## Component Standards
-- **Data Inspector:** Hierarchical tree view to organize metrics (pHash, File System, Metadata).
+- **Data Inspector:** Hierarchical tree view to organize metrics (pHash, File System, Metadata). Now a standalone, reactive widget.
+- **Component Communication:** Strictly use the global `Communicator` signal bus for cross-component notifications and state changes to maintain decoupling.
 - **Toolbar:** Dynamic generation of buttons based on available statistical plugins.
 - **File Operations:** Strictly use "Move" (atomic if possible) to minimize disk I/O and wear.
 

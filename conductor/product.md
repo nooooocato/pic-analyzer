@@ -73,6 +73,7 @@ A "geeky," high-performance image management and analysis tool designed for scie
 - **Utility-First UI:** A functional, data-dense interface following native Windows design patterns.
 - **On-Demand Analysis:** Statistical rules are triggered manually via buttons to conserve resources.
 - **Centralized App Layer:** Business logic, global state, and core services (DB, File Ops) are decoupled from the UI.
+- **Reactive Architecture:** Uses a global signal-based event bus (Communicator) to decouple UI components like Toast notifications and the Data Inspector.
 - **Lazy Loading:** UI elements and thumbnails are generated only as needed.
 - **Workspace Management:** Users can open folders as discrete workspaces, with analysis data stored in hidden local databases.
 - **Interactive Visualization:**
