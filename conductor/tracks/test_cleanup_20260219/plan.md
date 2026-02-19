@@ -16,9 +16,9 @@
     - [x] Move `tests/test_peewee_db.py` to `tests/db/`.
 - [x] Task: Move Plugin-framework-related tests to `tests/plugin/`. (cdc8373)
     - [x] Move `tests/test_plugin_discovery.py`, `tests/test_plugin_framework.py`, `tests/test_plugin_structure.py`, `tests/test_malformed_plugins.py`, `tests/test_plugin_conflicts.py`, `tests/test_plugin_integration.py`, `tests/test_base_plugin_update.py` to `tests/plugin/`.
-- [ ] Task: Reorganize and rename UI tests.
-    - [ ] Move `tests/test_thumbnail_gen.py`, `tests/test_toast_decoupled.py`, `tests/test_data_inspector.py`, `tests/test_main_window_hooks.py`, `tests/test_main_window_plugin_init.py` to `tests/ui/`.
-    - [ ] Move and rename `tests/ui_refactor/` to `tests/ui/ui_basic/`.
+- [x] Task: Reorganize and rename UI tests. (3af0eeb)
+    - [x] Move `tests/test_thumbnail_gen.py`, `tests/test_toast_decoupled.py`, `tests/test_data_inspector.py`, `tests/test_main_window_hooks.py`, `tests/test_main_window_plugin_init.py` to `tests/ui/`.
+    - [x] Move and rename `tests/ui_refactor/` to `tests/ui/ui_basic/`.
 - [ ] Task: Conductor - User Manual Verification 'Core Categorization' (Protocol in workflow.md)
 
 ## Phase 3: Plugin Test Decentralization
