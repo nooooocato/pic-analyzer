@@ -9,7 +9,7 @@
     - [x] Create `tests/plugin/`
     - [x] Create `tests/ui/`
 
-## Phase 2: Core Test Categorization
+## Phase 2: Core Test Categorization [checkpoint: dc15c75]
 - [x] Task: Move App-related tests to `tests/app/`. (cb30396)
     - [x] Move `tests/test_app_state.py`, `tests/test_communicator.py`, `tests/test_file_ops.py`, `tests/test_file_scanner.py`, `tests/test_scaffolding.py`, `tests/test_sys_path.py` to `tests/app/`.
 - [x] Task: Move DB-related tests to `tests/db/`. (119ccb2)
@@ -19,7 +19,7 @@
 - [x] Task: Reorganize and rename UI tests. (3af0eeb)
     - [x] Move `tests/test_thumbnail_gen.py`, `tests/test_toast_decoupled.py`, `tests/test_data_inspector.py`, `tests/test_main_window_hooks.py`, `tests/test_main_window_plugin_init.py` to `tests/ui/`.
     - [x] Move and rename `tests/ui_refactor/` to `tests/ui/ui_basic/`.
-- [ ] Task: Conductor - User Manual Verification 'Core Categorization' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Core Categorization' (Protocol in workflow.md)
 
 ## Phase 3: Plugin Test Decentralization
 - [ ] Task: Extract and move Sort plugin tests.
