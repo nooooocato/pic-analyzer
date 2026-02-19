@@ -1,13 +1,13 @@
 # Implementation Plan: Test Suite Reorganization and Decentralization
 
 ## Phase 1: Preparation and Environment Check
-- [ ] Task: Verify current test state by running all tests.
-    - [ ] Run `pytest` and ensure 100% pass rate before starting.
-- [ ] Task: Create new directory structure in `tests/`.
-    - [ ] Create `tests/app/`
-    - [ ] Create `tests/db/`
-    - [ ] Create `tests/plugin/`
-    - [ ] Create `tests/ui/`
+- [x] Task: Verify current test state by running all tests.
+    - [x] Run `pytest` and ensure 100% pass rate before starting.
+- [x] Task: Create new directory structure in `tests/`. (8d252ac)
+    - [x] Create `tests/app/`
+    - [x] Create `tests/db/`
+    - [x] Create `tests/plugin/`
+    - [x] Create `tests/ui/`
 
 ## Phase 2: Core Test Categorization
 - [ ] Task: Move App-related tests to `tests/app/`.
