@@ -1,6 +1,6 @@
 # Implementation Plan: Test Suite Reorganization and Decentralization
 
-## Phase 1: Preparation and Environment Check
+## Phase 1: Preparation and Environment Check [checkpoint: 570ef1e]
 - [x] Task: Verify current test state by running all tests.
     - [x] Run `pytest` and ensure 100% pass rate before starting.
 - [x] Task: Create new directory structure in `tests/`. (8d252ac)
