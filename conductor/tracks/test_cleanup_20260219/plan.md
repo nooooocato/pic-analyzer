@@ -14,8 +14,8 @@
     - [x] Move `tests/test_app_state.py`, `tests/test_communicator.py`, `tests/test_file_ops.py`, `tests/test_file_scanner.py`, `tests/test_scaffolding.py`, `tests/test_sys_path.py` to `tests/app/`.
 - [x] Task: Move DB-related tests to `tests/db/`. (119ccb2)
     - [x] Move `tests/test_peewee_db.py` to `tests/db/`.
-- [ ] Task: Move Plugin-framework-related tests to `tests/plugin/`.
-    - [ ] Move `tests/test_plugin_discovery.py`, `tests/test_plugin_framework.py`, `tests/test_plugin_structure.py`, `tests/test_malformed_plugins.py`, `tests/test_plugin_conflicts.py`, `tests/test_plugin_integration.py`, `tests/test_base_plugin_update.py` to `tests/plugin/`.
+- [x] Task: Move Plugin-framework-related tests to `tests/plugin/`. (cdc8373)
+    - [x] Move `tests/test_plugin_discovery.py`, `tests/test_plugin_framework.py`, `tests/test_plugin_structure.py`, `tests/test_malformed_plugins.py`, `tests/test_plugin_conflicts.py`, `tests/test_plugin_integration.py`, `tests/test_base_plugin_update.py` to `tests/plugin/`.
 - [ ] Task: Reorganize and rename UI tests.
     - [ ] Move `tests/test_thumbnail_gen.py`, `tests/test_toast_decoupled.py`, `tests/test_data_inspector.py`, `tests/test_main_window_hooks.py`, `tests/test_main_window_plugin_init.py` to `tests/ui/`.
     - [ ] Move and rename `tests/ui_refactor/` to `tests/ui/ui_basic/`.
