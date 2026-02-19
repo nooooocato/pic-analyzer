@@ -180,40 +180,15 @@ class DBManager:
                 val = getattr(img, metric_key)
                 results[img.path] = float(val) if val is not None else 0.0
         else:
-            # Join Image and AnalysisResult to get path and result_data
-            query = (Image
-                     .select(Image.path, AnalysisResult.result_data)
-                     .join(AnalysisResult))
-            
-            for row in query:
+            for ar in AnalysisResult.select(AnalysisResult.result_data, Image.path).join(Image):
                 try:
-                    data = json.loads(row.analysis_results[0].result_data) # This might be problematic if multiple ARs
+                    data = json.loads(ar.result_data)
                     if metric_key in data:
                         val = data[metric_key]
                         try:
-                            results[row.path] = float(val)
+                            results[ar.image.path] = float(val)
                         except (ValueError, TypeError):
                             pass
-                except (IndexError, json.JSONDecodeError, TypeError):
+                except (json.JSONDecodeError, TypeError):
                     continue
-                    
-            # Actually, the above join logic is slightly flawed for multiple ARs per image.
-            # Let's do it more robustly:
-            results = {}
-            if metric_key in ["file_size", "modified_at"]:
-                for img in Image.select(Image.path, getattr(Image, metric_key)):
-                    val = getattr(img, metric_key)
-                    results[img.path] = float(val) if val is not None else 0.0
-            else:
-                for ar in AnalysisResult.select(AnalysisResult.result_data, Image.path).join(Image):
-                    try:
-                        data = json.loads(ar.result_data)
-                        if metric_key in data:
-                            val = data[metric_key]
-                            try:
-                                results[ar.image.path] = float(val)
-                            except (ValueError, TypeError):
-                                pass
-                    except (json.JSONDecodeError, TypeError):
-                        continue
         return results
