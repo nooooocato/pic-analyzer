@@ -16,7 +16,7 @@ Establish the new ORM-based database infrastructure in `/src/db` and define mode
     - [x] Migrate `src/app/file_scanner.py` to use Peewee models.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Database Layer' (f108ebd)
 
-## Phase 2: Component Decoupling - Event Bus and Toast
+## Phase 2: Component Decoupling - Event Bus and Toast [checkpoint: 49176fc]
 Decouple the notification system from the Main Window using a signal-based event bus.
 
 - [x] Task: Implement Global Communicator (253f2ad)
@@ -27,7 +27,7 @@ Decouple the notification system from the Main Window using a signal-based event
     - [x] Update all callers (e.g., file_ops, plugins) to use `Communicator.notify`.
 - [x] Task: Verify Toast Functionality (063c9d2)
     - [x] Write integration tests for decoupled Toast notifications.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Event Bus and Toast' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Event Bus and Toast' (49176fc)
 
 ## Phase 3: Component Decoupling - Data Inspector
 Refactor the Data Inspector into a standalone, reactive widget.
