@@ -41,12 +41,12 @@ Refactor the Data Inspector into a standalone, reactive widget.
     - [x] Remove direct Data Inspector references and management code from `MainWindow`.
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Data Inspector' (1cf7782)
 
-## Phase 4: Final Migration and Cleanup
+## Phase 4: Final Migration and Cleanup (fff46c0)
 Deprecated old database logic and ensure full system integration.
 
-- [ ] Task: Deprecate `src/app/database.py`
-    - [ ] Remove old SQL-string based database logic.
-    - [ ] Ensure all tests originally using `database.py` now pass with the new Peewee implementation.
-- [ ] Task: Final Integration Test Pass
-    - [ ] Run full test suite and verify >80% coverage.
+- [x] Task: Deprecate `src/app/database.py` (fff46c0)
+    - [x] Remove old SQL-string based database logic.
+    - [x] Ensure all tests originally using `database.py` now pass with the new Peewee implementation.
+- [x] Task: Final Integration Test Pass (fff46c0)
+    - [x] Run full test suite and verify >80% coverage.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Migration' (Protocol in workflow.md)
