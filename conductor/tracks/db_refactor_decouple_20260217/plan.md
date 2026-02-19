@@ -19,14 +19,14 @@ Establish the new ORM-based database infrastructure in `/src/db` and define mode
 ## Phase 2: Component Decoupling - Event Bus and Toast
 Decouple the notification system from the Main Window using a signal-based event bus.
 
-- [ ] Task: Implement Global Communicator
-    - [ ] Create `src/app/communicator.py` with singleton `Communicator` class and PySide6 signals.
-- [ ] Task: Refactor Toast Component
-    - [ ] Modify `src/ui/common/toast` to subscribe to `Communicator` signals.
-    - [ ] Remove Toast management logic from `src/ui/main_window/logic.py`.
-    - [ ] Update all callers (e.g., file_ops, plugins) to use `Communicator.notify`.
-- [ ] Task: Verify Toast Functionality
-    - [ ] Write integration tests for decoupled Toast notifications.
+- [x] Task: Implement Global Communicator (253f2ad)
+    - [x] Create `src/app/communicator.py` with singleton `Communicator` class and PySide6 signals.
+- [x] Task: Refactor Toast Component (063c9d2)
+    - [x] Modify `src/ui/common/toast` to subscribe to `Communicator` signals.
+    - [x] Remove Toast management logic from `src/ui/main_window/logic.py`.
+    - [x] Update all callers (e.g., file_ops, plugins) to use `Communicator.notify`.
+- [x] Task: Verify Toast Functionality (063c9d2)
+    - [x] Write integration tests for decoupled Toast notifications.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Event Bus and Toast' (Protocol in workflow.md)
 
 ## Phase 3: Component Decoupling - Data Inspector
