@@ -12,8 +12,8 @@
 ## Phase 2: Core Test Categorization
 - [x] Task: Move App-related tests to `tests/app/`. (cb30396)
     - [x] Move `tests/test_app_state.py`, `tests/test_communicator.py`, `tests/test_file_ops.py`, `tests/test_file_scanner.py`, `tests/test_scaffolding.py`, `tests/test_sys_path.py` to `tests/app/`.
-- [ ] Task: Move DB-related tests to `tests/db/`.
-    - [ ] Move `tests/test_peewee_db.py` to `tests/db/`.
+- [x] Task: Move DB-related tests to `tests/db/`. (119ccb2)
+    - [x] Move `tests/test_peewee_db.py` to `tests/db/`.
 - [ ] Task: Move Plugin-framework-related tests to `tests/plugin/`.
     - [ ] Move `tests/test_plugin_discovery.py`, `tests/test_plugin_framework.py`, `tests/test_plugin_structure.py`, `tests/test_malformed_plugins.py`, `tests/test_plugin_conflicts.py`, `tests/test_plugin_integration.py`, `tests/test_base_plugin_update.py` to `tests/plugin/`.
 - [ ] Task: Reorganize and rename UI tests.
