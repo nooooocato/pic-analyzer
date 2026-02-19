@@ -170,38 +170,11 @@ class MainWindow(QMainWindow):
         self.layout_engine.gallery.apply_sort(metric, plugin, values)
 
     def _on_item_selected(self, file_path: str):
-        if not os.path.exists(file_path): return
-        
-        # Try to get metadata from database
-        metadata = state.db_manager.get_image_metadata(file_path)
-        
-        if not metadata:
-            # Fallback to filesystem
-            stats = os.stat(file_path)
-            metadata = {
-                "Filename": os.path.basename(file_path),
-                "Path": file_path,
-                "Size": f"{stats.st_size / 1024:.2f} KB",
-                "Modified": stats.st_mtime,
-            }
-        else:
-            metadata["Path"] = file_path
-            
-        self._update_inspector(metadata)
+        """Notify the system that an image has been selected."""
+        if os.path.exists(file_path):
+            Communicator().image_selected.emit(file_path)
 
-    def _update_inspector(self, metadata: dict):
-        model = QStandardItemModel()
-        model.setHorizontalHeaderLabels(["Property", "Value"])
-        for key, value in metadata.items():
-            display_value = str(value)
-            if "Modified" in key or "timestamp" in key.lower():
-                try:
-                    dt = datetime.datetime.fromtimestamp(float(value))
-                    display_value = dt.strftime("%Y-%m-%d %H:%M:%S")
-                except: pass
-            model.appendRow([QStandardItem(str(key)), QStandardItem(display_value)])
-        self.layout_engine.tree_view.setModel(model)
-        self.layout_engine.tree_view.expandAll()
+    # _update_inspector is now handled by the DataInspector widget itself via signals
 
     def _on_open_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder to Scan")

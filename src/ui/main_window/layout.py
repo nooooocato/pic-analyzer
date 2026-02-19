@@ -6,6 +6,7 @@ from src.ui.gallery.logic import GalleryView
 from src.ui.image_viewer.logic import ImageViewer
 from src.ui.overlays.selection.logic import SelectionOverlay
 from src.ui.overlays.sort.logic import SortOverlay
+from src.ui.overlays.data_inspector.logic import DataInspector
 
 class MainWindowLayout:
     def setup_ui(self, window: QMainWindow):
@@ -23,9 +24,8 @@ class MainWindowLayout:
         
         # Inspector Dock
         self.inspector_dock = QDockWidget("Data Inspector", window)
-        self.tree_view = QTreeView()
-        self.tree_view.setEditTriggers(QTreeView.NoEditTriggers)
-        self.inspector_dock.setWidget(self.tree_view)
+        self.data_inspector = DataInspector()
+        self.inspector_dock.setWidget(self.data_inspector)
         window.addDockWidget(Qt.RightDockWidgetArea, self.inspector_dock)
         
         # Central Gallery

@@ -10,6 +10,9 @@ class Communicator(QObject):
     # Signals
     # notify(message: str, level: str) - level can be "INFO", "WARNING", "ERROR", "SUCCESS"
     notify = Signal(str, str)
+    
+    # image_selected(file_path: str)
+    image_selected = Signal(str)
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
