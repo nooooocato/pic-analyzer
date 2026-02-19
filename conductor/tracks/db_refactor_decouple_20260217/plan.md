@@ -29,7 +29,7 @@ Decouple the notification system from the Main Window using a signal-based event
     - [x] Write integration tests for decoupled Toast notifications.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Event Bus and Toast' (49176fc)
 
-## Phase 3: Component Decoupling - Data Inspector (eb448df)
+## Phase 3: Component Decoupling - Data Inspector [checkpoint: 1cf7782]
 Refactor the Data Inspector into a standalone, reactive widget.
 
 - [x] Task: Standalone Data Inspector Widget (eb448df)
@@ -39,7 +39,7 @@ Refactor the Data Inspector into a standalone, reactive widget.
     - [x] Implement reactive view updates in Data Inspector based on Peewee model instances.
 - [x] Task: Cleanup MainWindow (eb448df)
     - [x] Remove direct Data Inspector references and management code from `MainWindow`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Data Inspector' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Data Inspector' (1cf7782)
 
 ## Phase 4: Final Migration and Cleanup
 Deprecated old database logic and ensure full system integration.
