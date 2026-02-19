@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QFrame, QGraphicsOpacityEffect
 from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QTimer, QPoint
+from src.app.communicator import Communicator
 from .style import get_style
 from .layout import ToastLayout
 
@@ -26,6 +27,15 @@ class Toast(QFrame):
         
         self.duration = duration
         self.hide()
+        
+        # Connect to global communicator
+        self.communicator = Communicator()
+        self.communicator.notify.connect(self._on_notify)
+
+    def _on_notify(self, message: str, level: str):
+        """Handle incoming global notifications."""
+        # Future: we could use 'level' to change styles
+        self.show_message(message)
 
     def show_message(self, text=None, reference_widget=None):
         if text:

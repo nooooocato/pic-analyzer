@@ -8,6 +8,7 @@ from PySide6.QtCore import Qt, QThreadPool, QPoint, QEvent
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QPixmap, QAction, QCursor
 
 from src.app.state import state
+from src.app.communicator import Communicator
 from src.app.file_scanner import FolderScanner
 from src.app.file_ops import hide_file
 from src.ui.overlays.sort.logic import SortOverlay
@@ -133,7 +134,7 @@ class MainWindow(QMainWindow):
         if new_index < l.gallery.count():
             self._open_image_viewer(l.gallery._visible_items[new_index]['path'])
         else:
-            self.toast.show_message("Wrapped to first image", reference_widget=l.image_viewer)
+            Communicator().notify.emit("Wrapped to first image", "INFO")
             self._open_image_viewer(l.gallery._visible_items[0]['path'])
 
     def _on_prev_image(self):
@@ -142,7 +143,7 @@ class MainWindow(QMainWindow):
         if new_index >= 0:
             self._open_image_viewer(l.gallery._visible_items[new_index]['path'])
         else:
-            self.toast.show_message("Wrapped to last image", reference_widget=l.image_viewer)
+            Communicator().notify.emit("Wrapped to last image", "INFO")
             self._open_image_viewer(l.gallery._visible_items[l.gallery.count()-1]['path'])
 
     def _on_select_all(self):
