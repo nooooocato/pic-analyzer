@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Sidebar & Plugin Refactor**
+- [x] **Track: Sidebar & Plugin Refactor**
 *Link: [./tracks/sidebar_plugin_refactor_20260220/](./tracks/sidebar_plugin_refactor_20260220/)*
