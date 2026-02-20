@@ -10,7 +10,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Sidebar UI' (Protocol in workflow.md)
 
 ## Phase 2: Core Architecture & Plugin Interface Refactor
-- [ ] Task: Define the new Plugin Schema and Base Classes in `src/plugin/base.py`.
+- [x] Task: Define the new Plugin Schema and Base Classes in `src/plugin/base.py`. 0551800
     - [ ] Design the `PluginSchema` data structure (TypedDict/JSON-like).
     - [ ] Update `BasePlugin`, `SortPlugin`, and `GroupPlugin` to use logic-only methods.
 - [ ] Task: Refactor the Plugin Manager to support Schema-based discovery.
