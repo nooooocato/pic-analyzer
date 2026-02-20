@@ -27,7 +27,7 @@
 - [x] Task: Create Dynamic Widget Generator. a9c945e
     - [ ] Implement a factory that maps schema types (int, str, choice) to PySide6 widgets.
     - [ ] Ensure widgets are correctly styled and sized for the sidebar.
-- [ ] Task: Implement Parameter Interaction & 'Apply' Button.
+- [x] Task: Implement Parameter Interaction & 'Apply' Button. 812fd85
     - [ ] Add an 'Apply' button that only appears/enables when parameters are modified.
     - [ ] Handle state synchronization between sidebar widgets and plugin logic.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Dynamic UI Generation & Interaction' (Protocol in workflow.md)
