@@ -20,7 +20,7 @@
 - [x] Task: Migrate existing Grouping plugins (Date Grouping) to the new interface. 3509559
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Core Architecture & Plugin Interface Refactor' (Protocol in workflow.md)
 
-## Phase 3: Dynamic UI Generation & Interaction
+## Phase 3: Dynamic UI Generation & Interaction [checkpoint: c58688f]
 - [x] Task: Implement Sidebar Rule Dropdowns for each section. d80eaba
     - [ ] Dynamically populate dropdowns with discovered plugins from the manager.
     - [ ] Implement 'Live Update' logic when a new rule is selected.
@@ -30,7 +30,7 @@
 - [x] Task: Implement Parameter Interaction & 'Apply' Button. 812fd85
     - [ ] Add an 'Apply' button that only appears/enables when parameters are modified.
     - [ ] Handle state synchronization between sidebar widgets and plugin logic.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Dynamic UI Generation & Interaction' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Dynamic UI Generation & Interaction' (Protocol in workflow.md)
 
 ## Phase 4: Filtering & Metadata Implementation
 - [ ] Task: Implement the 'Filter' plugin category.
