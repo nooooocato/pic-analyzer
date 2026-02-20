@@ -7,6 +7,7 @@ from src.ui.image_viewer.logic import ImageViewer
 from src.ui.overlays.selection.logic import SelectionOverlay
 from src.ui.overlays.sort.logic import SortOverlay
 from src.ui.overlays.data_inspector.logic import DataInspector
+from src.ui.common.sidebar import SidebarContainer
 
 class MainWindowLayout:
     def setup_ui(self, window: QMainWindow):
@@ -21,6 +22,12 @@ class MainWindowLayout:
         self.toolbar = QToolBar("Main Toolbar")
         self.toolbar.setMovable(False)
         window.addToolBar(self.toolbar)
+        
+        # Sidebar Dock (Left)
+        self.sidebar_dock = QDockWidget("Rules", window)
+        self.sidebar = SidebarContainer()
+        self.sidebar_dock.setWidget(self.sidebar)
+        window.addDockWidget(Qt.LeftDockWidgetArea, self.sidebar_dock)
         
         # Inspector Dock
         self.inspector_dock = QDockWidget("Data Inspector", window)
