@@ -1,5 +1,5 @@
 from src.plugin.base import BasePlugin
-from plugins.group.date_grouping.algo import DateGroupingAlgo
+from . import algo
 
 class DateGroupingPlugin(BasePlugin):
     """Plugin for grouping items by their file modification date.
@@ -28,7 +28,7 @@ class DateGroupingPlugin(BasePlugin):
         Returns:
             dict: Results containing the formatted date string.
         """
-        return DateGroupingAlgo().run(image_path, granularity)
+        return algo.DateGroupingAlgo().run(image_path, granularity)
 
     def initialize_ui(self, main_window) -> None:
         """Injects date grouping actions into the main menu."""

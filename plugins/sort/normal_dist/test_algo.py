@@ -1,9 +1,11 @@
+"""Tests for the Normal Distribution sort algorithm."""
 import pytest
 import numpy as np
-from .algo import NormalDistributionSort
+from . import algo
 
 def test_normal_distribution_sort():
-    plugin = NormalDistributionSort()
+    """Verifies sorting by proximity to the mean."""
+    plugin = algo.NormalDistributionSort()
     # Data centered around 10
     # Values: 10 (diff 0), 9 (diff 1), 11 (diff 1), 5 (diff 5), 15 (diff 5)
     items = [
@@ -22,7 +24,8 @@ def test_normal_distribution_sort():
     assert set([sorted_items[-1]["val"], sorted_items[-2]["val"]]) == {5, 15}
     
 def test_normal_distribution_stats():
-    plugin = NormalDistributionSort()
+    """Verifies mean and sigma calculations."""
+    plugin = algo.NormalDistributionSort()
     items = [
         {"path": "a", "val": 10},
         {"path": "b", "val": 20}

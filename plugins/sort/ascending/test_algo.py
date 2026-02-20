@@ -1,8 +1,10 @@
+"""Tests for the ascending sort algorithm."""
 import pytest
-from .algo import AscendingSort
+from . import algo
 
 def test_ascending_sort():
-    plugin = AscendingSort()
+    """Verifies that items are correctly sorted from lowest to highest value."""
+    plugin = algo.AscendingSort()
     items = [
         {"path": "a", "val": 10},
         {"path": "b", "val": 5},
