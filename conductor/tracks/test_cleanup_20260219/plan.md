@@ -21,13 +21,13 @@
     - [x] Move and rename `tests/ui_refactor/` to `tests/ui/ui_basic/`.
 - [x] Task: Conductor - User Manual Verification 'Core Categorization' (Protocol in workflow.md)
 
-## Phase 3: Plugin Test Decentralization
+## Phase 3: Plugin Test Decentralization [checkpoint: 2c8302a]
 - [x] Task: Extract and move Sort plugin tests. (ccf248c)
     - [x] Split `tests/test_basic_sort_plugins.py` into `plugins/sort/ascending/test_algo.py` and `plugins/sort/descending/test_algo.py`.
     - [x] Move `tests/test_normal_dist_plugin.py` to `plugins/sort/normal_dist/test_algo.py`.
 - [x] Task: Move Group plugin tests. (2d4019e)
     - [x] Move `tests/test_plugin_date_grouping.py` to `plugins/group/date_grouping/test_plugin.py`.
-- [ ] Task: Conductor - User Manual Verification 'Plugin Decentralization' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Plugin Decentralization' (Protocol in workflow.md)
 
 ## Phase 4: Verification and Cleanup
 - [ ] Task: Update test discovery (if necessary).
