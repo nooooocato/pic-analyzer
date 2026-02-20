@@ -28,13 +28,20 @@ def test_full_sidebar_rules_application(qtbot, tmp_path):
     
     # 2. Test Filtering (.png only)
     f_idx = sidebar.filter_combo.findText("File Type")
-    sidebar.filter_combo.setCurrentIndex(f_idx)
+    sidebar.filter_combo.setCurrentIndex(f_idx) # Should auto-apply default (.jpg)
+    qtbot.wait(100)
+    
+    # img1 is .jpg, img2 is .png. Default filter is .jpg.
+    # Wait, actually FileType default is .jpg. So img1 should be visible.
+    assert gallery.count() == 1
+    assert gallery._visible_items[0]['path'] == str(img1)
+    
     # Param combo should appear
     all_combos = sidebar.filtering_section.findChildren(QComboBox)
     ext_combo = all_combos[1]
     ext_combo.setCurrentText(".png")
     
-    # Click Apply
+    # Click Apply (needed for param change)
     qtbot.mouseClick(sidebar.apply_btn, Qt.LeftButton)
     qtbot.wait(100)
     

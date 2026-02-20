@@ -66,16 +66,19 @@ class SidebarContainer(QWidget):
         # Connections
         self.group_combo.currentIndexChanged.connect(lambda: self._on_plugin_selected("group"))
         self.filter_combo.currentIndexChanged.connect(lambda: self._on_plugin_selected("filter"))
-        self.sort_metric_combo.currentIndexChanged.connect(lambda: self.apply_btn.setEnabled(True))
+        self.sort_combo.currentIndexChanged.connect(lambda: self._on_plugin_selected("sort"))
+        self.sort_metric_combo.currentIndexChanged.connect(lambda: self._on_apply_clicked())
 
     def _populate_dropdowns(self):
         pm = state.plugin_manager
         
         # Populate Metrics
+        self.sort_metric_combo.blockSignals(True)
         self.sort_metric_combo.clear()
         metrics = state.db_manager.get_numeric_metrics()
         for m in metrics:
             self.sort_metric_combo.addItem(m.replace("_", " ").title(), m)
+        self.sort_metric_combo.blockSignals(False)
 
         def populate(combo, plugins):
             combo.blockSignals(True)
@@ -91,15 +94,15 @@ class SidebarContainer(QWidget):
 
     def _on_plugin_selected(self, category):
         if category == "group":
-            combo, layout = self.group_combo, self.group_params_layout
+            combo, layout, keep_count = self.group_combo, self.group_params_layout, 1
         elif category == "filter":
-            combo, layout = self.filter_combo, self.filter_params_layout
+            combo, layout, keep_count = self.filter_combo, self.filter_params_layout, 1
         else: # sort
-            combo, layout = self.sort_combo, self.sort_params_layout
+            combo, layout, keep_count = self.sort_combo, self.sort_params_layout, 4
             
-        # Clear existing dynamic widgets (keep the combo at 0)
-        while layout.count() > 1:
-            item = layout.takeAt(1)
+        # Clear existing dynamic widgets
+        while layout.count() > keep_count:
+            item = layout.takeAt(keep_count)
             if item.widget(): item.widget().deleteLater()
             
         plugin = combo.currentData()
@@ -122,10 +125,9 @@ class SidebarContainer(QWidget):
         elif isinstance(widget, QCheckBox):
             widget.stateChanged.connect(lambda: self.apply_btn.setEnabled(True))
 
-    def _get_params(self, layout):
+    def _get_params(self, layout, start_index=1):
         params = {}
-        # Start from 1 to skip the combo
-        for i in range(1, layout.count()):
+        for i in range(start_index, layout.count()):
             container = layout.itemAt(i).widget()
             if container and hasattr(container, "input_widget") and hasattr(container, "param_name"):
                 w = container.input_widget
@@ -142,12 +144,12 @@ class SidebarContainer(QWidget):
         
         # Gather all rules
         rules = {
-            "group": {"plugin": self.group_combo.currentData(), "params": self._get_params(self.group_params_layout)},
-            "filter": {"plugin": self.filter_combo.currentData(), "params": self._get_params(self.filter_params_layout)},
+            "group": {"plugin": self.group_combo.currentData(), "params": self._get_params(self.group_params_layout, 1)},
+            "filter": {"plugin": self.filter_combo.currentData(), "params": self._get_params(self.filter_params_layout, 1)},
             "sort": {
                 "plugin": self.sort_combo.currentData(), 
                 "metric": self.sort_metric_combo.currentData(),
-                "params": self._get_params(self.sort_params_layout)
+                "params": self._get_params(self.sort_params_layout, 4)
             }
         }
         
