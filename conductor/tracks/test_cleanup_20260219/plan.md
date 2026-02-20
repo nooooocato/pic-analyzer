@@ -38,3 +38,6 @@
     - [x] Remove empty directories and delete `tests/test_basic_sort_plugins.py`.
     - [x] Clean up `__pycache__` and `.pytest_cache`.
 - [x] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions e4d5017
