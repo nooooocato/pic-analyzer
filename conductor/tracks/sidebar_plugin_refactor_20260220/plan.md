@@ -9,7 +9,7 @@
     - [ ] Add 'Grouping', 'Filtering', and 'Sorting' sections to the sidebar.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Sidebar UI' (Protocol in workflow.md)
 
-## Phase 2: Core Architecture & Plugin Interface Refactor
+## Phase 2: Core Architecture & Plugin Interface Refactor [checkpoint: b8e0678]
 - [x] Task: Define the new Plugin Schema and Base Classes in `src/plugin/base.py`. 0551800
     - [ ] Design the `PluginSchema` data structure (TypedDict/JSON-like).
     - [ ] Update `BasePlugin`, `SortPlugin`, and `GroupPlugin` to use logic-only methods.
@@ -18,7 +18,7 @@
 - [x] Task: Migrate existing Sorting plugins (Ascending, Descending, Normal Dist) to the new interface. b52d4bb
     - [ ] Rewrite `algo.py` and `ui.py` (or merge logic into `algo.py`) for existing plugins.
 - [x] Task: Migrate existing Grouping plugins (Date Grouping) to the new interface. 3509559
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Architecture & Plugin Interface Refactor' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Core Architecture & Plugin Interface Refactor' (Protocol in workflow.md)
 
 ## Phase 3: Dynamic UI Generation & Interaction
 - [ ] Task: Implement Sidebar Rule Dropdowns for each section.
