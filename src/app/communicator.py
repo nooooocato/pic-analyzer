@@ -13,6 +13,9 @@ class Communicator(QObject):
     
     # image_selected(file_path: str)
     image_selected = Signal(str)
+    
+    # rules_updated(rules_dict: dict)
+    rules_updated = Signal(dict)
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:

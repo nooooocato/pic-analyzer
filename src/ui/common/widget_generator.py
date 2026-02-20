@@ -58,6 +58,7 @@ class WidgetGenerator:
         layout.addWidget(label)
         layout.addWidget(widget)
         
-        # Attach the actual input widget to the container for easy access
+        # Attach name and the actual input widget to the container for easy access
+        container.param_name = param["name"]
         container.input_widget = widget
         return container
