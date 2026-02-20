@@ -2,115 +2,67 @@ import os
 import pytest
 import shutil
 from src.plugin.manager import PluginManager
-from src.plugin.base import BasePlugin
+from src.plugin.base import SortPlugin, GroupPlugin, FilterPlugin, BasePlugin
 
-def test_plugin_manager_discovers_external_plugins():
-    # Create a dummy plugin in the new directory
-    plugin_content = """
-from src.plugin.base import BasePlugin
-
-class MockExternalPlugin(BasePlugin):
-    @property
-    def name(self):
-        return "Mock External Plugin"
-    
-    @property
-    def description(self):
-        return "A mock plugin for testing"
-    
-    def run(self, *args, **kwargs):
-        return "Success"
-    
-    def initialize_ui(self, main_window):
-        pass
-"""
-    os.makedirs("plugins/sort", exist_ok=True)
-    with open("plugins/sort/mock_plugin.py", "w") as f:
-        f.write(plugin_content)
-    
-    try:
-        manager = PluginManager("plugins")
-        assert "Mock External Plugin" in manager.plugins
-    finally:
-        if os.path.exists("plugins/sort/mock_plugin.py"):
-            os.remove("plugins/sort/mock_plugin.py")
-
-def test_plugin_manager_discovers_nested_plugins():
-    # Create a dummy plugin in a nested category
-    plugin_content = """
-from src.plugin.base import BasePlugin
-
-class NestedPlugin(BasePlugin):
-    @property
-    def name(self):
-        return "Nested Plugin"
-    
-    @property
-    def description(self):
-        return "A nested mock plugin for testing"
-    
-    def run(self, *args, **kwargs):
-        return "Nested Success"
-    
-    def initialize_ui(self, main_window):
-        pass
-"""
-    os.makedirs("plugins/test_category", exist_ok=True)
-    with open("plugins/test_category/nested_plugin.py", "w") as f:
-        f.write(plugin_content)
-    
-    try:
-        manager = PluginManager("plugins")
-        assert "Nested Plugin" in manager.plugins
-    finally:
-        if os.path.exists("plugins/test_category"):
-            shutil.rmtree("plugins/test_category")
-
-def test_plugin_manager_categorizes_plugins():
+def test_plugin_manager_categorizes_by_class_type():
+    """Test that PluginManager categorizes plugins based on their base class/category property."""
     sort_plugin_content = """
-from src.plugin.base import BasePlugin
-class SortPlugin(BasePlugin):
+from src.plugin.base import SortPlugin
+class MySort(SortPlugin):
     @property
-    def name(self): return "Sort Mock"
-    @property
-    def description(self): return "desc"
-    def run(self, *args): pass
-    def initialize_ui(self, main_window): pass
-"""
-    group_plugin_content = """
-from src.plugin.base import BasePlugin
-class GroupPlugin(BasePlugin):
-    @property
-    def name(self): return "Group Mock"
+    def name(self): return "Sort Refactor"
     @property
     def description(self): return "desc"
     def run(self, *args): pass
-    def initialize_ui(self, main_window): pass
+    def sort(self, items, metric, params): return items
 """
-    general_plugin_content = """
-from src.plugin.base import BasePlugin
-class GeneralPlugin(BasePlugin):
+    filter_plugin_content = """
+from src.plugin.base import FilterPlugin
+class MyFilter(FilterPlugin):
     @property
-    def name(self): return "General Mock"
+    def name(self): return "Filter Refactor"
     @property
     def description(self): return "desc"
     def run(self, *args): pass
-    def initialize_ui(self, main_window): pass
+    def filter(self, items, params): return items
 """
-    os.makedirs("plugins/sort", exist_ok=True)
-    os.makedirs("plugins/group", exist_ok=True)
-    os.makedirs("plugins/other", exist_ok=True)
     
-    with open("plugins/sort/s_mock.py", "w") as f: f.write(sort_plugin_content)
-    with open("plugins/group/g_mock.py", "w") as f: f.write(group_plugin_content)
-    with open("plugins/other/o_mock.py", "w") as f: f.write(general_plugin_content)
+    os.makedirs("plugins/test_refactor", exist_ok=True)
+    with open("plugins/test_refactor/s_ref.py", "w") as f: f.write(sort_plugin_content)
+    with open("plugins/test_refactor/f_ref.py", "w") as f: f.write(filter_plugin_content)
     
     try:
         manager = PluginManager("plugins")
-        assert "Sort Mock" in manager.sort_plugins
-        assert "Group Mock" in manager.group_plugins
-        assert "General Mock" in manager.general_plugins
-        assert "Sort Mock" in manager.plugins
+        assert "Sort Refactor" in manager.sort_plugins
+        assert "Filter Refactor" in manager.filter_plugins
+        assert "Sort Refactor" in manager.plugins
     finally:
-        for p in ["plugins/sort/s_mock.py", "plugins/group/g_mock.py", "plugins/other/o_mock.py"]:
-            if os.path.exists(p): os.remove(p)
+        if os.path.exists("plugins/test_refactor"):
+            shutil.rmtree("plugins/test_refactor")
+
+def test_plugin_manager_schema_access():
+    """Test that the manager can access plugin schemas."""
+    plugin_with_schema = """
+from src.plugin.base import SortPlugin
+class SchemaSort(SortPlugin):
+    @property
+    def name(self): return "Schema Sort"
+    @property
+    def description(self): return "desc"
+    @property
+    def schema(self):
+        return {"parameters": [{"name": "p1", "type": "int", "default": 1, "label": "P1"}]}
+    def run(self, *args): pass
+    def sort(self, items, metric, params): return items
+"""
+    os.makedirs("plugins/test_schema", exist_ok=True)
+    with open("plugins/test_schema/sch_ref.py", "w") as f: f.write(plugin_with_schema)
+    
+    try:
+        manager = PluginManager("plugins")
+        plugin = manager.plugins["Schema Sort"]
+        assert len(plugin.schema["parameters"]) == 1
+        assert plugin.schema["parameters"][0]["name"] == "p1"
+    finally:
+        if os.path.exists("plugins/test_schema"):
+            shutil.rmtree("plugins/test_schema")

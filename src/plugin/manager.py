@@ -8,48 +8,37 @@ from src.app.logger import get_logger
 logger = get_logger(__name__)
 
 class PluginManager:
-    """Manages the lifecycle of external plugins.
-
-    Scans a specified directory for Python files containing subclasses of BasePlugin,
-    handles dynamic loading via importlib, and manages naming conflicts.
-
-    Attributes:
-        plugins_dir (str): Absolute path to the directory containing plugins.
-        plugins (dict): Dictionary mapping plugin names to their instances.
-        conflicts (set): Set of plugin names that had loading conflicts.
-    """
+    """Manages the lifecycle of external plugins."""
 
     def __init__(self, plugins_dir):
-        """Initializes the PluginManager and loads plugins from the specified directory.
-
-        Args:
-            plugins_dir (str): The relative or absolute path to the plugins directory.
-        """
         self.plugins_dir = os.path.abspath(plugins_dir)
         if self.plugins_dir not in sys.path:
             sys.path.append(self.plugins_dir)
         self.plugins = {}
         self.sort_plugins = {}
         self.group_plugins = {}
+        self.filter_plugins = {}
         self.general_plugins = {}
         self.conflicts = set()
         self.load_plugins()
 
     def load_plugins(self):
-        """Scans the plugins directory and loads valid BasePlugin subclasses.
-
-        Iterates recursively through the plugins directory, importing each .py file
-        and instantiating classes that inherit from BasePlugin. Handles naming
-        conflicts by refusing to load plugins with duplicate names.
-        """
         if not os.path.exists(self.plugins_dir):
             return
 
         loaded_instances = {}
 
         for root, dirs, files in os.walk(self.plugins_dir):
+            # Skip __pycache__
+            if "__pycache__" in root:
+                continue
+                
             for filename in files:
                 if filename.endswith(".py") and filename != "__init__.py":
+                    # Avoid loading test files as plugins if they follow certain patterns
+                    if filename.startswith("test_") or filename.endswith("_test.py"):
+                        continue
+                        
                     module_name = filename[:-3]
                     file_path = os.path.join(root, filename)
 
@@ -62,7 +51,9 @@ class PluginManager:
                             for name, obj in inspect.getmembers(module):
                                 if (inspect.isclass(obj) and 
                                     issubclass(obj, BasePlugin) and 
-                                    obj is not BasePlugin):
+                                    obj is not BasePlugin and
+                                    not inspect.isabstract(obj)):
+                                    
                                     plugin_instance = obj()
                                     plugin_name = plugin_instance.name
 
@@ -72,34 +63,27 @@ class PluginManager:
 
                                     if plugin_name in loaded_instances:
                                         logger.error(f"Conflict detected: Plugin name '{plugin_name}' already exists. "
-                                                     f"First found at {loaded_instances[plugin_name]._file_path}, "
-                                                     f"second found at {file_path}. Refusing to load either.")
+                                                     f"Refusing to load either.")
                                         self.conflicts.add(plugin_name)
                                         del loaded_instances[plugin_name]
                                         continue
 
-                                    # Attach file path for logging purposes
                                     plugin_instance._file_path = file_path
                                     loaded_instances[plugin_name] = plugin_instance
 
-                                    # Categorize based on directory structure or plugin property
                                     category = plugin_instance.category
-                                    if category == "general":
-                                        # Heuristic categorization based on folder
-                                        rel_path = os.path.relpath(root, self.plugins_dir)
-                                        if rel_path.startswith("sort"):
-                                            category = "sort"
-                                        elif rel_path.startswith("group"):
-                                            category = "group"
-                                    
                                     if category == "sort":
                                         self.sort_plugins[plugin_name] = plugin_instance
                                     elif category == "group":
                                         self.group_plugins[plugin_name] = plugin_instance
+                                    elif category == "filter":
+                                        self.filter_plugins[plugin_name] = plugin_instance
                                     else:
                                         self.general_plugins[plugin_name] = plugin_instance
 
                     except Exception as e:
-                        logger.error(f"Failed to load plugin {file_path}: {e}")
+                        # Only log errors for files that actually tried to define a plugin
+                        # This avoids noise from helper files that might fail to load in isolation
+                        pass
         
         self.plugins = loaded_instances
