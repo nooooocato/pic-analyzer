@@ -43,10 +43,6 @@ class BasePlugin(ABC):
     def run(self, image_path: str) -> dict:
         pass
 
-    def initialize_ui(self, main_window) -> None:
-        """DEPRECATED: Use schema and logic-only methods instead."""
-        pass
-
 class SortPlugin(BasePlugin):
     """Base class for sorting plugins."""
     @property

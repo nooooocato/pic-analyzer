@@ -5,7 +5,6 @@ from PySide6.QtCore import Qt
 from src.ui.gallery.logic import GalleryView
 from src.ui.image_viewer.logic import ImageViewer
 from src.ui.overlays.selection.logic import SelectionOverlay
-from src.ui.overlays.sort.logic import SortOverlay
 from src.ui.overlays.data_inspector.logic import DataInspector
 from src.ui.common.sidebar import SidebarContainer
 
@@ -43,9 +42,6 @@ class MainWindowLayout:
         self.image_viewer = ImageViewer(self.gallery)
         self.selection_overlay = SelectionOverlay(self.gallery)
         self.selection_overlay.hide()
-        
-        # Sort Overlay needs a manager, which logic will provide later
-        self.sort_overlay = None 
 
     def update_overlay_positions(self, window: QMainWindow):
         margin = 15
@@ -55,9 +51,3 @@ class MainWindowLayout:
         
         if hasattr(self, "image_viewer"):
             self.image_viewer.resize(self.gallery.size())
-
-        if self.sort_overlay:
-            x = self.gallery.width() - self.sort_overlay.width() - margin
-            y = margin
-            self.sort_overlay.move(x, y)
-            self.sort_overlay.raise_()

@@ -11,7 +11,6 @@ from src.app.state import state
 from src.app.communicator import Communicator
 from src.app.file_scanner import FolderScanner
 from src.app.file_ops import hide_file
-from src.ui.overlays.sort.logic import SortOverlay
 from src.ui.common.toast.logic import Toast
 
 from .layout import MainWindowLayout
@@ -39,29 +38,16 @@ class MainWindow(QMainWindow):
         
         # Backward compatibility aliases for plugins/tests
         self.plugin_manager = state.plugin_manager
-        self._sort_plugins = list(state.plugin_manager.sort_plugins.values())
-        
-        # Initialize Sort Overlay (needs db from state)
-        self.layout_engine.sort_overlay = SortOverlay(state.db_manager, self.layout_engine.gallery)
-        self.layout_engine.sort_overlay.sortRequested.connect(self._on_sort_requested)
-        self.layout_engine.sort_overlay.show()
         
         # Set overlays on gallery for repositioning
         self.layout_engine.gallery.set_overlays(
             self.layout_engine.selection_overlay,
-            self.layout_engine.sort_overlay,
+            None, # Sort Overlay removed
             self.layout_engine.image_viewer
         )
         
         self._setup_connections()
         self._setup_menus()
-
-        # Initialize UI for all discovered plugins
-        for plugin in state.plugin_manager.plugins.values():
-            try:
-                plugin.initialize_ui(self)
-            except Exception as e:
-                logger.error(f"Failed to initialize UI for plugin {plugin.name}: {e}")
 
     def event(self, event):
         if event.type() == QEvent.PaletteChange:
@@ -83,6 +69,8 @@ class MainWindow(QMainWindow):
         l.selection_overlay.selectAllRequested.connect(self._on_select_all)
         l.selection_overlay.invertSelectionRequested.connect(self._on_invert_selection)
         l.selection_overlay.cancelRequested.connect(self._on_cancel_selection)
+        
+        Communicator().rules_updated.connect(self._on_rules_updated)
 
     def _setup_menus(self):
         l = self.layout_engine
@@ -97,11 +85,6 @@ class MainWindow(QMainWindow):
         self.open_folder_action.triggered.connect(self._on_open_folder)
         
         # View Menu
-        self.group_menu = l.view_menu.addMenu("Group By")
-        self._menu_cache["View/Group By"] = self.group_menu
-        self.group_menu.addAction("None").triggered.connect(lambda: l.gallery.set_grouping(None))
-        
-        l.view_menu.addSeparator()
         self.show_stats_action = l.view_menu.addAction("Show Sorting Stats")
         self.show_stats_action.setCheckable(True)
         self.show_stats_action.triggered.connect(l.gallery.set_show_stats)
@@ -160,14 +143,8 @@ class MainWindow(QMainWindow):
     def _on_cancel_selection(self):
         self.layout_engine.gallery.set_selection_mode_enabled(False)
 
-    def _on_sort_requested(self, metric, plugin_name):
-        plugin = state.plugin_manager.sort_plugins.get(plugin_name)
-        if plugin:
-            self._apply_sort(metric, plugin)
-
-    def _apply_sort(self, metric, plugin):
-        values = state.db_manager.get_metric_values(metric)
-        self.layout_engine.gallery.apply_sort(metric, plugin, values)
+    def _on_rules_updated(self, rules: dict):
+        self.layout_engine.gallery.set_rules(rules)
 
     def _on_item_selected(self, file_path: str):
         """Notify the system that an image has been selected."""
@@ -196,58 +173,3 @@ class MainWindow(QMainWindow):
         scanner.signals.file_found.connect(self.layout_engine.gallery.add_item)
         state.active_scanners.append(scanner)
         QThreadPool.globalInstance().start(scanner)
-
-    # Plugin Hooks
-    def get_menu(self, path: str) -> QMenu:
-        """
-        Returns an existing menu by its path (e.g., 'View/Group By') or creates it.
-        Uses a cache to ensure stability.
-        """
-        if not hasattr(self, "_menu_cache"):
-            self._menu_cache = {}
-        
-        path = path.strip("/")
-        if path in self._menu_cache:
-            return self._menu_cache[path]
-        
-        parts = path.split("/")
-        parent = self.menuBar()
-        current_path = ""
-        
-        for part in parts:
-            current_path = f"{current_path}/{part}" if current_path else part
-            if current_path in self._menu_cache:
-                parent = self._menu_cache[current_path]
-                continue
-            
-            found_menu = None
-            # Search in current parent's actions
-            for action in parent.actions():
-                if action.menu():
-                    title = action.menu().title().replace("&", "")
-                    if title.lower() == part.lower():
-                        found_menu = action.menu()
-                        break
-            
-            if not found_menu:
-                found_menu = parent.addMenu(f"&{part}")
-            
-            self._menu_cache[current_path] = found_menu
-            parent = found_menu
-        
-        return self._menu_cache[path]
-
-    def add_toolbar_action(self, action: QAction):
-        """
-        Adds an action to the main toolbar.
-        """
-        self.layout_engine.toolbar.addAction(action)
-
-    def register_sort_plugin(self, plugin):
-        """
-        Registers a sorting plugin to be used in the SortOverlay.
-        """
-        self._sort_plugins.append(plugin)
-        # Update SortOverlay if it exists
-        if self.layout_engine.sort_overlay:
-            self.layout_engine.sort_overlay.add_external_plugin(plugin)

@@ -15,9 +15,9 @@ class SidebarContainer(QWidget):
         self.scroll = QScrollArea()
         self.scroll.setWidgetResizable(True)
         self.scroll_content = QWidget()
-        self.layout = QVBoxLayout(self.scroll_content)
-        self.layout.setContentsMargins(5, 5, 5, 5)
-        self.layout.setSpacing(10)
+        self.content_layout = QVBoxLayout(self.scroll_content)
+        self.content_layout.setContentsMargins(5, 5, 5, 5)
+        self.content_layout.setSpacing(10)
         self.scroll.setWidget(self.scroll_content)
         main_layout.addWidget(self.scroll)
         
@@ -29,8 +29,8 @@ class SidebarContainer(QWidget):
         self.apply_btn.setEnabled(False)
         self.apply_btn.clicked.connect(self._on_apply_clicked)
         
-        self.layout.addStretch()
-        self.layout.addWidget(self.apply_btn)
+        self.content_layout.addStretch()
+        self.content_layout.addWidget(self.apply_btn)
         
         self._populate_dropdowns()
 
@@ -41,7 +41,7 @@ class SidebarContainer(QWidget):
         self.group_combo = QComboBox()
         self.group_params_layout.addWidget(self.group_combo)
         self.grouping_section = CollapsibleSection("Grouping", self.grouping_content)
-        self.layout.addWidget(self.grouping_section)
+        self.content_layout.addWidget(self.grouping_section)
         
         # Filtering
         self.filtering_content = QWidget()
@@ -49,23 +49,34 @@ class SidebarContainer(QWidget):
         self.filter_combo = QComboBox()
         self.filter_params_layout.addWidget(self.filter_combo)
         self.filtering_section = CollapsibleSection("Filtering", self.filtering_content)
-        self.layout.addWidget(self.filtering_section)
+        self.content_layout.addWidget(self.filtering_section)
         
         # Sorting
         self.sorting_content = QWidget()
         self.sort_params_layout = QVBoxLayout(self.sorting_content)
         self.sort_combo = QComboBox()
+        self.sort_metric_combo = QComboBox() # Added metric combo
+        self.sort_params_layout.addWidget(QLabel("Algorithm:"))
         self.sort_params_layout.addWidget(self.sort_combo)
+        self.sort_params_layout.addWidget(QLabel("Metric:"))
+        self.sort_params_layout.addWidget(self.sort_metric_combo)
         self.sorting_section = CollapsibleSection("Sorting", self.sorting_content)
-        self.layout.addWidget(self.sorting_section)
+        self.content_layout.addWidget(self.sorting_section)
         
         # Connections
         self.group_combo.currentIndexChanged.connect(lambda: self._on_plugin_selected("group"))
         self.filter_combo.currentIndexChanged.connect(lambda: self._on_plugin_selected("filter"))
-        self.sort_combo.currentIndexChanged.connect(lambda: self._on_plugin_selected("sort"))
+        self.sort_metric_combo.currentIndexChanged.connect(lambda: self.apply_btn.setEnabled(True))
 
     def _populate_dropdowns(self):
         pm = state.plugin_manager
+        
+        # Populate Metrics
+        self.sort_metric_combo.clear()
+        metrics = state.db_manager.get_numeric_metrics()
+        for m in metrics:
+            self.sort_metric_combo.addItem(m.replace("_", " ").title(), m)
+
         def populate(combo, plugins):
             combo.blockSignals(True)
             combo.clear()
@@ -133,7 +144,11 @@ class SidebarContainer(QWidget):
         rules = {
             "group": {"plugin": self.group_combo.currentData(), "params": self._get_params(self.group_params_layout)},
             "filter": {"plugin": self.filter_combo.currentData(), "params": self._get_params(self.filter_params_layout)},
-            "sort": {"plugin": self.sort_combo.currentData(), "params": self._get_params(self.sort_params_layout)}
+            "sort": {
+                "plugin": self.sort_combo.currentData(), 
+                "metric": self.sort_metric_combo.currentData(),
+                "params": self._get_params(self.sort_params_layout)
+            }
         }
         
         from src.app.communicator import Communicator

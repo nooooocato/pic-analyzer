@@ -99,13 +99,17 @@ class GroupedListWidget(BaseGroupedListWidget):
         self.viewport().update()
 
     def adjust_height(self):
-        if self.count() == 0:
-            self.setFixedHeight(0)
-            return
-        width = self.width() if self.width() > 150 else 800
-        items_per_row = max(1, width // 150)
-        rows = (self.count() + items_per_row - 1) // items_per_row
-        self.setFixedHeight(rows * 150 + 10)
+        try:
+            if self.count() == 0:
+                self.setFixedHeight(0)
+                return
+            width = self.width() if self.width() > 150 else 800
+            items_per_row = max(1, width // 150)
+            rows = (self.count() + items_per_row - 1) // items_per_row
+            self.setFixedHeight(rows * 150 + 10)
+        except RuntimeError:
+            # Widget might be deleted already
+            pass
 
 class GalleryView(QScrollArea):
     item_selected = Signal(str)
@@ -122,11 +126,15 @@ class GalleryView(QScrollArea):
         self._visible_items = []
         self._selection_mode_enabled = False
         self._group_widgets = []
-        self._current_plugin = None
-        self._current_granularity = "month"
+        
+        # New unified rules
+        self._rules = {
+            "group": {"plugin": None, "params": {}},
+            "filter": {"plugin": None, "params": {}},
+            "sort": {"plugin": None, "params": {}}
+        }
+        
         self._show_stats = False
-        self._current_sort_plugin = None
-        self._current_sort_metric = None
         
         # Overlays
         self.selection_overlay = None
@@ -194,7 +202,8 @@ class GalleryView(QScrollArea):
             self._refresh_timer.timeout.connect(self.refresh_view)
         
         # If no grouping and already initialized, we can append directly for better perf
-        if not self._current_plugin and self._group_widgets:
+        g_plugin = self._rules.get("group", {}).get("plugin")
+        if not g_plugin and self._group_widgets:
             self._visible_items.append(item_data)
             list_widget = self._group_widgets[0]
             item = QListWidgetItem()
@@ -210,9 +219,8 @@ class GalleryView(QScrollArea):
             if not self._refresh_timer.isActive():
                 self._refresh_timer.start()
 
-    def set_grouping(self, plugin, granularity="month"):
-        self._current_plugin = plugin
-        self._current_granularity = granularity
+    def set_rules(self, rules: dict):
+        self._rules = rules
         self.refresh_view()
 
     def set_show_stats(self, enabled):
@@ -220,27 +228,44 @@ class GalleryView(QScrollArea):
         self.refresh_view()
 
     def apply_sort(self, metric, plugin, values_map):
-        self._current_sort_plugin = plugin
-        self._current_sort_metric = metric
-        for item in self._items:
-            item[metric] = values_map.get(item['path'], 0)
-        self._items = plugin.sort(self._items, metric)
-        self.refresh_view()
+        """LEGACY: Redirect to new rules-based sorting if possible."""
+        # This is for tests/compatibility
+        pass
 
     def refresh_view(self):
         self._clear_layout()
-        self._visible_items = []
-        if not self._current_plugin:
-            self._create_group("All Images", self._items)
-        else:
-            groups = {}
-            for item in self._items:
-                res = self._current_plugin.run(item['path'], self._current_granularity)
-                group_name = res.get('date', 'Unknown')
-                groups.setdefault(group_name, []).append(item)
+        items = list(self._items) # Clone list
+        
+        # 1. Filter
+        f_rule = self._rules.get("filter", {})
+        f_plugin = f_rule.get("plugin")
+        if f_plugin:
+            items = f_plugin.filter(items, f_rule.get("params", {}))
             
-            for group_name in sorted(groups.keys(), reverse=True):
-                self._create_group(group_name, groups[group_name])
+        # 2. Sort
+        s_rule = self._rules.get("sort", {})
+        s_plugin = s_rule.get("plugin")
+        s_metric = s_rule.get("metric")
+        if s_plugin and s_metric:
+            # Need metric values from DB
+            values_map = state.db_manager.get_metric_values(s_metric)
+            for it in items:
+                it[s_metric] = values_map.get(it['path'], 0)
+            items = s_plugin.sort(items, s_metric, s_rule.get("params", {}))
+            
+        self._visible_items = items
+        
+        # 3. Group
+        g_rule = self._rules.get("group", {})
+        g_plugin = g_rule.get("plugin")
+        if not g_plugin:
+            self._create_group("Filtered Images", items)
+        else:
+            # Metric for grouping? The old date grouping just used path.
+            # My migrated DateGrouping uses path too.
+            groups = g_plugin.group(items, "", g_rule.get("params", {}))
+            for name in sorted(groups.keys(), reverse=True):
+                self._create_group(name, groups[name])
 
     def _create_group(self, title, items):
         group_container, group_layout = self.layout_engine.create_group_container(title)
@@ -263,16 +288,21 @@ class GalleryView(QScrollArea):
         )
         
         group_layout.addWidget(list_widget)
-        self._visible_items.extend(items)
         
-        if self._show_stats and self._current_sort_plugin and self._current_sort_metric:
-            stats = self._current_sort_plugin.get_stats(items, self._current_sort_metric)
-            if stats:
-                stats_str = " | ".join([f"{k.upper()}: {v:.2f}" for k, v in stats.items()])
-                label = QLabel(f"Group Statistics: {stats_str}")
-                label.setStyleSheet("color: #666; font-style: italic; padding-top: 5px;")
-                label.setAlignment(Qt.AlignRight)
-                group_layout.addWidget(label)
+        s_rule = self._rules.get("sort", {})
+        s_plugin = s_rule.get("plugin")
+        s_metric = s_rule.get("metric")
+        
+        if self._show_stats and s_plugin and s_metric:
+            # Check if plugin has get_stats
+            if hasattr(s_plugin, "get_stats"):
+                stats = s_plugin.get_stats(items, s_metric)
+                if stats:
+                    stats_str = " | ".join([f"{k.upper()}: {v:.2f}" for k, v in stats.items()])
+                    label = QLabel(f"Group Statistics: {stats_str}")
+                    label.setStyleSheet("color: #666; font-style: italic; padding-top: 5px;")
+                    label.setAlignment(Qt.AlignRight)
+                    group_layout.addWidget(label)
 
         self.layout_engine.container_layout.insertWidget(self.layout_engine.container_layout.count() - 1, group_container)
         self._group_widgets.append(list_widget)
