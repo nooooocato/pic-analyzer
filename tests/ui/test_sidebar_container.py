@@ -1,6 +1,6 @@
 import pytest
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton
-from src.ui.common.sidebar import SidebarContainer
+from src.ui.sidebar import SidebarContainer
 from src.ui.common.collapsible import CollapsibleSection
 from src.app.state import state
 

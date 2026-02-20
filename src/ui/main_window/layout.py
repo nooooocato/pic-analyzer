@@ -6,7 +6,7 @@ from src.ui.gallery.logic import GalleryView
 from src.ui.image_viewer.logic import ImageViewer
 from src.ui.overlays.selection.logic import SelectionOverlay
 from src.ui.overlays.data_inspector.logic import DataInspector
-from src.ui.common.sidebar import SidebarContainer
+from src.ui.sidebar import SidebarContainer
 
 class MainWindowLayout:
     def setup_ui(self, window: QMainWindow):

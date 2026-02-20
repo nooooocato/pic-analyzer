@@ -69,8 +69,6 @@ class MainWindow(QMainWindow):
         l.selection_overlay.selectAllRequested.connect(self._on_select_all)
         l.selection_overlay.invertSelectionRequested.connect(self._on_invert_selection)
         l.selection_overlay.cancelRequested.connect(self._on_cancel_selection)
-        
-        Communicator().rules_updated.connect(self._on_rules_updated)
 
     def _setup_menus(self):
         l = self.layout_engine
@@ -142,9 +140,6 @@ class MainWindow(QMainWindow):
 
     def _on_cancel_selection(self):
         self.layout_engine.gallery.set_selection_mode_enabled(False)
-
-    def _on_rules_updated(self, rules: dict):
-        self.layout_engine.gallery.set_rules(rules)
 
     def _on_item_selected(self, file_path: str):
         """Notify the system that an image has been selected."""

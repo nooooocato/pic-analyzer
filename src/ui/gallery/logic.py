@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QScrollArea, QListWidgetItem, QMenu, QLabel, QWidg
 from PySide6.QtCore import Qt, QSize, Signal, QTimer
 from PySide6.QtGui import QPixmap, QIcon
 from src.app.state import state
+from src.app.communicator import Communicator
 from .layout import GalleryLayout, GroupedListWidget as BaseGroupedListWidget
 from .style import get_gallery_style
 
@@ -141,6 +142,9 @@ class GalleryView(QScrollArea):
         self.selection_overlay = None
         self.sort_overlay = None
         self.image_viewer = None
+        
+        # Subscribe to rules
+        Communicator().rules_updated.connect(self.set_rules)
 
     def set_overlays(self, selection, sort, viewer):
         self.selection_overlay = selection

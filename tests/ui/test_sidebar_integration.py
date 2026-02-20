@@ -1,7 +1,7 @@
 import pytest
 from src.ui.main_window.logic import MainWindow
 from PySide6.QtWidgets import QDockWidget
-from src.ui.common.sidebar import SidebarContainer
+from src.ui.sidebar import SidebarContainer
 
 def test_sidebar_integration_in_main_window(qtbot):
     """Test that SidebarContainer is integrated as a dock widget in MainWindow."""
