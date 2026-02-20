@@ -1,17 +1,20 @@
-"""Algorithm for sorting items in descending order."""
 from typing import List, Dict, Any
+from src.plugin.base import SortPlugin
 
-class DescendingSort:
-    """Implementation of descending sort algorithm."""
+class DescendingPlugin(SortPlugin):
+    """Refactored Descending Sort Plugin using the new logic-only interface."""
 
-    def sort(self, items: List[Dict[str, Any]], metric_key: str) -> List[Dict[str, Any]]:
-        """Sorts the provided items based on the specified metric in descending order.
+    @property
+    def name(self) -> str:
+        return "Descending"
 
-        Args:
-            items: List of dictionaries, each representing an image with metadata.
-            metric_key: The key in the item dictionary to sort by.
+    @property
+    def description(self) -> str:
+        return "Sort items from highest to lowest value."
 
-        Returns:
-            A new list of sorted items.
-        """
+    def sort(self, items: List[Dict[str, Any]], metric_key: str, params: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Sorts the provided items based on the specified metric in descending order."""
         return sorted(items, key=lambda x: x.get(metric_key, 0), reverse=True)
+
+    def run(self, image_path: str) -> dict:
+        return {}
