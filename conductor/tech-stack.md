@@ -22,8 +22,9 @@
 - **Plugin System:** 
     - **Core Abstraction:** Base classes located in `src/plugin/` for better separation from UI.
     - **Externalized Discovery:** Plugins reside in the root-level `./plugins` directory and are discovered recursively at runtime.
-    - **Categorization:** Automatic categorization of plugins into `sort`, `group`, and `general` based on directory structure.
-    - **Dynamic UI Injection:** Plugins programmatically inject UI components (menus, toolbar actions) into the main window via a registration hooks system.
+    - **Categorization:** Automatic categorization of plugins into `sort`, `group`, `filter`, and `general`.
+    - **Metadata-Driven UI:** Plugins define a `schema` (parameters, types, defaults) used by the sidebar to automatically generate control widgets.
+    - **Logic-UI Decoupling:** Plugins focus exclusively on data processing; presentation is handled centrally by the Sidebar Container.
 - **Storage:** Safe file operations using Python's `shutil.move` with manual conflict resolution logic.
 
 ## Testing Architecture

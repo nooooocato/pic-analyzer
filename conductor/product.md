@@ -1,4 +1,4 @@
-# Initial Concept
+# Product Definition - Pic-Analyzer
 
 I need a quick and simple image management tool for organizing scattered images from QQ files.
 
@@ -13,9 +13,11 @@ I need a quick and simple image management tool for organizing scattered images 
     -   Use safe "move" operations (not copy/cut) to minimize SSD wear.
         - Selection actions:
             -   **Selection Mode:** Batch select images via long-press, right-click, or rubber-band drag.
-            -   **Batch Actions:** "Select All", "Invert Selection", and "Cancel Selection" via a floating overlay.
-            -   **Move Out:** Move selected items to a user-specified path.
-            -   **Delete:** Send selected items to system recycle bin.
+            -   **Batch Actions:** "Select All", "Invert Selection", and "Cancel Selection" via a floating overlay or sidebar.
+        -   **Rule-Based Organization:**
+            -   **Unified Sidebar:** A left-hand sidebar centralizing Grouping, Filtering, and Sorting controls.
+            -   **Metadata Filtering:** Rapid exclusion/inclusion based on File Type, File Size, and Date Range.
+            -   **Dynamic Parameters:** Real-time UI generation for plugin-specific settings.
         -   **Workspace Management:**
             -   Folder-based workspaces with isolated analysis data.
             -   Automatic discovery of images in selected folders and subfolders.
@@ -49,18 +51,16 @@ I need a quick and simple image management tool for organizing scattered images 
     -   File Type (jpg, png, gif, etc.)
 
 5.  **Sorting & Presentation:**
-    -   **Extensible Sorting Plugins:** Dynamic loading of sorting algorithms (e.g., Ascending, Descending).
+    -   **Extensible Sorting Plugins:** Metadata-driven loading of sorting algorithms (e.g., Ascending, Descending).
     -   **Statistical Sorting:** Normal Distribution Sorting (Peak First) based on calculated Mean (μ) and Sigma (σ).
     -   **On-Demand Metrics:** Toggleable display of group-level statistical insights.
 
 6.  **Grouping Logic:**
     -   A group is the result of a set of statistical rules.
-    -   Rules can be combined with AND/OR.
+    -   Rules can be combined via sequential filtering and grouping.
     -   Rules serve as both grouping and sorting criteria.
     -   Customizable priority order for rules within a group.
     -   *Example:* "Duplicate images, best quality first" -> Primary: pHash, Secondary: Info Density, Sort: Descending.
-
-# Product Definition - Pic-Analyzer
 
 ## Target Audience
 - **Primary Persona:** Data Hoarders, Archivists, Developers, and Data Scientists.
@@ -71,7 +71,7 @@ A "geeky," high-performance image management and analysis tool designed for scie
 
 ## Key Features
 - **Utility-First UI:** A functional, data-dense interface following native Windows design patterns.
-- **On-Demand Analysis:** Statistical rules are triggered manually via buttons to conserve resources.
+- **On-Demand Analysis:** Statistical rules are triggered manually via an 'Apply' button in the sidebar to conserve resources.
 - **Centralized App Layer:** Business logic, global state, and core services (DB, File Ops) are decoupled from the UI.
 - **Reactive Architecture:** Uses a global signal-based event bus (Communicator) to decouple UI components like Toast notifications and the Data Inspector.
 - **Lazy Loading:** UI elements and thumbnails are generated only as needed.
@@ -79,7 +79,7 @@ A "geeky," high-performance image management and analysis tool designed for scie
 - **Interactive Visualization:**
     - **Distribution Charts:** Histograms and scatter plots that act as interactive filters.
     - **Data Inspector:** A sidebar for deep-dives into raw metrics (pHash, information density).
-- **Externalized Plugin System:** Users and developers can extend the application with new sorting and grouping algorithms via the root-level `./plugins` directory.
+- **Externalized Plugin System:** Metadata-driven architecture where plugins define their own parameters for automatic UI generation.
 - **Safe Operations:** Strictly uses `move` operations to protect SSD lifespan and ensures analysis data (SQLite) is isolated from original files.
 
 ## High-Level Requirements
