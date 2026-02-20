@@ -3,9 +3,9 @@
 #### Phase 1: Sidebar Layout & Splitter
 Refactor the sidebar container to support dynamic grouping and resizable expanded sections.
 - [x] Task: [RED] Write tests for Sidebar dynamic reordering and splitter initialization c435435
-- [ ] Task: [GREEN] Implement sidebar grouping logic (Expanded top, Collapsed bottom)
-- [ ] Task: [GREEN] Integrate `QSplitter` for expanded sections to allow manual resizing
-- [ ] Task: [REFACTOR] Clean up sidebar layout management and handle expansion events
+- [x] Task: [GREEN] Implement sidebar grouping logic (Expanded top, Collapsed bottom) 5bc1f55
+- [x] Task: [GREEN] Integrate `QSplitter` for expanded sections to allow manual resizing 5bc1f55
+- [x] Task: [REFACTOR] Clean up sidebar layout management and handle expansion events 5bc1f55
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Sidebar Layout' (Protocol in workflow.md)
 
 #### Phase 2: Multi-Item UI Framework
