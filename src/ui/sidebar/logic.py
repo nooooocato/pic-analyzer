@@ -12,9 +12,6 @@ class SidebarContainer(QWidget):
         self.layout_engine.setup_ui(self)
         self.setStyleSheet(get_style())
         
-        self.layout_engine.apply_btn.setObjectName("ApplyButton")
-        self.layout_engine.apply_btn.clicked.connect(self._on_apply_clicked)
-        
         self._setup_connections()
         self._populate_dropdowns()
 
@@ -33,7 +30,7 @@ class SidebarContainer(QWidget):
     @property
     def sort_metric_combo(self): return self.layout_engine.sort_metric_combo
     @property
-    def apply_btn(self): return self.layout_engine.apply_btn
+    def apply_btn(self): return None # Button removed
     @property
     def group_params_layout(self): return self.layout_engine.group_params_layout
     @property
@@ -100,13 +97,13 @@ class SidebarContainer(QWidget):
 
     def _connect_change_signal(self, widget):
         if isinstance(widget, (QSpinBox, QDoubleSpinBox)):
-            widget.valueChanged.connect(lambda: self.layout_engine.apply_btn.setEnabled(True))
+            widget.valueChanged.connect(lambda: self._on_apply_clicked())
         elif isinstance(widget, QLineEdit):
-            widget.textChanged.connect(lambda: self.layout_engine.apply_btn.setEnabled(True))
+            widget.textChanged.connect(lambda: self._on_apply_clicked())
         elif isinstance(widget, QComboBox):
-            widget.currentIndexChanged.connect(lambda: self.layout_engine.apply_btn.setEnabled(True))
+            widget.currentIndexChanged.connect(lambda: self._on_apply_clicked())
         elif isinstance(widget, QCheckBox):
-            widget.stateChanged.connect(lambda: self.layout_engine.apply_btn.setEnabled(True))
+            widget.stateChanged.connect(lambda: self._on_apply_clicked())
 
     def _get_params(self, layout, start_index=1):
         params = {}
@@ -124,7 +121,6 @@ class SidebarContainer(QWidget):
 
     def _on_apply_clicked(self):
         l = self.layout_engine
-        l.apply_btn.setEnabled(False)
         
         # Gather all rules
         rules = {

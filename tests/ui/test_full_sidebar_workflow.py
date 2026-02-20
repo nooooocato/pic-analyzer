@@ -41,8 +41,6 @@ def test_full_sidebar_rules_application(qtbot, tmp_path):
     ext_combo = all_combos[1]
     ext_combo.setCurrentText(".png")
     
-    # Click Apply (needed for param change)
-    qtbot.mouseClick(sidebar.apply_btn, Qt.LeftButton)
     qtbot.wait(100)
     
     # Gallery should show only 1 item
@@ -78,7 +76,6 @@ def test_full_sidebar_rules_application(qtbot, tmp_path):
     m_idx = sidebar.sort_metric_combo.findText("Dummy Val")
     sidebar.sort_metric_combo.setCurrentIndex(m_idx)
     
-    qtbot.mouseClick(sidebar.apply_btn, Qt.LeftButton)
     qtbot.wait(100)
     
     # Should be sorted: img2 (5) then img1 (10)

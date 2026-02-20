@@ -46,9 +46,4 @@ class SidebarLayout:
         self.sorting_section = CollapsibleSection("Sorting", self.sorting_content)
         self.content_layout.addWidget(self.sorting_section)
         
-        # Apply Button
-        self.apply_btn = QPushButton("Apply Changes")
-        self.apply_btn.setEnabled(False)
-        
         self.content_layout.addStretch()
-        self.content_layout.addWidget(self.apply_btn)
