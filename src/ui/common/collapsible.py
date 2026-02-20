@@ -1,7 +1,9 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QFrame
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 
 class CollapsibleSection(QWidget):
+    toggled = Signal(bool)
+
     def __init__(self, title, content_widget, parent=None):
         super().__init__(parent)
         self.title = title
@@ -25,6 +27,7 @@ class CollapsibleSection(QWidget):
     def _on_toggled(self, checked):
         self.is_expanded = checked
         self.content_widget.setVisible(checked)
+        self.toggled.emit(checked)
 
     def toggle(self):
         """Manually toggle the expansion state."""

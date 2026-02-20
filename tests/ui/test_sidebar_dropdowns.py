@@ -16,8 +16,11 @@ def test_sidebar_dropdowns_populated(qtbot):
     # Let's check for QComboBox in each section
     group_dropdown = sidebar.grouping_section.findChild(QComboBox)
     filter_dropdown = sidebar.filtering_section.findChild(QComboBox)
-    sort_dropdown = sidebar.sorting_section.findChild(QComboBox)
     
+    # In Sorting section, we have multiple combos. 
+    # We want the algorithm one which is accessible via property or findChild with specific logic
+    sort_dropdown = sidebar.sort_combo 
+
     assert group_dropdown is not None
     assert filter_dropdown is not None
     assert sort_dropdown is not None

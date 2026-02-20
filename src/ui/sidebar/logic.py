@@ -47,6 +47,11 @@ class SidebarContainer(QWidget):
         l.sort_combo.currentIndexChanged.connect(lambda: self._on_plugin_selected("sort"))
         l.sort_metric_combo.currentIndexChanged.connect(lambda: self._on_apply_clicked())
 
+        # Dynamic layout reordering
+        l.filtering_section.toggled.connect(l.reorder_sections)
+        l.grouping_section.toggled.connect(l.reorder_sections)
+        l.sorting_section.toggled.connect(l.reorder_sections)
+
     def _populate_dropdowns(self):
         pm = state.plugin_manager
         l = self.layout_engine

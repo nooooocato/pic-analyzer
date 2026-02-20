@@ -20,8 +20,8 @@ def test_sidebar_sections_exist(qtbot):
     sidebar = SidebarContainer()
     qtbot.addWidget(sidebar)
     
-    # Find all CollapsibleSection objects in the content layout
-    sections = [sidebar.content_layout.itemAt(i).widget() for i in range(sidebar.content_layout.count()) if isinstance(sidebar.content_layout.itemAt(i).widget(), CollapsibleSection)]
+    # Find all CollapsibleSection objects
+    sections = sidebar.findChildren(CollapsibleSection)
     
     assert len(sections) == 3
     
