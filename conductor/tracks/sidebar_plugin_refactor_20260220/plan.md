@@ -1,7 +1,7 @@
 # Implementation Plan - Sidebar & Plugin Refactor
 
 ## Phase 1: Foundation & Sidebar UI
-- [ ] Task: Create the new Sidebar Container component and its integration with the Main Window layout.
+- [x] Task: Create the new Sidebar Container component and its integration with the Main Window layout. b13cfc6
     - [ ] Implement the base `SidebarContainer` widget in `src/ui/common/sidebar.py`.
     - [ ] Integrate the sidebar into `src/ui/main_window/layout.py`.
 - [ ] Task: Create Collapsible Section widget.
