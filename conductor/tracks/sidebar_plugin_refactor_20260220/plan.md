@@ -15,7 +15,7 @@
     - [ ] Update `BasePlugin`, `SortPlugin`, and `GroupPlugin` to use logic-only methods.
 - [x] Task: Refactor the Plugin Manager to support Schema-based discovery. 8e8007a
     - [ ] Update `src/plugin/manager.py` to handle the new metadata-driven approach.
-- [~] Task: Migrate existing Sorting plugins (Ascending, Descending, Normal Dist) to the new interface.
+- [x] Task: Migrate existing Sorting plugins (Ascending, Descending, Normal Dist) to the new interface. b52d4bb
     - [ ] Rewrite `algo.py` and `ui.py` (or merge logic into `algo.py`) for existing plugins.
 - [ ] Task: Migrate existing Grouping plugins (Date Grouping) to the new interface.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Architecture & Plugin Interface Refactor' (Protocol in workflow.md)
