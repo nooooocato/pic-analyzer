@@ -21,7 +21,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Core Architecture & Plugin Interface Refactor' (Protocol in workflow.md)
 
 ## Phase 3: Dynamic UI Generation & Interaction
-- [ ] Task: Implement Sidebar Rule Dropdowns for each section.
+- [x] Task: Implement Sidebar Rule Dropdowns for each section. d80eaba
     - [ ] Dynamically populate dropdowns with discovered plugins from the manager.
     - [ ] Implement 'Live Update' logic when a new rule is selected.
 - [ ] Task: Create Dynamic Widget Generator.
