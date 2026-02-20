@@ -24,7 +24,7 @@
 - [x] Task: Implement Sidebar Rule Dropdowns for each section. d80eaba
     - [ ] Dynamically populate dropdowns with discovered plugins from the manager.
     - [ ] Implement 'Live Update' logic when a new rule is selected.
-- [ ] Task: Create Dynamic Widget Generator.
+- [x] Task: Create Dynamic Widget Generator. a9c945e
     - [ ] Implement a factory that maps schema types (int, str, choice) to PySide6 widgets.
     - [ ] Ensure widgets are correctly styled and sized for the sidebar.
 - [ ] Task: Implement Parameter Interaction & 'Apply' Button.
