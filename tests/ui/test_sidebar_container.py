@@ -1,6 +1,7 @@
 import pytest
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton
 from src.ui.common.sidebar import SidebarContainer
+from src.ui.common.collapsible import CollapsibleSection
 
 def test_sidebar_container_initialization(qtbot):
     """Test that SidebarContainer initializes correctly as a QWidget."""
@@ -12,19 +13,16 @@ def test_sidebar_container_initialization(qtbot):
     assert isinstance(sidebar.layout(), QVBoxLayout)
 
 def test_sidebar_sections_exist(qtbot):
-    """Test that the initial sidebar contains the required sections."""
+    """Test that the initial sidebar contains the required collapsible sections."""
     sidebar = SidebarContainer()
     qtbot.addWidget(sidebar)
     
-    # Check for sections (initially they might just be labels or placeholders)
-    # The spec mentions: Grouping, Filtering, Sorting
-    sections = [sidebar.layout().itemAt(i).widget() for i in range(sidebar.layout().count()) if sidebar.layout().itemAt(i).widget()]
+    # Find all CollapsibleSection objects in the layout
+    sections = [sidebar.layout().itemAt(i).widget() for i in range(sidebar.layout().count()) if isinstance(sidebar.layout().itemAt(i).widget(), CollapsibleSection)]
     
-    # We expect at least some indication of the three sections
-    # This might change as we implement CollapsibleSection
-    section_texts = [w.text() if hasattr(w, 'text') else "" for w in sections]
+    assert len(sections) == 3
     
-    # At least check the titles for now to drive implementation
-    assert any("Grouping" in t for t in section_texts)
-    assert any("Filtering" in t for t in section_texts)
-    assert any("Sorting" in t for t in section_texts)
+    section_titles = [s.title for s in sections]
+    assert "Grouping" in section_titles
+    assert "Filtering" in section_titles
+    assert "Sorting" in section_titles
