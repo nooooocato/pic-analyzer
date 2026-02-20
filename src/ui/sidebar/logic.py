@@ -54,9 +54,10 @@ class SidebarContainer(QWidget):
         # Populate Metrics
         l.sort_metric_combo.blockSignals(True)
         l.sort_metric_combo.clear()
-        metrics = state.db_manager.get_numeric_metrics()
-        for m in metrics:
-            l.sort_metric_combo.addItem(m.replace("_", " ").title(), m)
+        if state.db_manager:
+            metrics = state.db_manager.get_numeric_metrics()
+            for m in metrics:
+                l.sort_metric_combo.addItem(m.replace("_", " ").title(), m)
         l.sort_metric_combo.blockSignals(False)
 
         def populate(combo, plugins):
@@ -74,17 +75,23 @@ class SidebarContainer(QWidget):
     def _on_plugin_selected(self, category):
         l = self.layout_engine
         if category == "group":
-            combo, layout, keep_count = l.group_combo, l.group_params_layout, 1
+            combo, layout = l.group_combo, l.group_params_layout
         elif category == "filter":
-            combo, layout, keep_count = l.filter_combo, l.filter_params_layout, 1
+            combo, layout = l.filter_combo, l.filter_params_layout
         else: # sort
-            combo, layout, keep_count = l.sort_combo, l.sort_params_layout, 4
-            
-        # Clear existing dynamic widgets
-        while layout.count() > keep_count:
-            item = layout.takeAt(keep_count)
-            if item.widget(): item.widget().deleteLater()
-            
+            combo, layout = l.sort_combo, l.sort_params_layout
+
+        # Clear existing dynamic widgets using 'is_param' property
+        i = 0
+        while i < layout.count():
+            item = layout.itemAt(i)
+            w = item.widget()
+            if w and w.property("is_param"):
+                layout.takeAt(i)
+                w.deleteLater()
+            else:
+                i += 1
+
         plugin = combo.currentData()
         if plugin and hasattr(plugin, "schema"):
             for param in plugin.schema.get("parameters", []):
@@ -105,11 +112,11 @@ class SidebarContainer(QWidget):
         elif isinstance(widget, QCheckBox):
             widget.stateChanged.connect(lambda: self._on_apply_clicked())
 
-    def _get_params(self, layout, start_index=1):
+    def _get_params(self, layout):
         params = {}
-        for i in range(start_index, layout.count()):
+        for i in range(layout.count()):
             container = layout.itemAt(i).widget()
-            if container and hasattr(container, "input_widget") and hasattr(container, "param_name"):
+            if container and container.property("is_param"):
                 w = container.input_widget
                 val = None
                 if isinstance(w, (QSpinBox, QDoubleSpinBox)): val = w.value()
@@ -124,12 +131,12 @@ class SidebarContainer(QWidget):
         
         # Gather all rules
         rules = {
-            "group": {"plugin": l.group_combo.currentData(), "params": self._get_params(l.group_params_layout, 1)},
-            "filter": {"plugin": l.filter_combo.currentData(), "params": self._get_params(l.filter_params_layout, 1)},
+            "group": {"plugin": l.group_combo.currentData(), "params": self._get_params(l.group_params_layout)},
+            "filter": {"plugin": l.filter_combo.currentData(), "params": self._get_params(l.filter_params_layout)},
             "sort": {
                 "plugin": l.sort_combo.currentData(), 
                 "metric": l.sort_metric_combo.currentData(),
-                "params": self._get_params(l.sort_params_layout, 4)
+                "params": self._get_params(l.sort_params_layout)
             }
         }
         

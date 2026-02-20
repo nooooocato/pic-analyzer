@@ -1,15 +1,20 @@
 import pytest
 from src.plugin.base import BasePlugin
 
-def test_base_plugin_has_initialize_ui():
-    class ConcretePlugin(BasePlugin):
+def test_base_plugin_abstract_methods():
+    """Verify that BasePlugin cannot be instantiated without implementing abstract methods."""
+    with pytest.raises(TypeError):
+        BasePlugin()
+
+def test_concrete_plugin_instantiation():
+    """Verify that a subclass implementing all abstract methods can be instantiated."""
+    class MyPlugin(BasePlugin):
         @property
-        def name(self): return "Test"
+        def name(self): return "MyPlugin"
         @property
-        def description(self): return "Test"
-        def run(self, image_path): return {}
-        # initialize_ui is not implemented here to test if it's required
-    
-    with pytest.raises(TypeError) as excinfo:
-        ConcretePlugin()
-    assert "initialize_ui" in str(excinfo.value)
+        def description(self): return "Desc"
+        def run(self, path): return {}
+        
+    p = MyPlugin()
+    assert p.name == "MyPlugin"
+    assert p.category == "general"

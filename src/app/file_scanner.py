@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class ScannerSignals(QObject):
     """Signals for the FolderScanner."""
-    file_found = Signal(str, bytes) # path, thumbnail_bytes
+    file_found = Signal(dict) # item_data dictionary
     finished = Signal()
     error = Signal(str)
 
@@ -97,7 +97,13 @@ class FolderScanner(QRunnable):
                                     logger.warning(f"Database write error for {file}: {db_e}")
                         
                         if thumb_bytes:
-                            self.signals.file_found.emit(file_path, thumb_bytes)
+                            self.signals.file_found.emit({
+                                "path": file_path,
+                                "filename": os.path.basename(file_path),
+                                "file_size": int(stats.st_size),
+                                "modified_at": modified_at,
+                                "thumb": thumb_bytes
+                            })
                             count += 1
                         else:
                             logger.warning(f"No thumbnail generated for {file_path}")

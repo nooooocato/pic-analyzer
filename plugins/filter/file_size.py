@@ -42,9 +42,13 @@ class FileSizeFilter(FilterPlugin):
         
         filtered = []
         for item in items:
-            path = item.get("path")
-            if path and os.path.exists(path):
-                size = os.path.getsize(path)
+            size = item.get("file_size")
+            if size is None:
+                path = item.get("path")
+                if path and os.path.exists(path):
+                    size = os.path.getsize(path)
+            
+            if size is not None:
                 if min_bytes <= size <= max_bytes:
                     filtered.append(item)
         return filtered

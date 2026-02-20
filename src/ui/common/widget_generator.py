@@ -61,4 +61,5 @@ class WidgetGenerator:
         # Attach name and the actual input widget to the container for easy access
         container.param_name = param["name"]
         container.input_widget = widget
+        container.setProperty("is_param", True)
         return container

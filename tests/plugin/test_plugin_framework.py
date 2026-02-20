@@ -36,7 +36,7 @@ class TestPlugin(BasePlugin):
     def run(self, image_path): return {"test": True}
     def initialize_ui(self, main_window): pass
 """
-    plugin_file = plugins_dir / "test_plugin.py"
+    plugin_file = plugins_dir / "dummy_plugin.py"
     plugin_file.write_text(plugin_content)
     
     manager = PluginManager(str(plugins_dir))

@@ -195,8 +195,7 @@ class GalleryView(QScrollArea):
             if item.widget(): item.widget().deleteLater()
         self._group_widgets = []
 
-    def add_item(self, file_path, thumb_bytes=None):
-        item_data = {'path': file_path, 'thumb': thumb_bytes}
+    def add_item(self, item_data: dict):
         self._items.append(item_data)
         
         # Debounce the refresh to avoid O(N^2) UI freezing
@@ -279,8 +278,8 @@ class GalleryView(QScrollArea):
         list_widget.set_selection_mode_enabled(self._selection_mode_enabled)
         for item_data in items:
             item = QListWidgetItem()
-            item.setData(Qt.UserRole, item_data['path'])
-            if item_data['thumb']:
+            item.setData(Qt.UserRole, item_data.get('path'))
+            if item_data.get('thumb'):
                 pixmap = QPixmap()
                 if pixmap.loadFromData(item_data['thumb']):
                     item.setIcon(QIcon(pixmap))

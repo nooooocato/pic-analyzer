@@ -36,7 +36,7 @@ def test_folder_scanner_finds_images(temp_image_dir, qtbot):
     scanner = FolderScanner(temp_image_dir)
     
     # Connect signal to collect found files and thumbnails
-    scanner.signals.file_found.connect(lambda p, t: found_files.append((p, t)))
+    scanner.signals.file_found.connect(lambda data: found_files.append((data['path'], data['thumb'])))
     
     # Run the scanner logic directly
     scanner.run()

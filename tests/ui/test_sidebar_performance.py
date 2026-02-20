@@ -13,7 +13,7 @@ def test_large_set_responsiveness(qtbot):
     
     start_time = time.time()
     for i in range(1000):
-        gallery.add_item(f"path_{i}.jpg")
+        gallery.add_item({"path": f"path_{i}.jpg"})
     end_time = time.time()
     
     # 1000 items should be added very quickly to the internal list

@@ -43,9 +43,13 @@ class DateRangeFilter(FilterPlugin):
         
         filtered = []
         for item in items:
-            path = item.get("path")
-            if path and os.path.exists(path):
-                mtime = os.path.getmtime(path)
+            mtime = item.get("modified_at")
+            if not mtime:
+                path = item.get("path")
+                if path and os.path.exists(path):
+                    mtime = os.path.getmtime(path)
+            
+            if mtime:
                 dt = datetime.datetime.fromtimestamp(mtime)
                 if start_year <= dt.year <= end_year:
                     filtered.append(item)

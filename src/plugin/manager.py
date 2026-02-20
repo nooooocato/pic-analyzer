@@ -8,9 +8,23 @@ from src.app.logger import get_logger
 logger = get_logger(__name__)
 
 class PluginManager:
-    """Manages the lifecycle of external plugins."""
+    """Manages the lifecycle of external plugins.
+
+    Scans a specified directory for Python files containing subclasses of BasePlugin,
+    handles dynamic loading via importlib, and manages naming conflicts.
+
+    Attributes:
+        plugins_dir (str): Absolute path to the directory containing plugins.
+        plugins (dict): Dictionary mapping plugin names to their instances.
+        conflicts (set): Set of plugin names that had loading conflicts.
+    """
 
     def __init__(self, plugins_dir):
+        """Initializes the PluginManager and loads plugins from the specified directory.
+
+        Args:
+            plugins_dir (str): The relative or absolute path to the plugins directory.
+        """
         self.plugins_dir = os.path.abspath(plugins_dir)
         if self.plugins_dir not in sys.path:
             sys.path.append(self.plugins_dir)
@@ -23,6 +37,12 @@ class PluginManager:
         self.load_plugins()
 
     def load_plugins(self):
+        """Scans the plugins directory and loads valid BasePlugin subclasses.
+
+        Iterates recursively through the plugins directory, importing each .py file
+        and instantiating classes that inherit from BasePlugin. Handles naming
+        conflicts by refusing to load plugins with duplicate names.
+        """
         if not os.path.exists(self.plugins_dir):
             return
 

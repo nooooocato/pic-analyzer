@@ -19,8 +19,8 @@ def test_full_sidebar_rules_application(qtbot, tmp_path):
     sidebar = window.layout_engine.sidebar
     
     # Manually add items to gallery
-    gallery.add_item(str(img1))
-    gallery.add_item(str(img2))
+    gallery.add_item({"path": str(img1)})
+    gallery.add_item({"path": str(img2)})
     
     # Wait for debounce timer
     qtbot.wait(100)
