@@ -35,7 +35,7 @@
 ## Phase 4: Filtering & Metadata Implementation
 - [x] Task: Implement the 'Filter' plugin category. 0551800
     - [ ] Define the `FilterPlugin` base class.
-- [ ] Task: Create Basic Metadata Filtering Plugins.
+- [x] Task: Create Basic Metadata Filtering Plugins. 55fe80c
     - [ ] Implement File Type filter.
     - [ ] Implement File Size filter.
     - [ ] Implement Date Range filter.
