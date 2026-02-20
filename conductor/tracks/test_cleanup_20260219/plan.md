@@ -29,12 +29,12 @@
     - [x] Move `tests/test_plugin_date_grouping.py` to `plugins/group/date_grouping/test_plugin.py`.
 - [x] Task: Conductor - User Manual Verification 'Plugin Decentralization' (Protocol in workflow.md)
 
-## Phase 4: Verification and Cleanup
-- [ ] Task: Update test discovery (if necessary).
-    - [ ] Check if `pytest` discovers tests in `plugins/` automatically; if not, add configuration.
-- [ ] Task: Run all tests to ensure no regressions.
-    - [ ] Run `pytest` from the root and verify all tests pass.
-- [ ] Task: Final Cleanup.
-    - [ ] Remove empty directories and delete `tests/test_basic_sort_plugins.py`.
-    - [ ] Clean up `__pycache__` and `.pytest_cache`.
-- [ ] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
+## Phase 4: Verification and Cleanup [checkpoint: e92775a]
+- [x] Task: Update test discovery (if necessary).
+    - [x] Check if `pytest` discovers tests in `plugins/` automatically; if not, add configuration.
+- [x] Task: Run all tests to ensure no regressions.
+    - [x] Run `pytest` from the root and verify all tests pass.
+- [x] Task: Final Cleanup.
+    - [x] Remove empty directories and delete `tests/test_basic_sort_plugins.py`.
+    - [x] Clean up `__pycache__` and `.pytest_cache`.
+- [x] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
