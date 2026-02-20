@@ -55,4 +55,27 @@ def test_full_sidebar_rules_application(qtbot, tmp_path):
     qtbot.wait(100)
     assert gallery.count() == 2
 
+    # 5. Test Sorting (Ascending by a dummy metric)
+    # We need to mock db_manager to return some values
+    from unittest.mock import MagicMock
+    state.db_manager = MagicMock()
+    state.db_manager.get_metric_values.return_value = {str(img1): 10, str(img2): 5}
+    state.db_manager.get_numeric_metrics.return_value = ["dummy_val"]
+    
+    # Refresh metrics combo (usually happens on init or folder open, but we mock now)
+    sidebar._populate_dropdowns() 
+    
+    s_idx = sidebar.sort_combo.findText("Ascending")
+    sidebar.sort_combo.setCurrentIndex(s_idx)
+    
+    m_idx = sidebar.sort_metric_combo.findText("Dummy Val")
+    sidebar.sort_metric_combo.setCurrentIndex(m_idx)
+    
+    qtbot.mouseClick(sidebar.apply_btn, Qt.LeftButton)
+    qtbot.wait(100)
+    
+    # Should be sorted: img2 (5) then img1 (10)
+    assert gallery._visible_items[0]['path'] == str(img2)
+    assert gallery._visible_items[1]['path'] == str(img1)
+
 from PySide6.QtWidgets import QComboBox

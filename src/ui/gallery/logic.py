@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QScrollArea, QListWidgetItem, QMenu, QLabel, QWidget
 from PySide6.QtCore import Qt, QSize, Signal, QTimer
 from PySide6.QtGui import QPixmap, QIcon
+from src.app.state import state
 from .layout import GalleryLayout, GroupedListWidget as BaseGroupedListWidget
 from .style import get_gallery_style
 
