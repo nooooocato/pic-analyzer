@@ -1,8 +1,0 @@
-{
-  "track_id": "test_cleanup_20260219",
-  "type": "chore",
-  "status": "new",
-  "created_at": "2026-02-19T10:00:00Z",
-  "updated_at": "2026-02-19T10:00:00Z",
-  "description": "整理和清理test，让 ./plugins/ 下每个plugin包管理和维护自己的test，而不是集中放在./test/文件夹中。集中的test只对程序src里面的代码负责。"
-}
