@@ -13,7 +13,7 @@
 - [x] Task: Define the new Plugin Schema and Base Classes in `src/plugin/base.py`. 0551800
     - [ ] Design the `PluginSchema` data structure (TypedDict/JSON-like).
     - [ ] Update `BasePlugin`, `SortPlugin`, and `GroupPlugin` to use logic-only methods.
-- [ ] Task: Refactor the Plugin Manager to support Schema-based discovery.
+- [x] Task: Refactor the Plugin Manager to support Schema-based discovery. 8e8007a
     - [ ] Update `src/plugin/manager.py` to handle the new metadata-driven approach.
 - [ ] Task: Migrate existing Sorting plugins (Ascending, Descending, Normal Dist) to the new interface.
     - [ ] Rewrite `algo.py` and `ui.py` (or merge logic into `algo.py`) for existing plugins.
