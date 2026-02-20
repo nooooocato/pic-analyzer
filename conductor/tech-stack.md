@@ -26,5 +26,10 @@
     - **Dynamic UI Injection:** Plugins programmatically inject UI components (menus, toolbar actions) into the main window via a registration hooks system.
 - **Storage:** Safe file operations using Python's `shutil.move` with manual conflict resolution logic.
 
+## Testing Architecture
+- **Framework:** `pytest` - Used for unit and integration testing.
+- **Decentralized Testing:** Plugin-specific tests are co-located within their respective packages in `./plugins/` to ensure modularity and autonomy.
+- **Mirrored Structure:** Core tests in `./tests/` mirror the `src/` directory structure for high discoverability and maintainability.
+
 ## Distribution
 - **Packaging:** PyInstaller - To package the application into a standalone Windows executable.
