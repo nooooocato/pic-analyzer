@@ -32,14 +32,14 @@
     - [ ] Handle state synchronization between sidebar widgets and plugin logic.
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Dynamic UI Generation & Interaction' (Protocol in workflow.md)
 
-## Phase 4: Filtering & Metadata Implementation
+## Phase 4: Filtering & Metadata Implementation [checkpoint: 1b20eac]
 - [x] Task: Implement the 'Filter' plugin category. 0551800
     - [ ] Define the `FilterPlugin` base class.
 - [x] Task: Create Basic Metadata Filtering Plugins. 55fe80c
     - [ ] Implement File Type filter.
     - [ ] Implement File Size filter.
     - [ ] Implement Date Range filter.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Filtering & Metadata Implementation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Filtering & Metadata Implementation' (Protocol in workflow.md)
 
 ## Phase 5: Final Integration & Cleanup
 - [ ] Task: Remove obsolete UI injection code from the Main Window and old plugin headers.
