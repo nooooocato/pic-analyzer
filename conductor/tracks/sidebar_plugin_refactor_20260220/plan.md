@@ -41,8 +41,11 @@
     - [ ] Implement Date Range filter.
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Filtering & Metadata Implementation' (Protocol in workflow.md)
 
-## Phase 5: Final Integration & Cleanup
-- [ ] Task: Remove obsolete UI injection code from the Main Window and old plugin headers.
-- [ ] Task: Perform comprehensive integration testing across all sorting, grouping, and filtering combinations.
-- [ ] Task: Verify performance and responsiveness under large image sets.
-- [ ] Task: Conductor - User Manual Verification 'Phase 5: Final Integration & Cleanup' (Protocol in workflow.md)
+## Phase 5: Final Integration & Cleanup [checkpoint: 4b279db]
+- [x] Task: Remove obsolete UI injection code from the Main Window and old plugin headers. 4ccd759
+    - [ ] Remove `initialize_ui` calls from plugins and the hook in `MainWindow`.
+    - [ ] Remove `register_sort_plugin` and `add_toolbar_action` from `MainWindow` if no longer used.
+    - [ ] Clean up redundant menu items in `MainWindow._setup_menus`.
+- [x] Task: Perform comprehensive integration testing across all sorting, grouping, and filtering combinations. 4b279db
+- [x] Task: Verify performance and responsiveness under large image sets. 4b279db
+- [x] Task: Conductor - User Manual Verification 'Phase 5: Final Integration & Cleanup' (Protocol in workflow.md)
