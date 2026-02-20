@@ -1,13 +1,13 @@
 # Implementation Plan - Sidebar & Plugin Refactor
 
-## Phase 1: Foundation & Sidebar UI
+## Phase 1: Foundation & Sidebar UI [checkpoint: 7938a63]
 - [x] Task: Create the new Sidebar Container component and its integration with the Main Window layout. b13cfc6
     - [ ] Implement the base `SidebarContainer` widget in `src/ui/common/sidebar.py`.
     - [ ] Integrate the sidebar into `src/ui/main_window/layout.py`.
 - [x] Task: Create Collapsible Section widget. 3df1775
     - [ ] Implement a reusable `CollapsibleSection` component that can host other widgets.
     - [ ] Add 'Grouping', 'Filtering', and 'Sorting' sections to the sidebar.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Sidebar UI' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Sidebar UI' (Protocol in workflow.md)
 
 ## Phase 2: Core Architecture & Plugin Interface Refactor
 - [ ] Task: Define the new Plugin Schema and Base Classes in `src/plugin/base.py`.
