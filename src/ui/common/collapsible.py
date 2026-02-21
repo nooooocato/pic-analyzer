@@ -31,7 +31,6 @@ class CollapsibleSection(QWidget):
         self._update_header_text()
         
         self.header_layout.addWidget(self.toggle_button)
-        self.header_layout.addStretch()
 
         if header_widget:
             self.header_layout.addWidget(header_widget)

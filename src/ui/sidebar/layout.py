@@ -67,7 +67,7 @@ class SidebarLayout:
         for section in self.all_sections:
             self.splitter.addWidget(section)
             # Ensure they don't grow unnecessarily
-            section.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+            section.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
             
         self.content_layout.addWidget(self.splitter)
         self.content_layout.addStretch() # This will only work if splitter allows it
