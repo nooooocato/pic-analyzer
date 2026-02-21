@@ -241,16 +241,27 @@ class GalleryView(QScrollArea):
         items = list(self._items) # Clone list
         
         # 1. Filter
-        f_rule = self._rules.get("filter", {})
-        f_plugin = f_rule.get("plugin")
-        if f_plugin:
-            items = f_plugin.filter(items, f_rule.get("params", {}))
+        # Compatibility: Support both single 'filter' and list 'filters'
+        f_rule = self._rules.get("filter")
+        if not f_rule and self._rules.get("filters"):
+            # Use first active plugin filter for now (Phase 2 compatibility)
+            for f in self._rules.get("filters", []):
+                if f.get("type") == "plugin":
+                    f_rule = f
+                    break
+
+        if f_rule and f_rule.get("plugin"):
+            items = f_rule["plugin"].filter(items, f_rule.get("params", {}))
             
         # 2. Sort
-        s_rule = self._rules.get("sort", {})
-        s_plugin = s_rule.get("plugin")
-        s_metric = s_rule.get("metric")
-        if s_plugin and s_metric:
+        # Compatibility: Support both single 'sort' and list 'sorts'
+        s_rule = self._rules.get("sort")
+        if not s_rule and self._rules.get("sorts"):
+            s_rule = self._rules.get("sorts")[0] if self._rules.get("sorts") else None
+
+        if s_rule and s_rule.get("plugin") and s_rule.get("metric"):
+            s_plugin = s_rule["plugin"]
+            s_metric = s_rule["metric"]
             # Need metric values from DB
             values_map = state.db_manager.get_metric_values(s_metric)
             for it in items:

@@ -21,9 +21,13 @@ class SidebarLayout:
         
         # Filtering
         self.filtering_content = QWidget()
-        self.filter_params_layout = QVBoxLayout(self.filtering_content)
-        self.filter_combo = QComboBox()
-        self.filter_params_layout.addWidget(self.filter_combo)
+        self.filtering_layout = QVBoxLayout(self.filtering_content)
+        self.filtering_items_layout = QVBoxLayout()
+        self.filtering_layout.addLayout(self.filtering_items_layout)
+        
+        self.add_filter_btn = QPushButton("+ Add Filter")
+        self.filtering_layout.addWidget(self.add_filter_btn)
+        
         self.filtering_section = CollapsibleSection("Filtering", self.filtering_content)
         
         # Grouping
@@ -35,13 +39,13 @@ class SidebarLayout:
         
         # Sorting
         self.sorting_content = QWidget()
-        self.sort_params_layout = QVBoxLayout(self.sorting_content)
-        self.sort_combo = QComboBox()
-        self.sort_metric_combo = QComboBox()
-        self.sort_params_layout.addWidget(QLabel("Metric:"))
-        self.sort_params_layout.addWidget(self.sort_metric_combo)
-        self.sort_params_layout.addWidget(QLabel("Algorithm:"))
-        self.sort_params_layout.addWidget(self.sort_combo)
+        self.sorting_layout = QVBoxLayout(self.sorting_content)
+        self.sorting_items_layout = QVBoxLayout()
+        self.sorting_layout.addLayout(self.sorting_items_layout)
+        
+        self.add_sort_btn = QPushButton("+ Add Sort")
+        self.sorting_layout.addWidget(self.add_sort_btn)
+        
         self.sorting_section = CollapsibleSection("Sorting", self.sorting_content)
         
         # Splitter for all sections - maintains fixed order
