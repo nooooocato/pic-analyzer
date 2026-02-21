@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Sidebar & Plugin Logic Upgrade**
+- [x] **Track: Sidebar & Plugin Logic Upgrade**
 *Link: [./tracks/sidebar_plugin_logic_20260220/](./tracks/sidebar_plugin_logic_20260220/)*
