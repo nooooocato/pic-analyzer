@@ -36,3 +36,6 @@ This plan outlines the steps to fix the bug where the image viewer does not resp
     - `[x]` Sub-task: Write a test for navigating before the beginning of the list.
 - `[x]` **Task:** Run all related tests again to ensure no regressions were introduced.
 - `[x]` **Task:** Conductor - User Manual Verification 'Refactoring and Final Testing' (Protocol in workflow.md)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions 5414c3a
