@@ -68,8 +68,8 @@ def test_full_sidebar_rules_application(qtbot, tmp_path):
     sidebar.group_combo.setCurrentIndex(g_idx)
     qtbot.wait(100)
     
-    # Should have 1 group
-    assert len(gallery._group_widgets) == 1
+    # Should have 2 groups now (Filtered Images header group + Date group)
+    assert len(gallery._group_widgets) == 2
     
     # 4. Remove Filter
     wrapper.remove_btn.click()

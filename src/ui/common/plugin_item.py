@@ -40,7 +40,7 @@ class PluginItemWrapper(QFrame):
         header_layout.addWidget(self.enabled_cb)
         
         self.title_label = QLabel(title)
-        self.title_label.setStyleSheet("font-size: 10px; font-weight: bold; color: #ccc;")
+        self.title_label.setObjectName("PluginItemTitle")
         header_layout.addWidget(self.title_label)
         header_layout.addStretch()
         
@@ -88,8 +88,6 @@ class PluginItemWrapper(QFrame):
         drag.setPixmap(pixmap)
         drag.setHotSpot(event.pos())
         
-        # Hide while dragging
-        self.hide()
-        result = drag.exec_(Qt.MoveAction)
-        if result == Qt.IgnoreAction:
-            self.show()
+        # Start drag. Don't hide 'self' to ensure it never 'disappears' 
+        # from the user's perspective if the drop is invalid.
+        drag.exec_(Qt.MoveAction)

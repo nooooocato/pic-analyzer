@@ -70,6 +70,5 @@ def get_gallery_style():
             padding-bottom: 5px; 
             border-bottom: 1px solid rgba(128, 128, 128, 60);
             font-weight: bold;
-            font-size: 14px;
         }}
     """

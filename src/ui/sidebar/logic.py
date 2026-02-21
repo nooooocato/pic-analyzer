@@ -228,7 +228,6 @@ class SidebarContainer(QWidget):
                 connector.addItems(["AND", "OR"])
                 connector.setProperty("is_connector", True)
                 connector.setFixedWidth(80)
-                connector.setStyleSheet("font-size: 10px; padding: 1px;")
                 connector.currentIndexChanged.connect(lambda: self._on_apply_clicked())
                 layout.addWidget(connector)
             layout.addWidget(w)
@@ -311,6 +310,8 @@ class SidebarContainer(QWidget):
             if isinstance(widget, PluginItemWrapper):
                 content = widget.content
                 plugin = content.combo.currentData()
+                if not plugin: continue # Skip 'Select Plugin...'
+
                 f_data = {
                     "type": "plugin",
                     "plugin_name": content.combo.currentText(),
@@ -332,6 +333,8 @@ class SidebarContainer(QWidget):
             if isinstance(wrapper, PluginItemWrapper):
                 content = wrapper.content
                 plugin = content.combo.currentData()
+                if not plugin: continue # Skip placeholders
+
                 metric = content.metric_combo.currentData() if hasattr(content, "metric_combo") else None
                 s_data = {
                     "plugin_name": content.combo.currentText(),
@@ -357,24 +360,52 @@ class SidebarContainer(QWidget):
 
     def dropEvent(self, event):
         source_item = event.source()
-        if not isinstance(source_item, PluginItemWrapper): return
-        l = self.layout_engine
-        target_layout = None
-        if l.filtering_section.isAncestorOf(source_item): target_layout = l.filtering_items_layout
-        elif l.sorting_section.isAncestorOf(source_item): target_layout = l.sorting_items_layout
-        if not target_layout:
-            source_item.show()
+        if not isinstance(source_item, PluginItemWrapper):
             return
+            
+        l = self.layout_engine
+        # Determine target layout
+        target_layout = None
+        if l.filtering_section.isAncestorOf(source_item):
+            target_layout = l.filtering_items_layout
+        elif l.sorting_section.isAncestorOf(source_item):
+            target_layout = l.sorting_items_layout
+            
+        if not target_layout:
+            return
+            
+        # Accept the action
+        event.setDropAction(Qt.MoveAction)
+        event.accept()
+
+        # Find target index among WRAPPERS only (ignore connectors)
         drop_pos = event.pos()
-        new_index = 0
+        
+        # Get current items in order
+        items = []
         for i in range(target_layout.count()):
-            item = target_layout.itemAt(i)
-            w = item.widget()
-            if w and w.isVisible():
-                if drop_pos.y() > w.mapTo(self, w.rect().center()).y(): new_index = i + 1
-        target_layout.insertWidget(new_index, source_item)
+            w = target_layout.itemAt(i).widget()
+            if isinstance(w, PluginItemWrapper):
+                items.append(w)
+        
+        # Remove source from list if present to find its new spot
+        if source_item in items:
+            items.remove(source_item)
+            
+        # Find new position
+        new_idx = 0
+        for i, w in enumerate(items):
+            # mapTo(self, ...) gives position in SidebarContainer coordinates
+            if drop_pos.y() > w.mapTo(self, w.rect().center()).y():
+                new_idx = i + 1
+        
+        # Re-insert at calculated position
+        target_layout.insertWidget(new_idx if target_layout != l.filtering_items_layout else new_idx * 2, source_item)
         source_item.show()
-        if target_layout == l.filtering_items_layout: self._sync_connectors()
+        
+        if target_layout == l.filtering_items_layout:
+            self._sync_connectors()
+            
         self._on_apply_clicked()
         event.accept()
 

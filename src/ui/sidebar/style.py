@@ -21,6 +21,12 @@ def get_style():
             margin: 1px;
         }
         
+        QLabel#PluginItemTitle {
+            font-size: 10px;
+            font-weight: bold;
+            color: #ccc;
+        }
+
         QLabel#drag_handle {
             color: #666;
             font-size: 14px;
@@ -67,5 +73,11 @@ def get_style():
             border-bottom: 1px solid #333;
             max-height: 22px;
             min-height: 22px;
+        }
+
+        /* Connector Styling */
+        QComboBox[is_connector="true"] {
+            font-size: 10px;
+            padding: 1px;
         }
     """
