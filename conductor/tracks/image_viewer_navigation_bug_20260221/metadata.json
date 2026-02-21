@@ -1,0 +1,8 @@
+{
+  "track_id": "image_viewer_navigation_bug_20260221",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-02-21T18:22:49Z",
+  "updated_at": "2026-02-21T18:22:49Z",
+  "description": "当应用了rules之后，照片查看器没有按照规则处理后的列表正确的前进和后退"
+}
