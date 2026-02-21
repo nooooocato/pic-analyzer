@@ -1,10 +1,10 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QFrame
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton
 from PySide6.QtCore import Qt, Signal
 
 class CollapsibleSection(QWidget):
     toggled = Signal(bool)
 
-    def __init__(self, title, content_widget, parent=None):
+    def __init__(self, title, content_widget, header_widget=None, parent=None):
         super().__init__(parent)
         self._raw_title = title
         self.content_widget = content_widget
@@ -14,15 +14,28 @@ class CollapsibleSection(QWidget):
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
         self.main_layout.setSpacing(0)
+
+        # Header
+        self.header_container = QWidget()
+        self.header_layout = QHBoxLayout(self.header_container)
+        self.header_layout.setContentsMargins(4, 0, 4, 0) # Give it some space
+        self.header_layout.setSpacing(5)
         
-        # Header button
+        # Header toggle button
         self.toggle_button = QPushButton()
         self.toggle_button.setCheckable(True)
         self.toggle_button.setChecked(True)
         self.toggle_button.toggled.connect(self._on_toggled)
+        self.toggle_button.setStyleSheet("text-align: left; border: none; padding-left: 0px;")
         self._update_header_text()
         
-        self.main_layout.addWidget(self.toggle_button)
+        self.header_layout.addWidget(self.toggle_button)
+        self.header_layout.addStretch()
+
+        if header_widget:
+            self.header_layout.addWidget(header_widget)
+        
+        self.main_layout.addWidget(self.header_container)
         self.main_layout.addWidget(self.content_widget)
         
     def _update_header_text(self):

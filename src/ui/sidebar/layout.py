@@ -4,6 +4,7 @@ from src.ui.common.collapsible import CollapsibleSection
 
 class SidebarLayout:
     def setup_ui(self, widget: QWidget):
+        widget.setMinimumWidth(250)
         
         self.main_layout = QVBoxLayout(widget)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
@@ -20,6 +21,12 @@ class SidebarLayout:
         self.scroll.setWidget(self.scroll_content)
         self.main_layout.addWidget(self.scroll)
         
+        # Add Buttons (to be placed in headers)
+        self.add_filter_btn = QPushButton("+")
+        self.add_filter_btn.setFixedSize(22, 22)
+        self.add_sort_btn = QPushButton("+")
+        self.add_sort_btn.setFixedSize(22, 22)
+        
         # Filtering
         self.filtering_content = QWidget()
         self.filtering_layout = QVBoxLayout(self.filtering_content)
@@ -27,10 +34,7 @@ class SidebarLayout:
         self.filtering_items_layout = QVBoxLayout()
         self.filtering_items_layout.setSpacing(2)
         self.filtering_layout.addLayout(self.filtering_items_layout)
-        
-        self.add_filter_btn = QPushButton("+ Add Filter")
-        self.filtering_layout.addWidget(self.add_filter_btn)
-        self.filtering_section = CollapsibleSection("Filtering", self.filtering_content)
+        self.filtering_section = CollapsibleSection("Filtering", self.filtering_content, self.add_filter_btn)
         
         # Grouping
         self.grouping_content = QWidget()
@@ -47,10 +51,7 @@ class SidebarLayout:
         self.sorting_items_layout = QVBoxLayout()
         self.sorting_items_layout.setSpacing(2)
         self.sorting_layout.addLayout(self.sorting_items_layout)
-        
-        self.add_sort_btn = QPushButton("+ Add Sort")
-        self.sorting_layout.addWidget(self.add_sort_btn)
-        self.sorting_section = CollapsibleSection("Sorting", self.sorting_content)
+        self.sorting_section = CollapsibleSection("Sorting", self.sorting_content, self.add_sort_btn)
         
         # Splitter for all sections
         self.splitter = QSplitter(Qt.Vertical)
@@ -58,8 +59,8 @@ class SidebarLayout:
         self.splitter.setHandleWidth(1) # Extra thin handle
         
         self.all_sections = [
-            self.filtering_section,
             self.grouping_section,
+            self.filtering_section,
             self.sorting_section
         ]
         

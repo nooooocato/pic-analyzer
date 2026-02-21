@@ -200,7 +200,7 @@ class SidebarContainer(QWidget):
         layout.addWidget(wrapper)
         
         if category == "filter":
-            self._sync_connectors()
+            QTimer.singleShot(0, self._sync_connectors)
             
         if auto_apply:
             self._on_apply_clicked()
