@@ -7,15 +7,15 @@
     - [ ] Create file: `src/ui/gallery/grouped_list_widget.py`
     - [ ] Create file: `src/ui/gallery/gallery_item_delegate.py`
     - [ ] Create test files for the new components in the `tests/` directory, mirroring the structure.
-- [ ] **Task:** Write failing unit tests for `GalleryItemDelegate`.
-    - [ ] Test item rendering for different states (selected, unselected).
-    - [ ] Test data handling (e.g., displaying image thumbnails, metadata).
-- [ ] **Task:** Write failing unit tests for `GroupedListWidget`.
-    - [ ] Test group creation and rendering.
-    - [ ] Test item insertion and removal from groups.
-- [ ] **Task:** Write failing unit tests for `GalleryLayout`.
-    - [ ] Test the integration and communication between `GroupedListWidget` and `GalleryItemDelegate`.
-    - [ ] Test the overall layout and arrangement of components.
+- [x] **Task:** Write failing unit tests for `GalleryItemDelegate`. [d328b65]
+    - [x] Test item rendering for different states (selected, unselected).
+    - [x] Test data handling (e.g., displaying image thumbnails, metadata).
+- [x] **Task:** Write failing unit tests for `GroupedListWidget`. [d328b65]
+    - [x] Test group creation and rendering.
+    - [x] Test item insertion and removal from groups.
+- [x] **Task:** Write failing unit tests for `GalleryLayout`. [d328b65]
+    - [x] Test the integration and communication between `GroupedListWidget` and `GalleryItemDelegate`.
+    - [x] Test the overall layout and arrangement of components.
 - [ ] **Task:** Conductor - User Manual Verification 'Phase 1: Setup and Initial Test Implementation' (Protocol in workflow.md)
 
 ## Phase 2: Component Implementation (Green Phase)
