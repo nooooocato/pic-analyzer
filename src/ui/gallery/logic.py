@@ -190,9 +190,11 @@ class GalleryView(QScrollArea):
         self._clear_layout()
 
     def _clear_layout(self):
+        # Remove all widgets from layout except the stretch
         while self.layout_engine.container_layout.count() > 1:
             item = self.layout_engine.container_layout.takeAt(0)
-            if item.widget(): item.widget().deleteLater()
+            if item.widget():
+                item.widget().deleteLater()
         self._group_widgets = []
 
     def add_item(self, item_data: dict):
@@ -211,7 +213,8 @@ class GalleryView(QScrollArea):
             self._visible_items.append(item_data)
             list_widget = self._group_widgets[0]
             item = QListWidgetItem()
-            item.setData(Qt.UserRole, file_path)
+            item.setData(Qt.UserRole, item_data.get("path"))
+            thumb_bytes = item_data.get('thumb')
             if thumb_bytes:
                 pixmap = QPixmap()
                 if pixmap.loadFromData(thumb_bytes):
@@ -240,33 +243,34 @@ class GalleryView(QScrollArea):
         self._clear_layout()
         items = list(self._items) # Clone list
         
-        # 1. Filter
-        # Compatibility: Support both single 'filter' and list 'filters'
-        f_rule = self._rules.get("filter")
-        if not f_rule and self._rules.get("filters"):
-            # Use first active plugin filter for now (Phase 2 compatibility)
-            for f in self._rules.get("filters", []):
-                if f.get("type") == "plugin":
-                    f_rule = f
-                    break
+        # 1. Sequential Filters
+        filters = self._rules.get("filters", [])
+        if not filters and self._rules.get("filter"):
+            # Old format compatibility
+            filters = [self._rules["filter"]]
 
-        if f_rule and f_rule.get("plugin"):
-            items = f_rule["plugin"].filter(items, f_rule.get("params", {}))
+        for f in filters:
+            if f.get("type") == "plugin":
+                plugin = f.get("plugin")
+                if plugin:
+                    items = plugin.filter(items, f.get("params", {}))
             
-        # 2. Sort
-        # Compatibility: Support both single 'sort' and list 'sorts'
-        s_rule = self._rules.get("sort")
-        if not s_rule and self._rules.get("sorts"):
-            s_rule = self._rules.get("sorts")[0] if self._rules.get("sorts") else None
-
-        if s_rule and s_rule.get("plugin") and s_rule.get("metric"):
-            s_plugin = s_rule["plugin"]
-            s_metric = s_rule["metric"]
-            # Need metric values from DB
-            values_map = state.db_manager.get_metric_values(s_metric)
-            for it in items:
-                it[s_metric] = values_map.get(it['path'], 0)
-            items = s_plugin.sort(items, s_metric, s_rule.get("params", {}))
+        # 2. Sequential Sorts
+        sorts = self._rules.get("sorts", [])
+        if not sorts and self._rules.get("sort"):
+            # Old format compatibility
+            sorts = [self._rules["sort"]]
+            
+        for s in sorts:
+            plugin = s.get("plugin")
+            metric = s.get("metric")
+            if plugin and metric:
+                # Need metric values from DB
+                values_map = state.db_manager.get_metric_values(metric)
+                for it in items:
+                    it[metric] = values_map.get(it['path'], 0)
+                # Stable sort ensures sequential priority
+                items = plugin.sort(items, metric, s.get("params", {}))
             
         self._visible_items = items
         
@@ -276,8 +280,6 @@ class GalleryView(QScrollArea):
         if not g_plugin:
             self._create_group("Filtered Images", items)
         else:
-            # Metric for grouping? The old date grouping just used path.
-            # My migrated DateGrouping uses path too.
             groups = g_plugin.group(items, "", g_rule.get("params", {}))
             for name in sorted(groups.keys(), reverse=True):
                 self._create_group(name, groups[name])

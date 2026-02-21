@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QLabel, QScrollArea, QFrame, QListWidget, QListView
+    QWidget, QVBoxLayout, QLabel, QScrollArea, QFrame, QListWidget, QListView, QSizePolicy
 )
 from PySide6.QtCore import Qt, QSize
 from src.ui.theme import Theme
@@ -21,12 +21,14 @@ class GalleryLayout:
 
     def create_group_container(self, title: str):
         group_container = QWidget()
+        group_container.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
         group_layout = QVBoxLayout(group_container)
         group_layout.setContentsMargins(0, 0, 0, 0)
         group_layout.setSpacing(Theme.SPACING_S)
         
         header = QLabel(title)
         header.setObjectName("GroupHeader")
+        header.setFixedHeight(22)
         group_layout.addWidget(header)
         
         return group_container, group_layout
