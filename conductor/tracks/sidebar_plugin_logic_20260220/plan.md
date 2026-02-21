@@ -38,4 +38,10 @@ Integrate state saving and restoration into the workspace database.
 - [x] Task: [GREEN] Update Peewee models to include tables for persistent sidebar configurations 56a26d0
 - [x] Task: [GREEN] Implement auto-save logic triggered by sidebar UI changes 56a26d0
 - [x] Task: [GREEN] Implement state restoration logic on workspace load 56a26d0
-- [~] Task: Conductor - User Manual Verification 'Phase 5: Persistence' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 5: Persistence' (Protocol in workflow.md) a2cfa04
+
+#### Track Summary & Refinements
+- **Robust Drag-and-Drop:** Refactored `PluginItemWrapper` and `SidebarContainer` to ensure items never disappear when dropped outside and correctly return to their positions.
+- **Gallery Header Logic:** Implemented specific anchoring for "Filtered Images" at the top when any filter is active, preventing header scaling issues.
+- **Global Font Fix:** Set application-wide font in `main.py` to eliminate `QFont::setPointSize` warnings.
+- **Crash Prevention:** Strengthened rule collection and widget deletion logic to handle rapid sidebar modifications without state corruption.

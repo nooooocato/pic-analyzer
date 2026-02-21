@@ -7,15 +7,15 @@ This track will upgrade the Rule Sidebar to support dynamic layout management, r
 1.  **Sidebar Layout & Splitter:**
     -   **Fixed Order:** Maintain a fixed relative order (Filter > Group > Sort) regardless of expansion state.
     -   **Resizable Sections:** Implement a splitter managing all sections to allow users to manually adjust the vertical space allocated to each expanded section.
-    -   **Collapsible Headers:** When collapsed, sections take minimal height (header only) but stay in their fixed position.
+    -   **Compact Design:** When collapsed, sections take minimal height (header only).
+    -   **Robust Reordering:** Drag-and-drop must be resilient; items should never disappear if dropped in invalid areas.
 2.  **Compound Filtering:**
     -   **Multi-Item Support:** Allow users to add multiple filter items within the Filter section via a "+" button.
     -   **Logical Connectors:** Implement "AND" / "OR" dropdowns between adjacent filter items to define complex selection logic.
-    -   **Activation Control:** Each filter item will include a checkbox to enable or disable it without removing the rule.
+    -   **Gallery Integration:** When any filter is active, a "Filtered Images" header is permanently anchored at the top of the gallery.
 3.  **Sequential Sorting:**
     -   **Multi-Item Support:** Allow adding multiple sort items via a "+" button.
-    -   **Drag-and-Drop Reordering:** Enable users to reorder sort items to define priority (e.g., Primary Sort, then Secondary Sort).
-    -   **"Then" Logic:** Sorting will be applied sequentially based on the UI order (top to bottom).
+    -   **Stable Reordering:** Priority is defined top-to-bottom in the UI (Top = Primary). Logic uses stable sequential sorting in reverse order to achieve this.
 4.  **State Persistence:**
     -   **Auto-Save:** The current configuration of filters (types, parameters, connectors, active state) and sorts (types, parameters, order) will be automatically saved to the workspace database.
     -   **Restoration:** Reopening a workspace will restore the exact sidebar configuration and rule sets.

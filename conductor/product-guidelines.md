@@ -3,6 +3,9 @@
 ## Visual Identity & UX
 - **Design System:** Windows 11 Modern Fluent Design (via PyQt/PySide styling).
 - **Layout Philosophy:** Utility-first, high data density. Prioritize information visibility over white space.
+- **Header Consistency:** Gallery group headers (e.g., "Filtered Images") must have a fixed height (22px) to prevent vertical layout shifts based on content density.
+- **Stability:** Drag-and-drop interactions must be non-destructive; items must return to a valid state if a drop is cancelled or invalid.
+- **Font Safety:** Always set a global application font (e.g., Segoe UI Variable, 10pt) on the `QApplication` instance to prevent internal Qt point size warnings.
 - **Image Display:** Lazy loading for thumbnails. Smooth transitions between tiled and original views.
 - **Interactivity:** Distribution charts must be interactive, serving as primary filtering mechanisms.
 
