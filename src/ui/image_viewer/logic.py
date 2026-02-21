@@ -37,6 +37,7 @@ class ImageViewer(QFrame):
         self.layout_engine.btn_next.clicked.connect(self.next_requested.emit)
         
         self.hide()
+        self._is_active = False
 
     def _get_scaled_movie_size(self, movie_size: QSize, target_rect_size: QSize) -> QSize:
         if movie_size.isEmpty(): return target_rect_size
@@ -83,6 +84,7 @@ class ImageViewer(QFrame):
         self.show()
         self.raise_()
         self.setFocus()
+        self._is_active = True
         
         self.fade_animation.stop()
         self.fade_animation.setStartValue(0.0)
@@ -156,6 +158,7 @@ class ImageViewer(QFrame):
         except RuntimeError: pass
         if self.current_movie: self.current_movie.stop()
         self.hide()
+        self._is_active = False
         self.closed.emit()
 
     def keyPressEvent(self, event):

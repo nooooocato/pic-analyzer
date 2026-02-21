@@ -101,8 +101,13 @@ class MainWindow(QMainWindow):
                 break
         
         if new_index != -1:
-            if l.image_viewer.isVisible():
+            if l.image_viewer._is_active:
                 direction = "next" if new_index > state.current_viewer_index else "prev"
+                # Handle wrap-around cases for correct animation direction
+                if state.current_viewer_index == l.gallery.count() - 1 and new_index == 0:
+                    direction = "next"
+                elif state.current_viewer_index == 0 and new_index == l.gallery.count() - 1:
+                    direction = "prev"
                 l.image_viewer.switch_image(file_path, direction)
             else:
                 l.image_viewer.show_image(file_path)
