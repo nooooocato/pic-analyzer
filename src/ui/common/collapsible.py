@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy
 from PySide6.QtCore import Qt, Signal
 
 class CollapsibleSection(QWidget):
@@ -27,6 +27,7 @@ class CollapsibleSection(QWidget):
         self.toggle_button.setChecked(True)
         self.toggle_button.toggled.connect(self._on_toggled)
         self.toggle_button.setStyleSheet("text-align: left; border: none; padding-left: 0px;")
+        self.toggle_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self._update_header_text()
         
         self.header_layout.addWidget(self.toggle_button)
