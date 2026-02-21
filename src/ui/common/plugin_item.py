@@ -39,7 +39,6 @@ class PluginItemWrapper(QFrame):
         self.enabled_cb.toggled.connect(self.toggled.emit)
         header_layout.addWidget(self.enabled_cb)
         
-        # Title
         self.title_label = QLabel(title)
         self.title_label.setStyleSheet("font-size: 10px; font-weight: bold; color: #ccc;")
         header_layout.addWidget(self.title_label)
@@ -58,6 +57,7 @@ class PluginItemWrapper(QFrame):
         layout.addWidget(content)
         
         self.toggled.connect(self._on_toggled)
+        self._drag_start_pos = None
 
     def _on_toggled(self, checked):
         self.content.setEnabled(checked)
@@ -65,10 +65,15 @@ class PluginItemWrapper(QFrame):
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton and self.drag_handle.underMouse():
             self._drag_start_pos = event.pos()
+        else:
+            self._drag_start_pos = None
+            super().mousePressEvent(event)
             
     def mouseMoveEvent(self, event):
-        if not (event.buttons() & Qt.LeftButton):
+        if not (event.buttons() & Qt.LeftButton) or self._drag_start_pos is None:
+            super().mouseMoveEvent(event)
             return
+            
         if (event.pos() - self._drag_start_pos).manhattanLength() < 5:
             return
             
