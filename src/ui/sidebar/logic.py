@@ -355,8 +355,22 @@ class SidebarContainer(QWidget):
         else: event.ignore()
 
     def dragMoveEvent(self, event):
-        if event.mimeData().hasFormat("application/x-plugin-item"): event.accept()
-        else: event.ignore()
+        if not event.mimeData().hasFormat("application/x-plugin-item"):
+            event.ignore()
+            return
+
+        # Check if drop is over a valid layout
+        l = self.layout_engine
+        target_widget = None
+        if l.filtering_section.underMouse():
+            target_widget = l.filtering_items_layout.parentWidget()
+        elif l.sorting_section.underMouse():
+            target_widget = l.sorting_items_layout.parentWidget()
+
+        if target_widget and target_widget.rect().contains(target_widget.mapFromGlobal(event.globalPos())):
+            event.accept()
+        else:
+            event.ignore()
 
     def dropEvent(self, event):
         source_item = event.source()

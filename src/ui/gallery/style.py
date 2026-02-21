@@ -66,9 +66,14 @@ def get_gallery_style():
     return f"""
         QScrollArea {{ background: transparent; border: none; }}
         GroupedListWidget {{ background: transparent; outline: none; }}
-        QLabel#GroupHeader {{ 
-            padding-bottom: 5px; 
-            border-bottom: 1px solid rgba(128, 128, 128, 60);
+        QLabel#GroupHeader {
             font-weight: bold;
-        }}
+            font-size: 11px;
+            color: #ccc;
+            padding: 0 8px;
+            background-color: #222;
+            border-bottom: 1px solid #333;
+            max-height: 22px;
+            min-height: 22px;
+        }
     """

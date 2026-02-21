@@ -63,17 +63,7 @@ def get_style():
             border-radius: 0;
         }
 
-        /* Gallery Title styling fix */
-        QLabel#GroupHeader {
-            font-weight: bold;
-            font-size: 11px;
-            color: #ccc;
-            padding: 0 8px;
-            background-color: #222;
-            border-bottom: 1px solid #333;
-            max-height: 22px;
-            min-height: 22px;
-        }
+
 
         /* Connector Styling */
         QComboBox[is_connector="true"] {
