@@ -10,11 +10,11 @@ Refactor the sidebar container to support dynamic grouping and resizable expande
 
 #### Phase 2: Multi-Item UI Framework
 Create the base UI components for managing multiple instances of filter/sort plugins.
-- [ ] Task: [RED] Write tests for `PluginItemWrapper` (Close button, Toggle state, Drag handle)
-- [ ] Task: [GREEN] Implement `PluginItemWrapper` to provide common controls for plugin widgets
-- [ ] Task: [GREEN] Implement the "+" button and dynamic widget generation in the Sidebar
-- [ ] Task: [GREEN] Implement the AND/OR logical operator UI for filter items
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Multi-Item UI' (Protocol in workflow.md)
+- [x] Task: [RED] Write tests for `PluginItemWrapper` (Close button, Toggle state, Drag handle) 1ac4757
+- [x] Task: [GREEN] Implement `PluginItemWrapper` to provide common controls for plugin widgets 1ac4757
+- [x] Task: [GREEN] Implement the "+" button and dynamic widget generation in the Sidebar 1ac4757
+- [x] Task: [GREEN] Implement the AND/OR logical operator UI for filter items 1ac4757
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Multi-Item UI' (Protocol in workflow.md) db8ed75
 
 #### Phase 3: Compound Filter Logic
 Update the core application logic to evaluate multiple filters with logical connectors.
