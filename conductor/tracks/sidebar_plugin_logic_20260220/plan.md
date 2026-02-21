@@ -24,7 +24,7 @@ Update the core application logic to evaluate multiple filters with logical conn
 - [x] Task: [REFACTOR] Optimize filter application to minimize redundant database queries db8ed75
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Filter Logic' (Protocol in workflow.md) 4254141
 
-#### Phase 4: Sequential Sorting Logic
+#### Phase 4: Sequential Sorting Logic [checkpoint: 5d5260e]
 Implement sequential "Then" sorting with drag-and-drop reordering support.
 - [x] Task: [RED] Write unit tests for stable sequential sorting (Primary > Secondary > Tertiary) 4254141
 - [x] Task: [x] Refactor `SortPluginManager` to perform stable, multi-stage sorting (Delegated to Gallery) 4254141
@@ -32,10 +32,10 @@ Implement sequential "Then" sorting with drag-and-drop reordering support.
 - [x] Task: [REFACTOR] Ensure UI order and sorting logic order remain synchronized 4254141
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Sequential Sorting' (Protocol in workflow.md) 56a26d0
 
-#### Phase 5: Workspace State Persistence
+#### Phase 5: Workspace State Persistence [checkpoint: 554c6ad]
 Integrate state saving and restoration into the workspace database.
-- [ ] Task: [RED] Write tests for sidebar state serialization and DB persistence
-- [ ] Task: [GREEN] Update Peewee models to include tables for persistent sidebar configurations
-- [ ] Task: [GREEN] Implement auto-save logic triggered by sidebar UI changes
-- [ ] Task: [GREEN] Implement state restoration logic on workspace load
-- [ ] Task: Conductor - User Manual Verification 'Phase 5: Persistence' (Protocol in workflow.md)
+- [x] Task: [RED] Write tests for sidebar state serialization and DB persistence 56a26d0
+- [x] Task: [GREEN] Update Peewee models to include tables for persistent sidebar configurations 56a26d0
+- [x] Task: [GREEN] Implement auto-save logic triggered by sidebar UI changes 56a26d0
+- [x] Task: [GREEN] Implement state restoration logic on workspace load 56a26d0
+- [~] Task: Conductor - User Manual Verification 'Phase 5: Persistence' (Protocol in workflow.md)
