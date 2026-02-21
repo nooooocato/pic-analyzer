@@ -45,3 +45,6 @@ Integrate state saving and restoration into the workspace database.
 - **Gallery Header Logic:** Implemented specific anchoring for "Filtered Images" at the top when any filter is active, preventing header scaling issues.
 - **Global Font Fix:** Set application-wide font in `main.py` to eliminate `QFont::setPointSize` warnings.
 - **Crash Prevention:** Strengthened rule collection and widget deletion logic to handle rapid sidebar modifications without state corruption.
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions 8f9a1d7
