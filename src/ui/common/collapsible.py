@@ -46,6 +46,7 @@ class CollapsibleSection(QWidget):
             x = self.width() - self.header_widget.width() - margin
             y = (self.header_container.height() - self.header_widget.height()) // 2
             self.header_widget.move(x, y)
+            self.header_widget.raise_()
 
     def _update_header_text(self):
         indicator = "▼" if self.is_expanded else "▶"
