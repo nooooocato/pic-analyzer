@@ -1,6 +1,6 @@
 # Implementation Plan: Sidebar & Plugin Logic Upgrade
 
-#### Phase 1: Sidebar Layout & Splitter
+#### Phase 1: Sidebar Layout & Splitter [checkpoint: b6c11b8]
 Refactor the sidebar container to support dynamic grouping and resizable expanded sections.
 - [x] Task: [RED] Write tests for Sidebar dynamic reordering and splitter initialization c435435
 - [x] Task: [GREEN] Implement sidebar grouping logic (Expanded top, Collapsed bottom) 5bc1f55
