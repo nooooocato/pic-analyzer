@@ -5,6 +5,7 @@ from src.app.state import state
 from src.app.communicator import Communicator
 from .layout import GalleryLayout, GroupedListWidget as BaseGroupedListWidget
 from .style import get_gallery_style
+from src.plugin.filter_engine import FilterEngine
 
 class GroupedListWidget(BaseGroupedListWidget):
     def __init__(self, parent=None):
@@ -249,11 +250,7 @@ class GalleryView(QScrollArea):
             # Old format compatibility
             filters = [self._rules["filter"]]
 
-        for f in filters:
-            if f.get("type") == "plugin":
-                plugin = f.get("plugin")
-                if plugin:
-                    items = plugin.filter(items, f.get("params", {}))
+        items = FilterEngine().apply(items, filters)
             
         # 2. Sequential Sorts
         sorts = self._rules.get("sorts", [])
@@ -261,12 +258,16 @@ class GalleryView(QScrollArea):
             # Old format compatibility
             sorts = [self._rules["sort"]]
             
+        metric_cache = {}
         for s in sorts:
             plugin = s.get("plugin")
             metric = s.get("metric")
             if plugin and metric:
-                # Need metric values from DB
-                values_map = state.db_manager.get_metric_values(metric)
+                # Optimized: Use cache to avoid redundant DB queries for same metric
+                if metric not in metric_cache:
+                    metric_cache[metric] = state.db_manager.get_metric_values(metric)
+                
+                values_map = metric_cache[metric]
                 for it in items:
                     it[metric] = values_map.get(it['path'], 0)
                 # Stable sort ensures sequential priority
