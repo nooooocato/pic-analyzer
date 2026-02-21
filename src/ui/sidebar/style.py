@@ -62,12 +62,4 @@ def get_style():
             text-align: left;
             border-radius: 0;
         }
-
-
-
-        /* Connector Styling */
-        QComboBox[is_connector="true"] {
-            font-size: 10px;
-            padding: 1px;
-        }
     """
