@@ -229,6 +229,7 @@ class SidebarContainer(QWidget):
                 connector.addItems(["AND", "OR"])
                 connector.setProperty("is_connector", True)
                 connector.setFixedWidth(80)
+                connector.setFont(self.font())
                 connector.currentIndexChanged.connect(lambda: self._on_apply_clicked())
                 layout.addWidget(connector)
             layout.addWidget(w)

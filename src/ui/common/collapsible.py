@@ -8,6 +8,7 @@ class CollapsibleSection(QWidget):
         super().__init__(parent)
         self._raw_title = title
         self.content_widget = content_widget
+        self.header_widget = header_widget
         self.is_expanded = True
         
         # Main layout
@@ -18,7 +19,7 @@ class CollapsibleSection(QWidget):
         # Header
         self.header_container = QWidget()
         self.header_layout = QHBoxLayout(self.header_container)
-        self.header_layout.setContentsMargins(4, 0, 4, 0) # Give it some space
+        self.header_layout.setContentsMargins(4, 0, 4, 0)
         self.header_layout.setSpacing(5)
         
         # Header toggle button
@@ -32,12 +33,20 @@ class CollapsibleSection(QWidget):
         
         self.header_layout.addWidget(self.toggle_button)
 
-        if header_widget:
-            self.header_layout.addWidget(header_widget)
+        if self.header_widget:
+            self.header_widget.setParent(self)
         
         self.main_layout.addWidget(self.header_container)
         self.main_layout.addWidget(self.content_widget)
         
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        if self.header_widget:
+            margin = 4
+            x = self.width() - self.header_widget.width() - margin
+            y = (self.header_container.height() - self.header_widget.height()) // 2
+            self.header_widget.move(x, y)
+
     def _update_header_text(self):
         indicator = "▼" if self.is_expanded else "▶"
         self.toggle_button.setText(f"{indicator} {self._raw_title}")
