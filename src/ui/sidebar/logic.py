@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QWidget, QSpinBox, QDoubleSpinBox, QLineEdit, QCheckBox, QComboBox, QVBoxLayout, QLabel
 from PySide6.QtCore import QTimer, Qt
+from PySide6.QtGui import QCursor
 from src.app.state import state
 from src.app.communicator import Communicator
 from src.ui.common.widget_generator import WidgetGenerator
@@ -367,7 +368,7 @@ class SidebarContainer(QWidget):
         elif l.sorting_section.underMouse():
             target_widget = l.sorting_items_layout.parentWidget()
 
-        if target_widget and target_widget.rect().contains(target_widget.mapFromGlobal(event.globalPos())):
+        if target_widget and target_widget.rect().contains(target_widget.mapFromGlobal(QCursor.pos())):
             event.accept()
         else:
             event.ignore()

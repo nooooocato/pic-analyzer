@@ -4,7 +4,6 @@ from src.ui.common.collapsible import CollapsibleSection
 
 class SidebarLayout:
     def setup_ui(self, widget: QWidget):
-        widget.setFixedWidth(250)
         
         self.main_layout = QVBoxLayout(widget)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
