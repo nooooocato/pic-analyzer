@@ -259,7 +259,9 @@ class GalleryView(QScrollArea):
             sorts = [self._rules["sort"]]
             
         metric_cache = {}
-        for s in sorts:
+        # Apply in REVERSE to ensure the first item in the UI is the PRIMARY sort
+        # (Stable sort: later sorts override earlier ones for equal values)
+        for s in reversed(sorts):
             plugin = s.get("plugin")
             metric = s.get("metric")
             if plugin and metric:
@@ -275,12 +277,28 @@ class GalleryView(QScrollArea):
             
         self._visible_items = items
         
-        # 3. Group
+        # 3. Headers and Grouping Logic
         g_rule = self._rules.get("group", {})
         g_plugin = g_rule.get("plugin")
+        
+        # Check if any filter is actually active
+        filters_list = self._rules.get("filters", [])
+        has_active_filter = any(f.get("type") == "plugin" and f.get("plugin") is not None for f in filters_list)
+        if not has_active_filter and self._rules.get("filter") and self._rules["filter"].get("plugin"):
+            has_active_filter = True
+
         if not g_plugin:
-            self._create_group("Filtered Images", items)
+            # Case 1 & 2 (No grouping): Show one group with either 'Filtered' or 'All'
+            title = "Filtered Images" if has_active_filter else "All Images"
+            self._create_group(title, items)
         else:
+            # Case 3: Grouping active
+            if has_active_filter:
+                # User wants 'Filtered Images' header on top when filtering
+                # We create a group with 0 items just to show the header
+                self._create_group("Filtered Images", [])
+            
+            # Create the actual groups from plugin
             groups = g_plugin.group(items, "", g_rule.get("params", {}))
             for name in sorted(groups.keys(), reverse=True):
                 self._create_group(name, groups[name])
