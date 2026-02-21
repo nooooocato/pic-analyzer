@@ -16,21 +16,21 @@ Create the base UI components for managing multiple instances of filter/sort plu
 - [x] Task: [GREEN] Implement the AND/OR logical operator UI for filter items 1ac4757
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Multi-Item UI' (Protocol in workflow.md) db8ed75
 
-#### Phase 3: Compound Filter Logic
+#### Phase 3: Compound Filter Logic [checkpoint: 4254141]
 Update the core application logic to evaluate multiple filters with logical connectors.
 - [x] Task: [RED] Write unit tests for the compound filter evaluation engine (AND/OR chains) db8ed75
 - [x] Task: [x] Refactor `FilterPluginManager` to support sequential filter evaluation (Delegated to FilterEngine) db8ed75
 - [x] Task: [x] Implement the boolean logic processor for `((F1 Op F2) Op F3)` chains db8ed75
 - [x] Task: [REFACTOR] Optimize filter application to minimize redundant database queries db8ed75
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Filter Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Filter Logic' (Protocol in workflow.md) 4254141
 
 #### Phase 4: Sequential Sorting Logic
 Implement sequential "Then" sorting with drag-and-drop reordering support.
-- [ ] Task: [RED] Write unit tests for stable sequential sorting (Primary > Secondary > Tertiary)
-- [ ] Task: [GREEN] Refactor `SortPluginManager` to perform stable, multi-stage sorting
-- [ ] Task: [GREEN] Implement drag-and-drop reordering logic within the Sort UI section
-- [ ] Task: [REFACTOR] Ensure UI order and sorting logic order remain synchronized
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Sequential Sorting' (Protocol in workflow.md)
+- [x] Task: [RED] Write unit tests for stable sequential sorting (Primary > Secondary > Tertiary) 4254141
+- [x] Task: [x] Refactor `SortPluginManager` to perform stable, multi-stage sorting (Delegated to Gallery) 4254141
+- [x] Task: [x] Implement drag-and-drop reordering logic within the Sort UI section 4254141
+- [x] Task: [REFACTOR] Ensure UI order and sorting logic order remain synchronized 4254141
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Sequential Sorting' (Protocol in workflow.md) 56a26d0
 
 #### Phase 5: Workspace State Persistence
 Integrate state saving and restoration into the workspace database.
