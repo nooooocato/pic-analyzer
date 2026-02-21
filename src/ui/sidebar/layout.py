@@ -15,7 +15,7 @@ class SidebarLayout:
         self.scroll_content = QWidget()
         self.content_layout = QVBoxLayout(self.scroll_content)
         self.content_layout.setContentsMargins(5, 5, 5, 5)
-        self.content_layout.setSpacing(0) # Spacing handled by containers
+        self.content_layout.setSpacing(0)
         self.scroll.setWidget(self.scroll_content)
         self.main_layout.addWidget(self.scroll)
         
@@ -44,18 +44,9 @@ class SidebarLayout:
         self.sort_params_layout.addWidget(self.sort_combo)
         self.sorting_section = CollapsibleSection("Sorting", self.sorting_content)
         
-        # Splitter for expanded sections
+        # Splitter for all sections - maintains fixed order
         self.splitter = QSplitter(Qt.Vertical)
-        self.content_layout.addWidget(self.splitter)
-        
-        # Container for collapsed sections (at the bottom)
-        self.collapsed_container = QWidget()
-        self.collapsed_layout = QVBoxLayout(self.collapsed_container)
-        self.collapsed_layout.setContentsMargins(0, 5, 0, 0)
-        self.collapsed_layout.setSpacing(5)
-        self.content_layout.addWidget(self.collapsed_container)
-        
-        self.content_layout.addStretch()
+        self.splitter.setChildrenCollapsible(False) # Don't collapse to 0 via splitter dragging
         
         self.all_sections = [
             self.filtering_section,
@@ -63,29 +54,13 @@ class SidebarLayout:
             self.sorting_section
         ]
         
-        self.reorder_sections()
+        for section in self.all_sections:
+            self.splitter.addWidget(section)
+            
+        self.content_layout.addWidget(self.splitter)
+        self.content_layout.addStretch()
 
     def reorder_sections(self):
-        """Moves sections between the splitter (expanded) and the collapsed container."""
-        # Remove sections from current parents
-        for section in self.all_sections:
-            section.setParent(None)
-            
-        expanded = [s for s in self.all_sections if s.is_expanded]
-        collapsed = [s for s in self.all_sections if not s.is_expanded]
-        
-        # Add expanded to splitter
-        if expanded:
-            self.splitter.setVisible(True)
-            for section in expanded:
-                self.splitter.addWidget(section)
-        else:
-            self.splitter.setVisible(False)
-            
-        # Add collapsed to collapsed layout
-        if collapsed:
-            self.collapsed_container.setVisible(True)
-            for section in collapsed:
-                self.collapsed_layout.addWidget(section)
-        else:
-            self.collapsed_container.setVisible(False)
+        """No longer reorders, just ensures correct layout update if needed."""
+        # For now, we don't need to do anything here as they are fixed in the splitter.
+        pass

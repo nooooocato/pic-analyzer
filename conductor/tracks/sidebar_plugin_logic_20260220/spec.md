@@ -5,9 +5,9 @@ This track will upgrade the Rule Sidebar to support dynamic layout management, r
 
 #### Functional Requirements
 1.  **Sidebar Layout & Splitter:**
-    -   **Dynamic Grouping:** Maintain a fixed relative order (Filter > Group > Sort) but visually group all expanded sections at the top and collapsed sections at the bottom.
-    -   **Resizable Sections:** Implement splitters between expanded sections to allow users to manually adjust the vertical space allocated to each.
-    -   **Collapsible Headers:** Collapsed sections will remain at the bottom as simple headers/buttons that can be clicked to expand.
+    -   **Fixed Order:** Maintain a fixed relative order (Filter > Group > Sort) regardless of expansion state.
+    -   **Resizable Sections:** Implement a splitter managing all sections to allow users to manually adjust the vertical space allocated to each expanded section.
+    -   **Collapsible Headers:** When collapsed, sections take minimal height (header only) but stay in their fixed position.
 2.  **Compound Filtering:**
     -   **Multi-Item Support:** Allow users to add multiple filter items within the Filter section via a "+" button.
     -   **Logical Connectors:** Implement "AND" / "OR" dropdowns between adjacent filter items to define complex selection logic.
