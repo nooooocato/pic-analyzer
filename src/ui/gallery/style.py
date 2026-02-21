@@ -63,9 +63,9 @@ class GalleryItemDelegate(QStyledItemDelegate):
 
 def get_gallery_style():
     # Rely more on system colors for text
-    return f"""
-        QScrollArea {{ background: transparent; border: none; }}
-        GroupedListWidget {{ background: transparent; outline: none; }}
+    return """
+        QScrollArea { background: transparent; border: none; }
+        GroupedListWidget { background: transparent; outline: none; }
         QLabel#GroupHeader {
             font-weight: bold;
             font-size: 11px;
