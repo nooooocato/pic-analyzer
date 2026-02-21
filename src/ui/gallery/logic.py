@@ -148,6 +148,7 @@ class GalleryView(QScrollArea):
         Communicator().rules_updated.connect(self.set_rules)
 
     def set_overlays(self, selection, sort, viewer):
+        """Sets the overlay widgets for the gallery and positions them."""
         self.selection_overlay = selection
         self.sort_overlay = sort
         self.image_viewer = viewer
@@ -320,7 +321,8 @@ class GalleryView(QScrollArea):
         list_widget.itemClicked.connect(lambda it: self.item_selected.emit(it.data(Qt.UserRole)))
         # Only emit activated signal if NOT in selection mode
         list_widget.itemDoubleClicked.connect(
-            lambda it: self.item_activated.emit(it.data(Qt.UserRole)) if not self.selection_mode_enabled else None
+            lambda it: self.item_activated.emit(it.data(Qt.UserRole))
+            if not self.selection_mode_enabled else None
         )
         
         group_layout.addWidget(list_widget)
