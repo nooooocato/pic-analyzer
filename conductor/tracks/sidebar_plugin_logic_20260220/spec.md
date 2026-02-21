@@ -12,9 +12,11 @@ This track will upgrade the Rule Sidebar to support dynamic layout management, r
 2.  **Compound Filtering:**
     -   **Multi-Item Support:** Allow users to add multiple filter items within the Filter section via a "+" button.
     -   **Logical Connectors:** Implement "AND" / "OR" dropdowns between adjacent filter items to define complex selection logic.
+    -   **Activation Control:** Each filter item will include a checkbox to enable or disable it without removing the rule.
     -   **Gallery Integration:** When any filter is active, a "Filtered Images" header is permanently anchored at the top of the gallery.
 3.  **Sequential Sorting:**
     -   **Multi-Item Support:** Allow adding multiple sort items via a "+" button.
+    -   **Drag-and-Drop Reordering:** Enable users to reorder sort items to define priority (e.g., Primary Sort, then Secondary Sort).
     -   **Stable Reordering:** Priority is defined top-to-bottom in the UI (Top = Primary). Logic uses stable sequential sorting in reverse order to achieve this.
 4.  **State Persistence:**
     -   **Auto-Save:** The current configuration of filters (types, parameters, connectors, active state) and sorts (types, parameters, order) will be automatically saved to the workspace database.
