@@ -3,7 +3,7 @@
 ## Core Technologies
 - **Language:** Python 3.10+ (for modern typing and concurrency support)
 - **UI Framework:** PySide6 (Qt for Python) - Chosen for its native Windows integration and support for modern Fluent Design styles.
-- **Database & ORM:** SQLite with **Peewee ORM** - Provides type-safe, structured access to Workspace, Image, and AnalysisResult models.
+- **Database & ORM:** SQLite with **Peewee ORM** - Provides type-safe, structured access to Workspace, Image, AnalysisResult, and SidebarState models.
 
 ## Image Processing & Media
 - **Pillow (PIL):** Primary library for image loading, thumbnail generation, and basic manipulation.
@@ -19,6 +19,8 @@
 ## Architecture & Infrastructure
 - **Concurrency:** `QThreadPool` and `QRunnable` for multi-threaded, non-blocking image analysis.
 - **Centralized State:** Dedicated `src/app/state.py` for global application state and service management.
+- **Logic Engines:** 
+    - **FilterEngine:** Dedicated processor for evaluating sequential AND/OR boolean chains for image selection.
 - **Plugin System:** 
     - **Core Abstraction:** Base classes located in `src/plugin/` for better separation from UI.
     - **Externalized Discovery:** Plugins reside in the root-level `./plugins` directory and are discovered recursively at runtime.

@@ -15,8 +15,9 @@ I need a quick and simple image management tool for organizing scattered images 
             -   **Selection Mode:** Batch select images via long-press, right-click, or rubber-band drag.
             -   **Batch Actions:** "Select All", "Invert Selection", and "Cancel Selection" via a floating overlay or sidebar.
         -   **Rule-Based Organization:**
-            -   **Unified Sidebar:** A left-hand sidebar centralizing Grouping, Filtering, and Sorting controls.
-            -   **Metadata Filtering:** Rapid exclusion/inclusion based on File Type, File Size, and Date Range.
+            -   **Unified Sidebar:** A right-hand sidebar centralizing Grouping, Filtering, and Sorting controls with resizable sections and persistent state.
+            -   **Metadata Filtering:** Compound logic support (AND/OR) for multiple concurrent filters.
+            -   **Sequential Sorting:** Multi-stage sorting ("Then By") with drag-and-drop priority management.
             -   **Dynamic Parameters:** Real-time UI generation for plugin-specific settings.
         -   **Workspace Management:**
             -   Folder-based workspaces with isolated analysis data.
