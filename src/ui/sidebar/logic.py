@@ -154,13 +154,16 @@ class SidebarContainer(QWidget):
         l = self.layout_engine
         layout = l.filtering_items_layout if category == "filter" else l.sorting_items_layout
         
+        # Safely remove from layout and disconnect
         layout.removeWidget(wrapper)
         wrapper.setParent(None)
-        wrapper.deleteLater()
         
+        # Use singleShot to delay the apply call until after the widget is fully gone
         if category == "filter":
             QTimer.singleShot(0, self._sync_connectors)
-        QTimer.singleShot(10, self._on_apply_clicked)
+        
+        # Give enough time for the widget to be destroyed before refreshing gallery
+        QTimer.singleShot(20, self._on_apply_clicked)
 
     def _on_plugin_item_selected(self, wrapper, category):
         content_widget = wrapper.content
@@ -219,6 +222,10 @@ class SidebarContainer(QWidget):
         
         for i in range(l.filtering_items_layout.count()):
             widget = l.filtering_items_layout.itemAt(i).widget()
+            # Verify widget still exists and is not being deleted
+            if not widget or widget.parent() is None:
+                continue
+
             if isinstance(widget, PluginItemWrapper):
                 if widget.enabled_cb.isChecked():
                     content = widget.content
@@ -229,7 +236,7 @@ class SidebarContainer(QWidget):
                             "plugin": plugin,
                             "params": self._get_params(content.params_layout)
                         })
-            elif widget and widget.property("is_connector"):
+            elif widget.property("is_connector"):
                 rules["filters"].append({
                     "type": "connector",
                     "op": widget.currentText()
@@ -238,13 +245,21 @@ class SidebarContainer(QWidget):
         for i in range(l.sorting_items_layout.count()):
             item = l.sorting_items_layout.itemAt(i)
             wrapper = item.widget()
+            if not wrapper or wrapper.parent() is None:
+                continue
+
             if isinstance(wrapper, PluginItemWrapper) and wrapper.enabled_cb.isChecked():
                 content = wrapper.content
                 plugin = content.combo.currentData()
-                if plugin:
+                metric = None
+                # Safely get metric
+                if hasattr(content, "metric_combo"):
+                    metric = content.metric_combo.currentData()
+
+                if plugin and metric:
                     rules["sorts"].append({
                         "plugin": plugin,
-                        "metric": content.metric_combo.currentData(),
+                        "metric": metric,
                         "params": self._get_params(content.params_layout)
                     })
         
