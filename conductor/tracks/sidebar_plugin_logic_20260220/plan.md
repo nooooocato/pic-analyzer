@@ -6,7 +6,7 @@ Refactor the sidebar container to support dynamic grouping and resizable expande
 - [x] Task: [GREEN] Implement sidebar grouping logic (Expanded top, Collapsed bottom) 5bc1f55
 - [x] Task: [GREEN] Integrate `QSplitter` for expanded sections to allow manual resizing 5bc1f55
 - [x] Task: [REFACTOR] Clean up sidebar layout management and handle expansion events 5bc1f55
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Sidebar Layout' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Sidebar Layout' (Protocol in workflow.md) b346064
 
 #### Phase 2: Multi-Item UI Framework
 Create the base UI components for managing multiple instances of filter/sort plugins.
