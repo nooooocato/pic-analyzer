@@ -38,3 +38,12 @@ class AnalysisResult(BaseModel):
     
     class Meta:
         table_name = 'analysis_results'
+
+class SidebarState(BaseModel):
+    workspace = ForeignKeyField(Workspace, backref='sidebar_states', on_delete='CASCADE')
+    # Store the entire rules dict as JSON
+    config_data = TextField()
+    updated_at = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = 'sidebar_states'

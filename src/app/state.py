@@ -37,9 +37,13 @@ class AppState:
         if self.db_manager and self.current_folder:
             # Ensure workspace exists in DB
             self.db_manager.manage_workspace("create", {
-                "name": os.path.basename(self.current_folder),
+                "name": self.workspace_name,
                 "path": self.current_folder
             })
+
+    @property
+    def workspace_name(self) -> Optional[str]:
+        return os.path.basename(self.current_folder) if self.current_folder else None
 
 # Global instance
 state = AppState()

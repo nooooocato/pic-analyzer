@@ -1,7 +1,8 @@
 import json
 from peewee import SqliteDatabase
-from .models import db_proxy, Workspace, Image, AnalysisResult
+from .models import db_proxy, Workspace, Image, AnalysisResult, SidebarState
 import os
+import datetime
 
 class DBManager:
     def __init__(self, db_path: str):
@@ -15,7 +16,32 @@ class DBManager:
         db_proxy.initialize(self.db)
         
         # Ensure tables exist
-        self.db.create_tables([Workspace, Image, AnalysisResult])
+        self.db.create_tables([Workspace, Image, AnalysisResult, SidebarState])
+
+    def save_sidebar_state(self, workspace_name: str, config: dict):
+        """Saves or updates the sidebar configuration for a workspace."""
+        try:
+            ws = Workspace.get(Workspace.name == workspace_name)
+            state, created = SidebarState.get_or_create(
+                workspace=ws,
+                defaults={"config_data": json.dumps(config)}
+            )
+            if not created:
+                state.config_data = json.dumps(config)
+                state.updated_at = datetime.datetime.now()
+                state.save()
+            return True
+        except Workspace.DoesNotExist:
+            return False
+
+    def load_sidebar_state(self, workspace_name: str) -> dict:
+        """Loads the most recent sidebar configuration for a workspace."""
+        try:
+            ws = Workspace.get(Workspace.name == workspace_name)
+            state = SidebarState.get(SidebarState.workspace == ws)
+            return json.loads(state.config_data)
+        except (Workspace.DoesNotExist, SidebarState.DoesNotExist):
+            return {}
 
     def switch_database(self, new_db_path: str):
         """Closes the current connection and opens a new one."""
