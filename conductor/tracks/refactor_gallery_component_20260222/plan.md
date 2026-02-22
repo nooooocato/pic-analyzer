@@ -45,7 +45,7 @@
     - [x] Further split components into granular directories (`item_delegate/`, `grouped_list/`, `gallery_layout/`) with separate `logic.py`, `layout.py`, and `style.py`. [94c6a36]
 - [x] **Task:** Conductor - User Manual Verification 'Phase 3: Integration and Refactoring' (Protocol in workflow.md) [9223c7f]
 
-## Phase 4: Cleanup and Final Verification
+## Phase 4: Cleanup and Final Verification [checkpoint: 6794b42]
 
 - [x] **Task:** Remove the old gallery component's source file(s). [e13df15]
 - [x] **Task:** Run the full application and perform manual end-to-end testing. [cb1d927]
@@ -53,4 +53,4 @@
     - [x] Check for any visual or functional regressions.
 - [x] **Task:** Run the entire test suite and ensure all tests pass. [cb1d927]
 - [x] **Task:** Generate and review the code coverage report. [cb1d927]
-- [x] **Task:** Conductor - User Manual Verification 'Phase 4: Cleanup and Final Verification' (Protocol in workflow.md) [6304445]
+- [x] **Task:** Conductor - User Manual Verification 'Phase 4: Cleanup and Final Verification' (Protocol in workflow.md) [6794b42]
