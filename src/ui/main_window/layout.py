@@ -2,7 +2,7 @@ from PySide6.QtWidgets import (
     QMainWindow, QToolBar, QTreeView, QDockWidget, QMenuBar
 )
 from PySide6.QtCore import Qt
-from src.ui.gallery.logic import GalleryView
+from src.ui.gallery.gallery_layout import GalleryLayout
 from src.ui.image_viewer.logic import ImageViewer
 from src.ui.overlays.selection.logic import SelectionOverlay
 from src.ui.overlays.data_inspector.logic import DataInspector
@@ -35,7 +35,7 @@ class MainWindowLayout:
         window.addDockWidget(Qt.RightDockWidgetArea, self.inspector_dock)
         
         # Central Gallery
-        self.gallery = GalleryView()
+        self.gallery = GalleryLayout()
         window.setCentralWidget(self.gallery)
         
         # Overlays (Children of Gallery for floating effect)

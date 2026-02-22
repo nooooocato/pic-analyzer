@@ -2,6 +2,7 @@
 from PySide6.QtWidgets import QListWidget, QListView, QMenu
 from PySide6.QtCore import Qt, QSize, Signal, QTimer
 from .gallery_item_delegate import GalleryItemDelegate
+from src.ui.theme import Theme
 
 class GroupedListWidget(QListWidget):
     """Internal widget for grouped list items in the gallery."""
@@ -64,7 +65,6 @@ class GroupedListWidget(QListWidget):
         parent_gallery = self._find_parent_gallery()
         if not parent_gallery: return
         
-        from src.ui.theme import Theme
         menu = QMenu(self)
         menu.setStyleSheet(Theme.get_menu_qss())
         

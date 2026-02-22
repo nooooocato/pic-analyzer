@@ -1,5 +1,5 @@
 
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel, QSizePolicy
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel, QSizePolicy, QListWidgetItem
 from PySide6.QtCore import Qt, Signal, QTimer
 from PySide6.QtGui import QPixmap, QIcon
 from .grouped_list_widget import GroupedListWidget
@@ -182,7 +182,6 @@ class GalleryLayout(QScrollArea):
         list_widget = GroupedListWidget()
         list_widget.set_selection_mode_enabled(self._selection_mode_enabled)
         
-        from PySide6.QtWidgets import QListWidgetItem
         for item_data in items:
             item = QListWidgetItem()
             item.setData(Qt.UserRole, item_data.get('path'))
