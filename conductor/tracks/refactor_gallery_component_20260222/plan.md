@@ -32,17 +32,17 @@
     - [x] Define the public API that `main_window` will consume.
 - [x] **Task:** Conductor - User Manual Verification 'Phase 2: Component Implementation (Green Phase)' (Protocol in workflow.md) [6a4dfa2]
 
-## Phase 3: Integration and Refactoring
+## Phase 3: Integration and Refactoring [checkpoint: 9223c7f]
 
-- [ ] **Task:** Refactor `main_window` to use the new `GalleryLayout`.
-    - [ ] Create a failing integration test that checks if `main_window` correctly displays the gallery.
-    - [ ] Replace the old gallery component with `GalleryLayout`.
-    - [ ] Update any connections or method calls to match the new component's API.
-    - [ ] Ensure the integration test passes.
-- [ ] **Task:** Refactor the implementation of all new components for clarity and performance.
-    - [ ] Review code for duplication.
-    - [ ] Optimize any performance bottlenecks identified during testing.
-- [ ] **Task:** Conductor - User Manual Verification 'Phase 3: Integration and Refactoring' (Protocol in workflow.md)
+- [x] **Task:** Refactor `main_window` to use the new `GalleryLayout`. [0256370]
+    - [x] Create a failing integration test that checks if `main_window` correctly displays the gallery.
+    - [x] Replace the old gallery component with `GalleryLayout`.
+    - [x] Update any connections or method calls to match the new component's API.
+    - [x] Ensure the integration test passes.
+- [x] **Task:** Refactor the implementation of all new components for clarity and performance. [0256370]
+    - [x] Review code for duplication.
+    - [x] Optimize any performance bottlenecks identified during testing.
+- [x] **Task:** Conductor - User Manual Verification 'Phase 3: Integration and Refactoring' (Protocol in workflow.md) [9223c7f]
 
 ## Phase 4: Cleanup and Final Verification
 
