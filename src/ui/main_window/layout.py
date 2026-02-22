@@ -2,7 +2,7 @@ from PySide6.QtWidgets import (
     QMainWindow, QToolBar, QTreeView, QDockWidget, QMenuBar
 )
 from PySide6.QtCore import Qt
-from src.ui.gallery.gallery_layout import GalleryLayout
+from src.ui.gallery.gallery_layout.logic import GalleryLayout
 from src.ui.image_viewer.logic import ImageViewer
 from src.ui.overlays.selection.logic import SelectionOverlay
 from src.ui.overlays.data_inspector.logic import DataInspector

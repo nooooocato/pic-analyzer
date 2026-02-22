@@ -42,6 +42,7 @@
 - [x] **Task:** Refactor the implementation of all new components for clarity and performance. [0256370]
     - [x] Review code for duplication.
     - [x] Optimize any performance bottlenecks identified during testing.
+    - [x] Further split components into granular directories (`item_delegate/`, `grouped_list/`, `gallery_layout/`) with separate `logic.py`, `layout.py`, and `style.py`. [94c6a36]
 - [x] **Task:** Conductor - User Manual Verification 'Phase 3: Integration and Refactoring' (Protocol in workflow.md) [9223c7f]
 
 ## Phase 4: Cleanup and Final Verification

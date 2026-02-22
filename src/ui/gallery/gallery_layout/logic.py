@@ -1,12 +1,14 @@
 
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QFrame, QLabel, QSizePolicy, QListWidgetItem
+from PySide6.QtWidgets import QScrollArea, QListWidgetItem, QWidget, QLabel
 from PySide6.QtCore import Qt, Signal, QTimer
 from PySide6.QtGui import QPixmap, QIcon
-from .grouped_list_widget import GroupedListWidget
+from src.ui.gallery.grouped_list.logic import GroupedListWidget
 from src.ui.theme import Theme
 from src.app.communicator import Communicator
 from src.plugin.filter_engine import FilterEngine
 from src.app.state import state
+from .layout import GalleryLayoutUI
+from .style import get_gallery_style
 
 class GalleryLayout(QScrollArea):
     """Main container and orchestrator for the gallery component."""
@@ -17,19 +19,10 @@ class GalleryLayout(QScrollArea):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._setup_ui()
-        self.setStyleSheet("""
-            QScrollArea { background: transparent; border: none; }
-            GroupedListWidget { background: transparent; outline: none; }
-            QLabel#GroupHeader {
-                font-weight: bold;
-                font-size: 11px;
-                color: #ccc;
-                padding: 0 8px;
-                background-color: #222;
-                border-bottom: 1px solid #333;
-            }
-        """)
+        self.ui = GalleryLayoutUI()
+        self.ui.setup_ui(self)
+        self.setStyleSheet(get_gallery_style())
+        
         self._items = []
         self._visible_items = []
         self._selection_mode_enabled = False
@@ -47,21 +40,6 @@ class GalleryLayout(QScrollArea):
         self.image_viewer = None
         
         Communicator().rules_updated.connect(self.set_rules)
-
-    def _setup_ui(self):
-        self.setWidgetResizable(True)
-        self.setFrameShape(QFrame.NoFrame)
-        # Use a transparent background for the scroll area itself if needed,
-        # but the container widget will have the content.
-        
-        self.container = QWidget()
-        self.container.setStyleSheet("background: transparent;")
-        self.container_layout = QVBoxLayout(self.container)
-        self.container_layout.setContentsMargins(10, 10, 10, 10)
-        self.container_layout.setSpacing(Theme.SPACING_XL)
-        self.container_layout.addStretch()
-        
-        self.setWidget(self.container)
 
     def set_overlays(self, selection, sort, viewer):
         self.selection_overlay = selection
@@ -96,7 +74,6 @@ class GalleryLayout(QScrollArea):
             group.set_selection_mode_enabled(enabled)
             if not enabled:
                 group.clearSelection()
-                # Assuming group is a GroupedListWidget, it handles its own items' check state
         self.selection_mode_changed.emit(enabled)
 
     def clear(self):
@@ -105,8 +82,8 @@ class GalleryLayout(QScrollArea):
         self._clear_layout()
 
     def _clear_layout(self):
-        while self.container_layout.count() > 1:
-            item = self.container_layout.takeAt(0)
+        while self.ui.container_layout.count() > 1:
+            item = self.ui.container_layout.takeAt(0)
             if item.widget():
                 item.widget().deleteLater()
         self._group_widgets = []
@@ -179,16 +156,7 @@ class GalleryLayout(QScrollArea):
                 self._create_group(name, groups[name])
 
     def _create_group(self, title, items):
-        group_container = QWidget()
-        group_container.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
-        group_layout = QVBoxLayout(group_container)
-        group_layout.setContentsMargins(0, 0, 0, 0)
-        group_layout.setSpacing(Theme.SPACING_S)
-        
-        header = QLabel(title)
-        header.setObjectName("GroupHeader")
-        header.setFixedHeight(22)
-        group_layout.addWidget(header)
+        group_container, group_layout = self.ui.create_group_container(title)
         
         list_widget = GroupedListWidget()
         list_widget.set_selection_mode_enabled(self._selection_mode_enabled)
@@ -224,7 +192,7 @@ class GalleryLayout(QScrollArea):
                     label.setAlignment(Qt.AlignRight)
                     group_layout.addWidget(label)
 
-        self.container_layout.insertWidget(self.container_layout.count() - 1, group_container)
+        self.ui.container_layout.insertWidget(self.ui.container_layout.count() - 1, group_container)
         self._group_widgets.append(list_widget)
         QTimer.singleShot(0, list_widget.adjust_height)
 

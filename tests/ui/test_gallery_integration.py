@@ -2,7 +2,7 @@
 import pytest
 from PySide6.QtWidgets import QApplication
 from src.ui.main_window.logic import MainWindow
-from src.ui.gallery.gallery_layout import GalleryLayout
+from src.ui.gallery.gallery_layout.logic import GalleryLayout
 
 def test_main_window_uses_gallery_layout(qtbot):
     """Integration test to verify MainWindow uses the refactored GalleryLayout."""

@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea
 from unittest.mock import MagicMock
 
 # This import will fail initially, which is expected for the red phase.
-from src.ui.gallery.gallery_layout import GalleryLayout
+from src.ui.gallery.gallery_layout.logic import GalleryLayout
 
 @pytest.fixture
 def layout_widget(qtbot, monkeypatch):

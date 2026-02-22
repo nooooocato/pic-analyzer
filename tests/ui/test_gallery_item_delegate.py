@@ -6,7 +6,7 @@ from PySide6.QtGui import QPainter
 from unittest.mock import Mock, MagicMock
 
 # This import will fail initially, which is expected for the red phase.
-from src.ui.gallery.gallery_item_delegate import GalleryItemDelegate
+from src.ui.gallery.item_delegate.logic import GalleryItemDelegate
 
 @pytest.fixture
 def delegate():

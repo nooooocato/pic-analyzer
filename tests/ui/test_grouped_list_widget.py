@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt
 from unittest.mock import MagicMock
 
 # This import will fail initially, which is expected for the red phase.
-from src.ui.gallery.grouped_list_widget import GroupedListWidget
+from src.ui.gallery.grouped_list.logic import GroupedListWidget
 
 @pytest.fixture
 def widget(qtbot):

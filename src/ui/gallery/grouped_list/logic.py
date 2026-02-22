@@ -1,7 +1,7 @@
 
 from PySide6.QtWidgets import QListWidget, QListView, QMenu
 from PySide6.QtCore import Qt, QSize, Signal, QTimer
-from .gallery_item_delegate import GalleryItemDelegate
+from src.ui.gallery.item_delegate.logic import GalleryItemDelegate
 from src.ui.theme import Theme
 
 class GroupedListWidget(QListWidget):
