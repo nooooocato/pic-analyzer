@@ -18,19 +18,19 @@
     - [x] Test the overall layout and arrangement of components.
 - [x] **Task:** Conductor - User Manual Verification 'Phase 1: Setup and Initial Test Implementation' (Protocol in workflow.md) [59f43e2]
 
-## Phase 2: Component Implementation (Green Phase)
+## Phase 2: Component Implementation (Green Phase) [checkpoint: 6a4dfa2]
 
-- [ ] **Task:** Implement `GalleryItemDelegate` to pass the tests.
-    - [ ] Implement the `paint` method to draw items.
-    - [ ] Implement `sizeHint` to provide item dimensions.
-- [ ] **Task:** Implement `GroupedListWidget` to pass the tests.
-    - [ ] Implement logic to handle data models and group items accordingly.
-    - [ ] Set up the view and connect it with the `GalleryItemDelegate`.
-- [ ] **Task:** Implement `GalleryLayout` to pass the tests.
-    - [ ] Instantiate `GroupedListWidget` and `GalleryItemDelegate`.
-    - [ ] Connect signals and slots between the components.
-    - [ ] Define the public API that `main_window` will consume.
-- [ ] **Task:** Conductor - User Manual Verification 'Phase 2: Component Implementation (Green Phase)' (Protocol in workflow.md)
+- [x] **Task:** Implement `GalleryItemDelegate` to pass the tests. [4ca956d]
+    - [x] Implement the `paint` method to draw items.
+    - [x] Implement `sizeHint` to provide item dimensions.
+- [x] **Task:** Implement `GroupedListWidget` to pass the tests. [4ca956d]
+    - [x] Implement logic to handle data models and group items accordingly.
+    - [x] Set up the view and connect it with the `GalleryItemDelegate`.
+- [x] **Task:** Implement `GalleryLayout` to pass the tests. [4ca956d]
+    - [x] Instantiate `GroupedListWidget` and `GalleryItemDelegate`.
+    - [x] Connect signals and slots between the components.
+    - [x] Define the public API that `main_window` will consume.
+- [x] **Task:** Conductor - User Manual Verification 'Phase 2: Component Implementation (Green Phase)' (Protocol in workflow.md) [6a4dfa2]
 
 ## Phase 3: Integration and Refactoring
 
