@@ -46,10 +46,10 @@
 
 ## Phase 4: Cleanup and Final Verification
 
-- [ ] **Task:** Remove the old gallery component's source file(s).
-- [ ] **Task:** Run the full application and perform manual end-to-end testing.
-    - [ ] Verify all gallery interactions in `main_window`.
-    - [ ] Check for any visual or functional regressions.
-- [ ] **Task:** Run the entire test suite and ensure all tests pass.
-- [ ] **Task:** Generate and review the code coverage report.
-- [ ] **Task:** Conductor - User Manual Verification 'Phase 4: Cleanup and Final Verification' (Protocol in workflow.md)
+- [x] **Task:** Remove the old gallery component's source file(s). [e13df15]
+- [x] **Task:** Run the full application and perform manual end-to-end testing. [cb1d927]
+    - [x] Verify all gallery interactions in `main_window`.
+    - [x] Check for any visual or functional regressions.
+- [x] **Task:** Run the entire test suite and ensure all tests pass. [cb1d927]
+- [x] **Task:** Generate and review the code coverage report. [cb1d927]
+- [x] **Task:** Conductor - User Manual Verification 'Phase 4: Cleanup and Final Verification' (Protocol in workflow.md) [6304445]

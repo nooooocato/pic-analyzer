@@ -30,6 +30,7 @@ class GalleryLayout(QScrollArea):
                 border-bottom: 1px solid #333;
             }
         """)
+        self._items = []
         self._visible_items = []
         self._selection_mode_enabled = False
         self._group_widgets = []

@@ -35,7 +35,27 @@ def test_selection_mode_enabled(widget):
     widget.set_selection_mode_enabled(False)
     assert not widget.selection_mode_enabled
 
-def test_adjust_height_empty(widget):
-    """Test adjust_height on an empty widget."""
+def test_adjust_height_with_items(widget):
+    """Test adjust_height with items."""
+    from PySide6.QtWidgets import QListWidgetItem
+    for i in range(10):
+        widget.addItem(QListWidgetItem(f"Item {i}"))
+    widget.resize(800, 600)
     widget.adjust_height()
-    assert widget.height() == 0
+    # Height should be > 0
+    assert widget.height() > 0
+
+def test_on_selection_changed_mode_enabled(widget):
+    """Test _on_selection_changed logic when mode is enabled."""
+    from PySide6.QtWidgets import QListWidgetItem
+    item = QListWidgetItem("Test")
+    widget.addItem(item)
+    widget.set_selection_mode_enabled(True)
+    
+    # Simulate selection
+    item.setSelected(True)
+    # The internal handler should set check state
+    assert item.checkState() == Qt.Checked
+    
+    item.setSelected(False)
+    assert item.checkState() == Qt.Unchecked

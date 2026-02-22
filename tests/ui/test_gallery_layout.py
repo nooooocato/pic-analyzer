@@ -23,15 +23,18 @@ def test_gallery_layout_instantiation(layout_widget):
     assert layout_widget is not None
     assert isinstance(layout_widget, QScrollArea)
 
-def test_add_item_triggers_refresh(layout_widget, qtbot):
-    """Test that adding an item eventually creates a group."""
-    item_data = {"path": "test.jpg", "thumb": None}
-    layout_widget.add_item(item_data)
-    
-    # Wait for the refresh timer
+def test_selection_mode_toggle(layout_widget):
+    """Test that selection mode toggles correctly."""
+    assert not layout_widget.selection_mode_enabled
+    layout_widget.set_selection_mode_enabled(True)
+    assert layout_widget.selection_mode_enabled
+    layout_widget.set_selection_mode_enabled(False)
+    assert not layout_widget.selection_mode_enabled
+
+def test_clear_layout(layout_widget, qtbot):
+    """Test that clear removes items."""
+    layout_widget.add_item({"path": "test.jpg", "thumb": None})
     qtbot.wait(100)
-    
-    from src.ui.gallery.grouped_list_widget import GroupedListWidget
-    list_widget = layout_widget.findChild(GroupedListWidget)
-    assert list_widget is not None
-    assert list_widget.count() == 1
+    assert layout_widget.count() == 1
+    layout_widget.clear()
+    assert layout_widget.count() == 0
