@@ -18,8 +18,18 @@ class GalleryLayout(QScrollArea):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._setup_ui()
-        
-        self._items = []
+        self.setStyleSheet("""
+            QScrollArea { background: transparent; border: none; }
+            GroupedListWidget { background: transparent; outline: none; }
+            QLabel#GroupHeader {
+                font-weight: bold;
+                font-size: 11px;
+                color: #ccc;
+                padding: 0 8px;
+                background-color: #222;
+                border-bottom: 1px solid #333;
+            }
+        """)
         self._visible_items = []
         self._selection_mode_enabled = False
         self._group_widgets = []
