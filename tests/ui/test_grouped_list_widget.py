@@ -19,13 +19,23 @@ def test_grouped_list_widget_instantiation(widget):
     assert widget is not None
     assert isinstance(widget, QListView)
 
-def test_set_model(widget):
-    """Test that setting a model works."""
-    model = MagicMock()
-    widget.setModel(model)
-    assert widget.model() == model
+def test_add_item(widget):
+    """Test that adding an item works."""
+    from PySide6.QtWidgets import QListWidgetItem
+    item = QListWidgetItem("Test Item")
+    widget.addItem(item)
+    assert widget.count() == 1
+    assert widget.item(0).text() == "Test Item"
 
-def test_grouping_logic_initialization(widget):
-    """Test that grouping logic is initialized."""
-    # This might check for a specific attribute or behavior related to grouping
-    assert hasattr(widget, 'grouping_enabled')
+def test_selection_mode_enabled(widget):
+    """Test that selection mode can be enabled and disabled."""
+    assert not widget.selection_mode_enabled
+    widget.set_selection_mode_enabled(True)
+    assert widget.selection_mode_enabled
+    widget.set_selection_mode_enabled(False)
+    assert not widget.selection_mode_enabled
+
+def test_adjust_height_empty(widget):
+    """Test adjust_height on an empty widget."""
+    widget.adjust_height()
+    assert widget.height() == 0
