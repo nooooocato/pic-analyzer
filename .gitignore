@@ -18,3 +18,6 @@ app_metadata.db
 app.log
 
 .cleanup_backup/
+
+.gemini/
+gha-creds-*.json
